@@ -3,763 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linea LED - Executive Premium Control Hub</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brandOrange: '#F26522',
-                        brandOrangeHover: '#d95316',
-                        bgLightGrey: '#f3f4f6',
-                        cardBg: '#ffffff',
-                        borderGrey: '#e5e7eb',
-                        textDark: '#1f2937',
-                        textMuted: '#4b5563',
-                        cyberGreen: '#10B981',
-                        cyberBlue: '#3B82F6',
-                        cyberAmber: '#F59E0B'
-                    }
-                }
-            }
-        }
-    </script>
+    <title>Linea LED - Corporate Support Portal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <style>
-        /* Professional Premium Scrollbar to Match Orange-Grey Theme */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+        :root {
+            --primary: #FF4500;
+            --primary-hover: #DC3700;
+            --bg-dark: #121212;
+            --card-dark: #1E1E1E;
+            --text-main: #FFFFFF;
+            --text-muted: #A0A0A0;
+            --border-color: #2D2D2D;
+            --success: #00E676;
         }
-        ::-webkit-scrollbar-track {
-            background: #e5e7eb;
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        ::-webkit-scrollbar-thumb {
-            background: #F26522;
-            border-radius: 4px;
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #d95316;
+
+        .portal-container {
+            width: 100%;
+            max-width: 500px;
+            background: var(--card-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header h1 span {
+            color: var(--primary);
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 12px;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        .telemetry-badge {
+            background: rgba(0, 230, 118, 0.1);
+            border: 1px solid var(--success);
+            color: var(--success);
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--text-muted);
+            font-size: 13px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            background: #252525;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #2D2D2D;
+        }
+
+        .checkbox-group {
+            display: grid;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            background: #252525;
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .checkbox-item:hover {
+            background: #2D2D2D;
+        }
+
+        .checkbox-item input {
+            margin-right: 12px;
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Attachment Field Styling */
+        .file-upload-wrapper {
+            position: relative;
+            background: #252525;
+            border: 1px dashed var(--border-color);
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--primary);
+            background: #2D2D2D;
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-wrapper i {
+            font-size: 24px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .file-upload-name {
+            font-size: 12px;
+            color: var(--primary);
+            margin-top: 5px;
+            font-weight: bold;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-submit:disabled {
+            background: #555555;
+            cursor: not-allowed;
         }
     </style>
 </head>
-<body class="bg-bgLightGrey text-textDark min-h-screen flex flex-col justify-between font-sans">
+<body>
 
-    <header id="main-header" class="bg-white border-b border-borderGrey shadow-sm p-4 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
-            <div>
-                <h1 class="text-xl font-black text-textDark tracking-wide flex items-center gap-2">
-                    <span class="text-brandOrange"><i class="fa-solid fa-bolt"></i> LINEA LED</span> GATEWAY CONTROL HUB
-                </h1>
-                <p class="text-[10px] text-textMuted tracking-wider font-semibold">REAL-TIME SIGNAGE SYSTEM AUTOMATION</p>
-            </div>
-            
-            <div class="flex flex-wrap gap-1.5 bg-gray-100 p-1.5 rounded-xl border border-borderGrey">
-                <button onclick="changeTab('qr')" id="tab-qr" class="bg-brandOrange text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-all shadow-sm"><i class="fa-solid fa-qrcode mr-1"></i> 1. QR Generator</button>
-                <button onclick="changeTab('complaint')" id="tab-complaint" class="text-textMuted hover:bg-gray-200 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> 2. Register Complaint</button>
-                <button onclick="changeTab('dashboard')" id="tab-dashboard" class="text-textMuted hover:bg-gray-200 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"><i class="fa-solid fa-chart-line mr-1"></i> 3. Live Dashboard</button>
-                <button onclick="changeTab('warranty')" id="tab-warranty" class="text-textMuted hover:bg-gray-200 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"><i class="fa-solid fa-file-invoice mr-1"></i> 4. Warranty Database</button>
-                <button onclick="changeTab('admin-panel')" id="tab-admin-panel" class="text-textMuted hover:bg-gray-200 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"><i class="fa-solid fa-user-gear mr-1"></i> 5. Admin API Console</button>
-            </div>
-        </div>
-    </header>
-
-    <main class="max-w-7xl w-full mx-auto p-6 flex-grow">
-        
-        <div id="content-qr" class="tab-section block space-y-6">
-            <div class="bg-cardBg p-5 rounded-xl border border-borderGrey shadow-sm space-y-4">
-                <div>
-                    <h2 class="text-sm font-bold text-textDark uppercase tracking-wider border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-qrcode text-brandOrange mr-1"></i> Custom QR Generator Tab</h2>
-                    <p class="text-xs text-textMuted mt-0.5">Yahan apna explicit variables daal kar manual dynamic QR card generate kijiye.</p>
-                </div>
-
-                <div class="space-y-3 bg-gray-50 p-4 rounded-xl border border-borderGrey">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-bold text-textMuted mb-1">Warranty Serial ID *</label>
-                            <input type="text" id="new-warranty-id" placeholder="e.g. TA4G5TJZ" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark font-mono uppercase focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-textMuted mb-1">Branch Name / Client *</label>
-                            <input type="text" id="new-branch-name" placeholder="e.g. MUTHOOT FINANCE LTD." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-textMuted mb-1">Site Verified Full Location Address *</label>
-                        <input type="text" id="new-site-address" placeholder="Enter full physical landmark details..." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
-                    </div>
-                    <button onclick="addManualQRCard()" class="w-full bg-brandOrange hover:bg-brandOrangeHover text-white text-sm font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 uppercase tracking-wide">
-                        <i class="fa-solid fa-square-plus"></i> Create Custom QR Card
-                    </button>
-                </div>
-            </div>
-
-            <div>
-                <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-3"><i class="fa-solid fa-network-wired"></i> System Active Signage Registry (<span id="total-nodes-badge" class="font-mono text-brandOrange font-bold">1</span> Card Active)</h3>
-                <div id="qr-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                </div>
-            </div>
+    <div class="portal-container">
+        <div class="header">
+            <h1>LINEA LED <span>PORTAL</span></h1>
+            <p>Real-Time Signage Support Center</p>
         </div>
 
-        <div id="content-complaint" class="tab-section hidden">
-            <div class="bg-cardBg border border-borderGrey rounded-xl shadow-md overflow-hidden max-w-xl mx-auto">
-                <div class="bg-gray-50 px-6 py-4 border-b border-borderGrey text-center">
-                    <span class="text-brandOrange uppercase text-[10px] font-bold tracking-widest font-mono block">End-User Signage Fault Panel</span>
-                    <h2 class="text-base font-black text-textDark tracking-wide mt-0.5"><i class="fa-solid fa-screwdriver-wrench text-brandOrange"></i> Linea Signage Fault Registration</h2>
-                </div>
-                
-                <form onsubmit="handleCustomerFormSubmission(event)" class="p-6 space-y-4">
-                    <div class="bg-gray-50 p-3 rounded-xl border border-dashed border-gray-300 space-y-3">
-                        <span class="text-[10px] text-cyberGreen font-bold block tracking-wider uppercase"><i class="fa-solid fa-circle-check"></i> Scan Matrix Data Pre-Load:</span>
-                        
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <div>
-                                <label class="block text-[11px] font-bold text-textMuted mb-0.5">Warranty Token Serial</label>
-                                <input type="text" id="claim-serial" readonly placeholder="Awaiting Valid Scan" class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-brandOrange font-mono font-bold cursor-not-allowed">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-textMuted mb-0.5">Project / Branch Identity</label>
-                                <input type="text" id="claim-project-name" readonly placeholder="Awaiting Valid Scan" class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-textDark font-bold cursor-not-allowed">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-[11px] font-bold text-textMuted mb-0.5">Site Full Address Reference</label>
-                            <textarea id="claim-address" readonly placeholder="Address parameter auto mapping details..." class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-textMuted cursor-not-allowed h-16 resize-none focus:outline-none"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-50 p-3 rounded-lg border border-borderGrey flex justify-between items-center">
-                        <div>
-                            <span class="block text-[10px] uppercase font-bold tracking-wider text-textMuted">Geospatial Node Telemetry *</span>
-                            <span id="gps-status-text" class="text-xs font-bold text-red-500 flex items-center gap-1 mt-0.5">
-                                <i class="fa-solid fa-circle-radiation text-brandOrange animate-pulse"></i> Location Verification Required
-                            </span>
-                            <input type="hidden" id="gps-verified-data" required>
-                        </div>
-                        <button type="button" onclick="lockGPSCoordinates()" class="bg-white hover:bg-gray-100 text-xs font-bold text-textDark px-3 py-2 rounded-md transition-all border border-gray-300 shadow-sm uppercase tracking-wider">
-                            Verify Site Location
-                        </button>
-                    </div>
-
-                    <div class="bg-gray-50 p-4 rounded-xl border border-borderGrey space-y-3">
-                        <span class="block text-xs font-bold uppercase tracking-wider text-brandOrange"><i class="fa-solid fa-camera"></i> Upload Defective Product Photographs</span>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-[11px] font-bold text-textMuted mb-1 flex justify-between">
-                                    <span>Photo 1 (Mandatory Close-up View) *</span>
-                                    <span class="text-red-500 text-[9px] font-bold">REQUIRED</span>
-                                </label>
-                                <input type="file" id="photo-mandatory" required accept="image/*" class="w-full bg-white text-xs text-textMuted file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-brandOrange file:text-white hover:file:bg-brandOrangeHover cursor-pointer border border-gray-300 rounded-lg p-1 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-textMuted mb-1">Photo 2 (Optional Wide-angle View)</label>
-                                <input type="file" id="photo-extra1" accept="image/*" class="w-full bg-white text-xs text-textMuted file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-gray-500 file:text-white hover:file:bg-gray-600 cursor-pointer border border-gray-300 rounded-lg p-1 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-textMuted mb-1">Photo 3 (Optional Driver View)</label>
-                                <input type="file" id="photo-extra2" accept="image/*" class="w-full bg-white text-xs text-textMuted file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-gray-700 file:text-white hover:file:bg-gray-600 cursor-pointer border border-gray-300 rounded-lg p-1 shadow-sm">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-textMuted mb-1">Contact Person Name *</label>
-                            <input type="text" id="claim-contact-name" required placeholder="Enter Name" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-textMuted mb-1">Active WhatsApp Mobile *</label>
-                            <input type="tel" id="claim-contact-phone" required placeholder="10 Digit Number" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-textMuted mb-2">Signage Technical Fault Diagnosis *</label>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                            <label class="flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg border border-borderGrey cursor-pointer select-none text-[11px]">
-                                <input type="checkbox" name="faults" value="Complete LED Blackout" class="mt-0.5 accent-brandOrange" checked>
-                                <span class="text-textDark font-medium">Complete LED Blackout</span>
-                            </label>
-                            <label class="flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg border border-borderGrey cursor-pointer select-none text-[11px]">
-                                <input type="checkbox" name="faults" value="Partial Dim Patches" class="mt-0.5 accent-brandOrange">
-                                <span class="text-textDark font-medium">Partial Dim Patches</span>
-                            </label>
-                            <label class="flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg border border-borderGrey cursor-pointer select-none text-[11px]">
-                                <input type="checkbox" name="faults" value="LED Module Dead" class="mt-0.5 accent-brandOrange">
-                                <span class="text-textDark font-medium">LED Module Dead</span>
-                            </label>
-                            <label class="flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg border border-borderGrey cursor-pointer select-none text-[11px]">
-                                <input type="checkbox" name="faults" value="Power Driver Failure" class="mt-0.5 accent-brandOrange">
-                                <span class="text-textDark font-medium">Power Driver Failure</span>
-                            </label>
-                            <label class="flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg border border-borderGrey cursor-pointer select-none text-[11px]">
-                                <input type="checkbox" name="faults" value="Flickering / Blink Issue" class="mt-0.5 accent-brandOrange">
-                                <span class="text-textDark font-medium">Flickering / Blink Issue</span>
-                            </label>
-                            <label class="flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg border border-borderGrey cursor-pointer select-none text-[11px]">
-                                <input type="checkbox" name="faults" value="Structural Damage" class="mt-0.5 accent-brandOrange">
-                                <span class="text-textDark font-medium">Structural Damage</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <button id="submit-btn" type="submit" class="w-full bg-brandOrange hover:bg-brandOrangeHover text-white text-sm font-bold uppercase tracking-wider py-3 px-4 rounded-lg shadow-md transition-all">
-                        Dispatch Secure Complaint Payload
-                    </button>
-                </form>
-            </div>
+        <div class="telemetry-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>SECURE GEOSPATIAL NODE CONNECTED</span>
         </div>
 
-        <div id="content-dashboard" class="tab-section hidden space-y-6">
-            <div class="bg-cardBg p-5 rounded-xl border border-borderGrey shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <div>
-                    <h2 class="text-base font-bold text-textDark tracking-wide border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-desktop text-brandOrange mr-1"></i> Customer Responses & Operational Matrix</h2>
-                    <p class="text-xs text-textMuted mt-0.5">Real-time complaints management engine with automated validation markers.</p>
-                </div>
-                <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                    <input type="text" id="dashboard-search" oninput="filterDashboardTable()" placeholder="🔍 Search logs..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-44">
-                    <select id="dashboard-status-filter" onchange="filterDashboardTable()" class="bg-white border border-gray-300 text-xs rounded-lg px-2 py-1.5 font-bold focus:outline-none focus:border-brandOrange cursor-pointer text-textDark">
-                        <option value="ALL">All Statuses</option>
-                        <option value="Open Fault">🔴 Open Fault</option>
-                        <option value="In Progress">🟡 In Progress</option>
-                        <option value="Resolved">🟢 Resolved</option>
-                    </select>
-                    <button onclick="exportDashboardData()" class="bg-brandOrange hover:bg-brandOrangeHover text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 shadow-sm">
-                        <i class="fa-solid fa-file-export"></i> Export CSV
-                    </button>
+        <form id="complaintForm">
+            <!-- Warranty ID (Hidden/Pre-filled context) -->
+            <input type="hidden" id="warrantyId" value="LINEA-LED-9981">
+
+            <div class="form-group">
+                <label>Contact Person Name *</label>
+                <input type="text" id="clientName" class="form-control" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label>Active WhatsApp Mobile *</label>
+                <input type="tel" id="contactPhone" class="form-control" placeholder="e.g. 8698755608" required>
+            </div>
+
+            <div class="form-group">
+                <label>Signage Technical Fault Diagnosis *</label>
+                <div class="checkbox-group">
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="fault" value="Complete LED Blackout">
+                        <span>Complete LED Blackout</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="fault" value="Partial Dim Patches">
+                        <span>Partial Dim Patches</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="fault" value="LED Module Dead">
+                        <span>LED Module Dead</span>
+                    </label>
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="fault" value="Power Driver Failure">
+                        <span>Power Driver Failure</span>
+                    </label>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm relative overflow-hidden">
-                    <span class="text-[10px] text-textMuted uppercase font-bold tracking-wider block">Total Dispatched Claims</span>
-                    <span id="dash-counter-total" class="text-2xl font-black text-textDark block mt-1 font-mono">0</span>
-                    <span class="text-[9px] text-textMuted block mt-1">Fired from scanned incoming logs</span>
-                </div>
-                <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm relative overflow-hidden border-l-4 border-red-500">
-                    <span class="text-[10px] text-red-600 uppercase font-bold tracking-wider block">Pending / Open Faults</span>
-                    <span id="dash-counter-pending" class="text-2xl font-black text-red-600 block mt-1 font-mono">0</span>
-                    <span class="text-[9px] text-cyberAmber font-bold block mt-1"><i class="fa-solid fa-circle-notch animate-spin mr-0.5"></i> Awaiting Action</span>
-                </div>
-                <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm relative overflow-hidden border-l-4 border-emerald-500">
-                    <span class="text-[10px] text-emerald-600 uppercase font-bold tracking-wider block">Resolved Signages</span>
-                    <span id="dash-counter-resolved" class="text-2xl font-black text-emerald-600 block mt-1 font-mono">0</span>
-                    <span class="text-[9px] text-cyberGreen font-bold block mt-1"><i class="fa-solid fa-check-double"></i> Service Complete</span>
+            <!-- Beautiful Attachment Option -->
+            <div class="form-group">
+                <label>Upload Fault Image / Site Proof (Optional)</label>
+                <div class="file-upload-wrapper">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p style="font-size: 13px; color: var(--text-muted);">Click or Drag photo here to attach</p>
+                    <input type="file" id="siteAttachment" accept="image/*" onchange="updateFileName()">
+                    <div id="fileNameDisplay" class="file-upload-name"></div>
                 </div>
             </div>
 
-            <div class="bg-white rounded-xl border border-borderGrey overflow-hidden shadow-sm">
-                <div class="bg-gray-50 px-5 py-3 border-b border-borderGrey flex justify-between items-center">
-                    <h3 class="text-xs font-bold text-textDark uppercase tracking-wider"><i class="fa-solid fa-list text-brandOrange mr-1"></i> Real-time Complaint Response Ledger</h3>
-                    <span class="text-[9px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md border border-emerald-200 font-mono font-bold">Operational Node Live</span>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-xs">
-                        <thead>
-                            <tr class="bg-gray-100 text-textMuted border-b border-borderGrey uppercase tracking-wider font-mono text-[10px]">
-                                <th class="p-3">Warranty ID</th>
-                                <th class="p-3">Client / Branch Name</th>
-                                <th class="p-3">Contact Reference</th>
-                                <th class="p-3">Verified Photo Attachment</th>
-                                <th class="p-3">Diagnostic Issue</th>
-                                <th class="p-3">System Match Status</th>
-                                <th class="p-3 text-center">Update Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dashboard-complaint-rows" class="divide-y divide-gray-200 font-medium text-textDark">
-                            <tr id="empty-ledger-placeholder">
-                                <td colspan="7" class="p-10 text-center text-textMuted font-medium italic">
-                                    <i class="fa-solid fa-receipt text-3xl block mb-2 text-gray-300"></i> Koi response abhi tak generate nahi hua hai. Warranty QR scan karke complaint submit kijiye!
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <div id="content-warranty" class="tab-section hidden space-y-6">
-            <div class="bg-cardBg p-6 rounded-xl border border-borderGrey shadow-sm space-y-5">
-                <div class="border-b border-gray-200 pb-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div>
-                        <h2 class="text-base font-bold text-textDark border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-file-invoice text-brandOrange mr-1"></i> Master Warranty Registrations Database</h2>
-                        <p class="text-xs text-textMuted mt-0.5">Sudhanshu bhai, yahan aapka master CSV spreadsheet data safe load hoga.</p>
-                    </div>
-                    
-                    <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                        <input type="text" id="warranty-search-input" oninput="filterWarrantyTable()" placeholder="🔍 Search ID, Client, Project..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-64">
-                        
-                        <label class="flex items-center gap-1.5 bg-cyberGreen hover:bg-emerald-600 text-white text-xs font-bold py-1.5 px-3 rounded-lg cursor-pointer transition-all shadow-sm uppercase tracking-wider">
-                            <i class="fa-solid fa-file-excel"></i> Upload Master CSV
-                            <input type="file" id="warranty-csv-import" accept=".csv" onchange="parseWarrantyCSV(event)" class="hidden">
-                        </label>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-xl border border-borderGrey overflow-hidden">
-                    <div class="p-3 bg-gray-50 border-b border-borderGrey flex justify-between items-center">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-textMuted">CSV Spreadsheet Framework Viewer (Horizontal Drag Active)</span>
-                        <span id="csv-count-badge" class="text-[10px] bg-orange-100 text-brandOrange font-mono px-2 py-0.5 rounded border border-orange-200 font-bold">0 Records Found</span>
-                    </div>
-                    
-                    <div class="overflow-x-auto overflow-y-auto max-h-[500px]">
-                        <table class="w-full text-left text-xs min-w-[1500px]">
-                            <thead class="sticky top-0 bg-gray-100 text-textMuted font-mono text-[10px] uppercase border-b border-borderGrey z-10">
-                                <tr>
-                                    <th class="p-3 border-r border-gray-200 w-[120px]">Warranty ID</th>
-                                    <th class="p-3 border-r border-gray-200 w-[200px]">Customer Name</th>
-                                    <th class="p-3 border-r border-gray-200 w-[100px]">Total Warranty</th>
-                                    <th class="p-3 border-r border-gray-200 w-[100px]">Start Date</th>
-                                    <th class="p-3 border-r border-gray-200 w-[100px]">End Date</th>
-                                    <th class="p-3 border-r border-gray-200 w-[200px]">Project / Branch Name</th>
-                                    <th class="p-3 border-r border-gray-200 w-[130px]">Contact Number</th>
-                                    <th class="p-3 border-r border-gray-200 w-[350px]">Site Address (Full)</th>
-                                    <th class="p-3 border-r border-gray-200 w-[180px]">Product Name</th>
-                                    <th class="p-3 w-[120px]">Product Type</th>
-                                </tr>
-                            </thead>
-                            <tbody id="csv-data-viewer-rows" class="divide-y divide-gray-200 text-textDark font-medium break-words">
-                                <tr>
-                                    <td colspan="10" class="p-12 text-center text-textMuted italic">
-                                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-300 block mb-2"></i> No data loaded into temporary system node. Please upload a valid CSV.
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="content-admin-panel" class="tab-section hidden">
-            <div class="bg-cardBg p-6 rounded-xl border border-borderGrey shadow-sm max-w-xl mx-auto space-y-4">
-                <div class="border-b border-gray-200 pb-2 flex items-center gap-2">
-                    <span class="text-brandOrange text-xl"><i class="fa-solid fa-shield-halved"></i></span>
-                    <div>
-                        <h3 class="text-sm font-bold text-textDark uppercase tracking-wider">Central Admin Credentials Dashboard</h3>
-                        <p class="text-[11px] text-textMuted">Secure Identity & Gateway Parameters Locked Configuration</p>
-                    </div>
-                </div>
-                
-                <div class="space-y-3 bg-gray-50 p-4 rounded-xl border border-borderGrey">
-                    <div>
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Admin Executive Name</label>
-                        <input type="text" id="admin-user-name" readonly value="Sudhanshu Shekhar" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark font-bold cursor-not-allowed shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Registered Contact Number</label>
-                        <input type="text" id="admin-user-phone" readonly value="8698755608" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-cyberBlue font-mono font-bold cursor-not-allowed shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">System Registered Mail ID</label>
-                        <input type="text" id="admin-user-email" readonly value="mis@hi-sign.com" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark font-mono font-semibold cursor-not-allowed shadow-sm">
-                    </div>
-                    <div class="pt-2 border-t border-gray-200">
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Product ID Key</label>
-                        <input type="text" id="admin-product-id" readonly value="3a950ac6-e427-45db-848b-21ca1f292072" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-brandOrange font-mono font-bold cursor-not-allowed shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Token Secure ID</label>
-                        <input type="text" id="admin-token-id" readonly value="01c04aaa-7588-4989-b435-13a873c5e9b3" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textMuted font-mono cursor-not-allowed shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Phone Configuration ID</label>
-                        <input type="text" id="admin-phone-id" readonly value="58852" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-cyberGreen font-mono font-bold cursor-not-allowed shadow-sm">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <footer id="main-footer" class="bg-white border-t border-borderGrey py-4 text-center text-xs text-textMuted shadow-inner">
-        <p>© 2026 <span class="text-brandOrange font-bold tracking-wider">LINEA LED SIGNAGE NETWORKS</span> | Deployed by <span class="text-textDark font-bold">Sudhanshu Shekhar</span></p>
-    </footer>
+            <button type="submit" id="submitBtn" class="btn-submit">Submit Complaint</button>
+        </form>
+    </div>
 
     <script>
-        // GLOBAL API BACKEND URL CONFIGURATION
+        // Aapka updated Render Live URL
         const BACKEND_URL = 'https://linea-led.onrender.com';
 
-        let masterWarrantyStorage = JSON.parse(localStorage.getItem('linea_warranty_db')) || [];
-        let complaintsResponseArray = JSON.parse(localStorage.getItem('linea_complaints_db')) || [];
-        let customQRCardsArray = JSON.parse(localStorage.getItem('linea_custom_qr_cards')) || [];
+        // Attachment file ka naam display karne ke liye function
+        function updateFileName() {
+            const fileInput = document.getElementById('siteAttachment');
+            const nameDisplay = document.getElementById('fileNameDisplay');
+            if(fileInput.files.length > 0) {
+                nameDisplay.textContent = "Attached: " + fileInput.files[0].name;
+            } else {
+                nameDisplay.textContent = "";
+            }
+        }
 
-        // Flag tracking if user is currently inside customer layout simulation mode
-        let isCustomerLayoutViewMode = false;
-
-        window.onload = function() {
-            renderWarrantyTable();
-            renderCustomQRCards();
+        // Form Submit Handler
+        document.getElementById('complaintForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            // App start hote hi server se latest live data dashboard par fetch karega
-            fetchLiveDashboardData();
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Processing Cloud Sync...";
 
-            // Handle real-time mobile scan parameter processing on application initialization
-            const urlParams = new URLSearchParams(window.location.search);
-            const wId = urlParams.get('wId');
-            const bName = urlParams.get('bName');
-            const addr = urlParams.get('addr');
-
-            if (wId && bName && addr) {
-                isCustomerLayoutViewMode = true;
-
-                // Completely hide navigation interface panel & footer container
-                document.getElementById('main-header').style.display = 'none';
-                document.getElementById('main-footer').style.display = 'none';
-
-                triggerCustomerScanPassthrough(wId, bName, addr);
-                
-                // Clear URL parameters smoothly without refresh
-                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                window.history.replaceState({path: cleanUrl}, '', cleanUrl);
-            }
-        };
-
-        function changeTab(tabName) {
-            document.querySelectorAll('.tab-section').forEach(section => {
-                section.classList.add('hidden');
-                section.classList.remove('block');
-            });
-            document.querySelectorAll('[id^="tab-"]').forEach(btn => {
-                btn.classList.remove('bg-brandOrange', 'text-white', 'shadow-sm');
-                btn.classList.add('text-textMuted');
-            });
-            document.getElementById('content-' + tabName).classList.remove('hidden');
-            document.getElementById('content-' + tabName).classList.add('block');
-            document.getElementById('tab-' + tabName).classList.add('bg-brandOrange', 'text-white', 'shadow-sm');
-            document.getElementById('tab-' + tabName).classList.remove('text-textMuted');
-
-            if (tabName === 'dashboard') {
-                fetchLiveDashboardData();
-            }
-        }
-
-        function parseWarrantyCSV(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const text = e.target.result;
-                const lines = text.split('\n');
-                masterWarrantyStorage = [];
-
-                for (let i = 1; i < lines.length; i++) {
-                    const row = lines[i].trim();
-                    if (!row) continue;
-                    const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                    
-                    if (cols.length > 0) {
-                        masterWarrantyStorage.push({
-                            warrantyId: cols[0] ? cols[0].replace(/"/g, '').trim() : '',
-                            customerName: cols[1] ? cols[1].replace(/"/g, '').trim() : '',
-                            totalWarranty: cols[3] ? cols[3].replace(/"/g, '').trim() : '',
-                            startDate: cols[4] ? cols[4].replace(/"/g, '').trim() : '',
-                            endDate: cols[5] ? cols[5].replace(/"/g, '').trim() : '',
-                            projectName: cols[11] ? cols[11].replace(/"/g, '').trim() : '',
-                            contactNo: cols[13] ? cols[13].replace(/"/g, '').trim() : '',
-                            siteAddress: cols[15] ? cols[15].replace(/"/g, '').trim() : '',
-                            productName: cols[18] ? cols[18].replace(/"/g, '').trim() : '',
-                            productType: cols[19] ? cols[19].replace(/"/g, '').trim() : ''
-                        });
-                    }
-                }
-                localStorage.setItem('linea_warranty_db', JSON.stringify(masterWarrantyStorage));
-                renderWarrantyTable();
-                alert(`✅ DATA INTEGRATED SAFELY: ${masterWarrantyStorage.length} Master spreadsheet rows registered!`);
-            };
-            reader.readAsText(file);
-        }
-
-        function renderWarrantyTable() {
-            const tableBody = document.getElementById('csv-data-viewer-rows');
-            if(!tableBody) return;
-            document.getElementById('csv-count-badge').innerText = `${masterWarrantyStorage.length} Records Found`;
-
-            if (masterWarrantyStorage.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="10" class="p-12 text-center text-textMuted italic">No data loaded into system node. Please upload a valid CSV.</td></tr>`;
-                return;
-            }
-
-            tableBody.innerHTML = masterWarrantyStorage.map(item => `
-                <tr class="hover:bg-gray-50 border-b border-gray-200 font-mono text-[11px] align-top text-textDark">
-                    <td class="p-3 text-brandOrange font-bold border-r border-gray-200">${item.warrantyId}</td>
-                    <td class="p-3 text-textDark border-r border-gray-200 whitespace-normal font-sans">${item.customerName}</td>
-                    <td class="p-3 text-textMuted border-r border-gray-200">${item.totalWarranty}</td>
-                    <td class="p-3 text-textMuted border-r border-gray-200">${item.startDate}</td>
-                    <td class="p-3 text-textMuted border-r border-gray-200">${item.endDate}</td>
-                    <td class="p-3 text-cyberBlue font-bold border-r border-gray-200 whitespace-normal font-sans">${item.projectName}</td>
-                    <td class="p-3 text-textDark border-r border-gray-200">${item.contactNo}</td>
-                    <td class="p-3 text-textMuted border-r border-gray-200 whitespace-normal font-sans tracking-wide select-all" title="Click to copy full address">${item.siteAddress}</td>
-                    <td class="p-3 text-cyberGreen border-r border-gray-200 whitespace-normal font-sans">${item.productName}</td>
-                    <td class="p-3 text-textMuted whitespace-normal font-sans">${item.productType}</td>
-                </tr>
-            `).join('');
-        }
-
-        function filterWarrantyTable() {
-            const query = document.getElementById('warranty-search-input').value.toLowerCase().trim();
-            const rows = document.getElementById('csv-data-viewer-rows').getElementsByTagName('tr');
-
-            for (let row of rows) {
-                if (row.cells.length < 2) continue;
-                const matchId = row.cells[0].innerText.toLowerCase();
-                const matchClient = row.cells[1].innerText.toLowerCase();
-                const matchProject = row.cells[5].innerText.toLowerCase();
-
-                if (matchId.includes(query) || matchClient.includes(query) || matchProject.includes(query)) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            }
-        }
-
-        function addManualQRCard() {
-            const wId = document.getElementById('new-warranty-id').value.trim().toUpperCase();
-            const bName = document.getElementById('new-branch-name').value.trim();
-            const bAddress = document.getElementById('new-site-address').value.trim();
-
-            if (!wId || !bName || !bAddress) {
-                alert("Attention: Please populate all input parameters!");
-                return;
-            }
-
-            customQRCardsArray.unshift({ id: wId, client: bName, address: bAddress });
-            localStorage.setItem('linea_custom_qr_cards', JSON.stringify(customQRCardsArray));
-            renderCustomQRCards();
-
-            document.getElementById('new-warranty-id').value = "";
-            document.getElementById('new-branch-name').value = "";
-            document.getElementById('new-site-address').value = "";
-            alert("✅ Dynamic QR Card compiled successfully!");
-        }
-
-        function renderCustomQRCards() {
-            const gridContainer = document.getElementById('qr-cards-grid');
-            if(!gridContainer) return;
-            document.getElementById('total-nodes-badge').innerText = `${customQRCardsArray.length + 1} Cards Active`;
-
-            const baseUrl = window.location.href.split('?')[0];
-            const staticStaticUrl = `${baseUrl}?wId=TA4G5TJZ&bName=${encodeURIComponent('MUTHOOT FINANCE LTD.')}&addr=${encodeURIComponent('Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')}`;
-
-            let staticHtml = `
-                <div class="bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
-                    <div>
-                        <h4 class="font-bold text-textDark text-sm tracking-wide font-sans">MUTHOOT FINANCE LTD.</h4>
-                        <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">Warranty ID: TA4G5TJZ</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerSimulatedScanClick('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(staticStaticUrl)}" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
-                            <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
-                        </div>
-                        <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar</p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-gray-100">
-                        <button onclick="triggerSimulatedScanClick('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
-                    </div>
-                </div>
-            `;
-
-            let dynamicHtml = customQRCardsArray.map(item => {
-                const qrPayloadUrl = `${baseUrl}?wId=${encodeURIComponent(item.id)}&bName=${encodeURIComponent(item.client)}&addr=${encodeURIComponent(item.address)}`;
-                return `
-                <div class="bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
-                    <div>
-                        <h4 class="font-bold text-textDark text-sm tracking-wide font-sans">${item.client}</h4>
-                        <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">Warranty ID: ${item.id}</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerSimulatedScanClick('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrPayloadUrl)}" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
-                            <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
-                        </div>
-                        <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">${item.address}</p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-gray-100">
-                        <button onclick="triggerSimulatedScanClick('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
-                    </div>
-                </div>
-            `}).join('');
-
-            gridContainer.innerHTML = staticHtml + dynamicHtml;
-        }
-
-        function triggerSimulatedScanClick(wId, bName, siteAddr) {
-            triggerCustomerScanPassthrough(wId, bName, siteAddr);
-        }
-
-        function triggerCustomerScanPassthrough(wId, bName, siteAddr) {
-            changeTab('complaint');
-            
-            document.getElementById('claim-serial').value = wId;
-            document.getElementById('claim-project-name').value = bName;
-            document.getElementById('claim-address').value = siteAddr;
-
-            document.getElementById('claim-contact-name').value = "Sudhanshu Shekhar";
-            document.getElementById('claim-contact-phone').value = "8698755608";
-            
-            const mockFileSlot = document.getElementById('photo-mandatory');
-            if (mockFileSlot) {
-                mockFileSlot.required = false; 
-            }
-            
-            const gpsStatus = document.getElementById('gps-status-text');
-            const gpsDataStore = document.getElementById('gps-verified-data');
-            if (gpsStatus && gpsDataStore) {
-                gpsStatus.className = "text-xs font-bold text-cyberGreen flex items-center gap-1 mt-0.5";
-                gpsStatus.innerHTML = `<i class="fa-solid fa-circle-check"></i> SCAN TELEMETRY LOCKED ON SITE`;
-                gpsDataStore.value = "LAT_28.6441_LONG_77.2012";
-            }
-        }
-
-        function lockGPSCoordinates() {
-            const gpsStatus = document.getElementById('gps-status-text');
-            const gpsDataStore = document.getElementById('gps-verified-data');
-            gpsStatus.innerHTML = `<i class="fa-solid fa-satellite-dish animate-spin text-brandOrange"></i> Security Locking...`;
-            
-            setTimeout(() => {
-                gpsStatus.className = "text-xs font-bold text-cyberGreen flex items-center gap-1 mt-0.5";
-                gpsStatus.innerHTML = `<i class="fa-solid fa-circle-check"></i> GEOSPATIAL NODE SECURED`;
-                gpsDataStore.value = "LAT_28.6441_LONG_77.2012";
-            }, 600);
-        }
-
-        // FETCH LIVE DATA FROM RENDER BACKEND
-        async function fetchLiveDashboardData() {
-            const tableBody = document.getElementById('dashboard-complaint-rows');
-            if(!tableBody) return;
-
-            try {
-                // Console tab se core configurations retrieve kiye headers lagane ke liye
-                const productId = document.getElementById('admin-product-id').value;
-                const tokenId = document.getElementById('admin-token-id').value;
-                const phoneId = document.getElementById('admin-phone-id').value;
-
-                const response = await fetch(`${BACKEND_URL}/api/complaints`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Product-Id': productId,
-                        'X-Token-Id': tokenId,
-                        'X-Phone-Id': phoneId
-                    }
-                });
-
-                if (!response.ok) throw new Error('Network error parsing server data registry');
-                
-                const serverData = await response.json();
-                complaintsResponseArray = serverData.complaints || serverData;
-
-                // Local backup synchronous state syncing 
-                localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
-                renderDashboardEngine(complaintsResponseArray);
-
-            } catch (error) {
-                console.error("Backend offline or error. Switching to fallback localStorage:", error);
-                // Fallback architecture agar network lag ho
-                renderDashboardEngine(complaintsResponseArray);
-            }
-        }
-
-        function renderDashboardEngine(dataArray) {
-            const tableBody = document.getElementById('dashboard-complaint-rows');
-            if(!tableBody) return;
-
-            tableBody.innerHTML = "";
-            let pendingCount = 0;
-            let resolvedCount = 0;
-
-            if (!dataArray || dataArray.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="7" class="p-10 text-center text-textMuted font-medium italic"><i class="fa-solid fa-receipt text-3xl block mb-2 text-gray-300"></i> Koi response abhi tak nahi mila hai backend se. Check network or map dynamic scan!</td></tr>`;
-                updateCounters(0, 0, 0);
-                return;
-            }
-
-            dataArray.forEach((item, index) => {
-                if (item.status === "Open Fault" || !item.status) pendingCount++;
-                if (item.status === "Resolved") resolvedCount++;
-
-                let currentStatus = item.status || "Open Fault";
-                let badgeClass = "bg-red-100 text-red-800 border border-red-200";
-                if (currentStatus === "In Progress") badgeClass = "bg-amber-100 text-amber-800 border border-amber-200";
-                if (currentStatus === "Resolved") badgeClass = "bg-emerald-100 text-emerald-800 border border-emerald-200";
-
-                const matchStatusText = item.matchStatus || "✅ Verified Node Match";
-                const matchBadgeClass = matchStatusText.includes("✅") ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-amber-700 bg-amber-50 border-amber-200";
-
-                const rowHtml = `
-                    <tr class="hover:bg-gray-50 border-b border-gray-200 text-textDark font-medium">
-                        <td class="p-3 font-mono text-brandOrange font-bold">${item.warrantyId || 'N/A'}</td>
-                        <td class="p-3 font-bold font-sans">${item.client || item.clientName || 'N/A'}</td>
-                        <td class="p-3 text-textMuted font-sans">${item.contact || 'N/A'}</td>
-                        <td class="p-3 text-cyberBlue font-mono font-semibold"><i class="fa-solid fa-paperclip text-xs mr-1"></i>${item.imageName || 'scanned_proof.jpg'}</td>
-                        <td class="p-3"><span class="${badgeClass} px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-sans">${item.issue || 'Diagnostic'}</span></td>
-                        <td class="p-3"><span class="border px-2 py-0.5 rounded text-[10px] font-bold font-mono ${matchBadgeClass}">${matchStatusText}</span></td>
-                        <td class="p-3 text-center">
-                            <select onchange="updateRowStatusOnServer('${item._id || index}', this.value, ${index})" class="bg-white border border-gray-300 text-xs rounded-lg text-textDark px-2 py-1 font-bold focus:outline-none focus:border-brandOrange cursor-pointer shadow-sm">
-                                <option value="Open Fault" ${currentStatus === 'Open Fault' ? 'selected' : ''}>🔴 Open Fault</option>
-                                <option value="In Progress" ${currentStatus === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
-                                <option value="Resolved" ${currentStatus === 'Resolved' ? 'selected' : ''}>🟢 Resolved</option>
-                            </select>
-                        </td>
-                    </tr>
-                `;
-                tableBody.insertAdjacentHTML('beforeend', rowHtml);
+            // Checkboxes se selected faults nikalna
+            const selectedFaults = [];
+            document.querySelectorAll('input[name="fault"]:checked').forEach((cb) => {
+                selectedFaults.push(cb.value);
             });
 
-            updateCounters(dataArray.length, pendingCount, resolvedCount);
-        }
-
-        // DISPATCH SECURE COMPLAINT PAYLOAD TO LIVE SERVER API
-        async function handleCustomerFormSubmission(event) {
-            event.preventDefault();
-
-            const gpsLock = document.getElementById('gps-verified-data').value;
-            if (!gpsLock) {
-                alert("🚨 DISPATCH DENIED: Please authorize site GPS telemetry configuration verification first.");
+            if(selectedFaults.length === 0) {
+                alert("Please select at least one Technical Fault Diagnosis.");
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Complaint";
                 return;
             }
 
-            const submitBtn = document.getElementById('submit-btn');
-            if(submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.innerText = "Processing Pipeline secure dispatch...";
-            }
-
-            const wId = document.getElementById('claim-serial').value.trim().toUpperCase();
-            const pName = document.getElementById('claim-project-name').value;
-            const personName = document.getElementById('claim-contact-name').value;
-            const personPhone = document.getElementById('claim-contact-phone').value;
-            const fileCheck = document.getElementById('photo-mandatory').files[0];
-
-            let faultsSelected = [];
-            document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
-            const activeFaultText = faultsSelected.join(', ') || 'Diagnostic Evaluation';
-
-            const matchFoundInDatabase = masterWarrantyStorage.some(record => record.warrantyId.toUpperCase() === wId);
-            const matchStatusLabel = matchFoundInDatabase ? "✅ Verified Node Match" : "⚠️ Manual Network Registration";
-
-            // Creating the Payload Object mapping console specifications 
+            // Data payload banana backend ke liye
             const payload = {
-                warrantyId: wId,
-                client: pName,
-                contact: `${personName} (${personPhone})`,
-                imageName: fileCheck ? fileCheck.name : "scanned_proof.jpg",
-                issue: activeFaultText,
-                matchStatus: matchStatusLabel,
-                status: "Open Fault",
-                // Admin API Console panel mapping variables inject dynamically
-                adminUserName: document.getElementById('admin-user-name').value,
-                adminUserPhone: document.getElementById('admin-user-phone').value,
-                adminUserEmail: document.getElementById('admin-user-email').value,
-                productId: document.getElementById('admin-product-id').value,
-                tokenId: document.getElementById('admin-token-id').value,
-                phoneId: document.getElementById('admin-phone-id').value,
-                gpsCoordinates: gpsLock
+                warrantyId: document.getElementById('warrantyId').value,
+                clientName: document.getElementById('clientName').value,
+                contactName: document.getElementById('clientName').value,
+                contactPhone: document.getElementById('contactPhone').value,
+                issueReported: selectedFaults.join(', ')
             };
 
             try {
-                const response = await fetch(`${BACKEND_URL}/api/complaints`, {
+                // API Hit to Live Render Server
+                const response = await fetch(`${BACKEND_URL}/api/register-complaint`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -767,131 +323,23 @@
                     body: JSON.stringify(payload)
                 });
 
-                if (!response.ok) throw new Error('Server application response returned error status code');
+                const result = await response.json();
 
-                alert(`🚀 STREAM DISPATCHED SUCCESSFULLY TO LIVE SERVER:\nValidation Status: ${matchStatusLabel}`);
-                
-                // Form UI reset rules safely executed
-                event.target.reset();
-                document.getElementById('photo-mandatory').required = true; 
-                document.getElementById('gps-verified-data').value = "";
-                document.getElementById('gps-status-text').className = "text-xs font-semibold text-red-500 flex items-center gap-1 mt-0.5";
-                document.getElementById('gps-status-text').innerHTML = `<i class="fa-solid fa-circle-radiation text-brandOrange animate-pulse"></i> Location Verification Required`;
-                
-                if (isCustomerLayoutViewMode) {
-                    alert("Thank you! Your complaint has been lodged securely.");
-                    document.getElementById('claim-serial').value = "";
-                    document.getElementById('claim-project-name').value = "";
-                    document.getElementById('claim-address').value = "";
-                    changeTab('complaint');
+                if (result.success) {
+                    alert(`Complaint Logged Successfully!\nYour Ticket ID is: #${result.data.id}`);
+                    document.getElementById('complaintForm').reset();
+                    document.getElementById('fileNameDisplay').textContent = "";
                 } else {
-                    changeTab('dashboard');
+                    alert("Server Error: " + result.message);
                 }
-
             } catch (error) {
-                console.error("Critical API transmission error, falling back to synchronization mode:", error);
-                alert("⚠️ Server Sync Error. Saving data locally to master local ledger temporarily.");
-                
-                // Backup fall back push
-                complaintsResponseArray.unshift(payload);
-                localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
-                changeTab('dashboard');
+                console.error("Error syncing:", error);
+                alert("Failed to sync with cloud. Please check internet connection.");
             } finally {
-                if(submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = "Dispatch Secure Complaint Payload";
-                }
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Complaint";
             }
-        }
-
-        // UPDATE ROW STATUS ON THE RENDER SERVER
-        async function updateRowStatusOnServer(id, newStatus, fallbackIndex) {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/complaints/status`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id: id,
-                        status: newStatus
-                    })
-                });
-
-                if (!response.ok) {
-                    // Method patch query variations depending on route definitions
-                    const altResponse = await fetch(`${BACKEND_URL}/api/complaints/${id}`, {
-                        method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ status: newStatus })
-                    });
-                    if(!altResponse.ok) throw new Error('API server status change update failed');
-                }
-                
-                alert(`🟢 STATUS CONFIGURATION REGISTERED: updated to "${newStatus}"`);
-                fetchLiveDashboardData();
-
-            } catch (error) {
-                console.error("Could not sync status change with live network server node:", error);
-                // Fallback updating engine state offline array directly
-                if(complaintsResponseArray[fallbackIndex]) {
-                    complaintsResponseArray[fallbackIndex].status = newStatus;
-                    localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
-                    renderDashboardEngine(complaintsResponseArray);
-                }
-            }
-        }
-
-        function updateCounters(total, pending, resolved) {
-            document.getElementById('dash-counter-total').innerText = total;
-            document.getElementById('dash-counter-pending').innerText = pending;
-            document.getElementById('dash-counter-resolved').innerText = resolved;
-        }
-
-        function filterDashboardTable() {
-            const query = document.getElementById('dashboard-search').value.toLowerCase();
-            const statusFilter = document.getElementById('dashboard-status-filter').value;
-            const rows = document.getElementById('dashboard-complaint-rows').getElementsByTagName('tr');
-
-            for (let row of rows) {
-                if (row.cells.length < 2) continue;
-                const txtId = row.cells[0].innerText.toLowerCase();
-                const txtClient = row.cells[1].innerText.toLowerCase();
-                const selectEl = row.cells[6].getElementsByTagName('select')[0];
-                const currentStatus = selectEl ? selectEl.value : '';
-
-                const matchesSearch = txtId.includes(query) || txtClient.includes(query);
-                const matchesStatus = (statusFilter === "ALL") || (currentStatus === statusFilter);
-
-                if (matchesSearch && matchesStatus) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
-            }
-        }
-
-        function exportDashboardData() {
-            if (complaintsResponseArray.length === 0) {
-                alert("Export Fail: System database payload log stream is empty!");
-                return;
-            }
-
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Warranty ID,Client Name,Contact Reference,Defect Photo,Issue Reported,Cross-Check Status,Operational Status\n";
-
-            complaintsResponseArray.forEach(item => {
-                csvContent += `"${item.warrantyId || ''}","${item.client || item.clientName || ''}","${item.contact || ''}","${item.imageName || ''}","${item.issue || ''}","${item.matchStatus || ''}","${item.status || ''}"\n`;
-            });
-
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "Linea_LED_Operational_Report_2026.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+        });
     </script>
 </body>
 </html>
