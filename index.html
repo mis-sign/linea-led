@@ -98,22 +98,7 @@
             <div>
                 <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-3"><i class="fa-solid fa-network-wired"></i> System Active Signage Registry (<span id="total-nodes-badge" class="font-mono text-brandOrange font-bold">1</span> Card Active)</h3>
                 <div id="qr-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
-                        <div>
-                            <h4 class="font-bold text-textDark text-sm tracking-wide">MUTHOOT FINANCE LTD.</h4>
-                            <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">Warranty ID: TA4G5TJZ</p>
-                            
-                            <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerCustomerScanPassthrough('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=TA4G5TJZ" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
-                                <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
-                            </div>
-                            <p class="text-[11px] text-textMuted px-1 text-center font-medium">Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar</p>
-                        </div>
-                        <div class="mt-4 pt-3 border-t border-gray-100">
-                            <button onclick="triggerCustomerScanPassthrough('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
-                        </div>
                     </div>
-                </div>
             </div>
         </div>
 
@@ -402,6 +387,21 @@
             renderWarrantyTable();
             renderDashboardTable();
             renderCustomQRCards();
+
+            // FIXED PIPELINE: Handle real-time mobile scan parameter processing on application initialization
+            const urlParams = new URLSearchParams(window.location.search);
+            const wId = urlParams.get('wId');
+            const bName = urlParams.get('bName');
+            const addr = urlParams.get('addr');
+
+            if (wId && bName && addr) {
+                // If deep link payload parameters exist, cleanly inject into user view layout context area instantly
+                triggerCustomerScanPassthrough(wId, bName, addr);
+                
+                // Clear URL parameters from browser address bar smoothly without refreshing the page
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.history.replaceState({path: cleanUrl}, '', cleanUrl);
+            }
         };
 
         function changeTab(tabName) {
@@ -523,13 +523,18 @@
             const gridContainer = document.getElementById('qr-cards-grid');
             document.getElementById('total-nodes-badge').innerText = `${customQRCardsArray.length + 1} Cards Active`;
 
+            // FIXED QR PAYLOAD: Dynamic deployment environment absolute base link configuration locator mapping
+            const baseUrl = window.location.href.split('?')[0];
+
+            const staticStaticUrl = `${baseUrl}?wId=TA4G5TJZ&bName=${encodeURIComponent('MUTHOOT FINANCE LTD.')}&addr=${encodeURIComponent('Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')}`;
+
             let staticHtml = `
                 <div class="bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
                     <div>
                         <h4 class="font-bold text-textDark text-sm tracking-wide font-sans">MUTHOOT FINANCE LTD.</h4>
                         <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">Warranty ID: TA4G5TJZ</p>
                         <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerCustomerScanPassthrough('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=TA4G5TJZ" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(staticStaticUrl)}" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
                             <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
                         </div>
                         <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar</p>
@@ -540,13 +545,15 @@
                 </div>
             `;
 
-            let dynamicHtml = customQRCardsArray.map(item => `
+            let dynamicHtml = customQRCardsArray.map(item => {
+                const qrPayloadUrl = `${baseUrl}?wId=${encodeURIComponent(item.id)}&bName=${encodeURIComponent(item.client)}&addr=${encodeURIComponent(item.address)}`;
+                return `
                 <div class="bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
                     <div>
                         <h4 class="font-bold text-textDark text-sm tracking-wide font-sans">${item.client}</h4>
                         <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">Warranty ID: ${item.id}</p>
                         <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerCustomerScanPassthrough('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${item.id}" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrPayloadUrl)}" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
                             <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
                         </div>
                         <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">${item.address}</p>
@@ -555,7 +562,7 @@
                         <button onclick="triggerCustomerScanPassthrough('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
 
             gridContainer.innerHTML = staticHtml + dynamicHtml;
         }
