@@ -46,7 +46,7 @@
 </head>
 <body class="bg-bgLightGrey text-textDark min-h-screen flex flex-col justify-between font-sans">
 
-    <header class="bg-white border-b border-borderGrey shadow-sm p-4 sticky top-0 z-50">
+    <header id="main-header" class="bg-white border-b border-borderGrey shadow-sm p-4 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
             <div>
                 <h1 class="text-xl font-black text-textDark tracking-wide flex items-center gap-2">
@@ -98,7 +98,7 @@
             <div>
                 <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-3"><i class="fa-solid fa-network-wired"></i> System Active Signage Registry (<span id="total-nodes-badge" class="font-mono text-brandOrange font-bold">1</span> Card Active)</h3>
                 <div id="qr-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    </div>
+                </div>
             </div>
         </div>
 
@@ -374,7 +374,7 @@
 
     </main>
 
-    <footer class="bg-white border-t border-borderGrey py-4 text-center text-xs text-textMuted shadow-inner">
+    <footer id="main-footer" class="bg-white border-t border-borderGrey py-4 text-center text-xs text-textMuted shadow-inner">
         <p>© 2026 <span class="text-brandOrange font-bold tracking-wider">LINEA LED SIGNAGE NETWORKS</span> | Deployed by <span class="text-textDark font-bold">Sudhanshu Shekhar</span></p>
     </footer>
 
@@ -382,6 +382,9 @@
         let masterWarrantyStorage = JSON.parse(localStorage.getItem('linea_warranty_db')) || [];
         let complaintsResponseArray = JSON.parse(localStorage.getItem('linea_complaints_db')) || [];
         let customQRCardsArray = JSON.parse(localStorage.getItem('linea_custom_qr_cards')) || [];
+
+        // Flag to tracking if user is currently inside customer layout simulation mode
+        let isCustomerLayoutViewMode = false;
 
         window.onload = function() {
             renderWarrantyTable();
@@ -395,6 +398,13 @@
             const addr = urlParams.get('addr');
 
             if (wId && bName && addr) {
+                // Set the layout view toggle flag true
+                isCustomerLayoutViewMode = true;
+
+                // Completely hide navigation interface panel & footer container completely
+                document.getElementById('main-header').style.display = 'none';
+                document.getElementById('main-footer').style.display = 'none';
+
                 // If deep link payload parameters exist, cleanly inject into user view layout context area instantly
                 triggerCustomerScanPassthrough(wId, bName, addr);
                 
@@ -533,14 +543,14 @@
                     <div>
                         <h4 class="font-bold text-textDark text-sm tracking-wide font-sans">MUTHOOT FINANCE LTD.</h4>
                         <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">Warranty ID: TA4G5TJZ</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerCustomerScanPassthrough('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')">
+                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerSimulatedScanClick('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(staticStaticUrl)}" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
                             <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
                         </div>
                         <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar</p>
                     </div>
                     <div class="mt-4 pt-3 border-t border-gray-100">
-                        <button onclick="triggerCustomerScanPassthrough('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
+                        <button onclick="triggerSimulatedScanClick('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
                     </div>
                 </div>
             `;
@@ -552,19 +562,26 @@
                     <div>
                         <h4 class="font-bold text-textDark text-sm tracking-wide font-sans">${item.client}</h4>
                         <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">Warranty ID: ${item.id}</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerCustomerScanPassthrough('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
+                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerSimulatedScanClick('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrPayloadUrl)}" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
                             <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
                         </div>
                         <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">${item.address}</p>
                     </div>
                     <div class="mt-4 pt-3 border-t border-gray-100">
-                        <button onclick="triggerCustomerScanPassthrough('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
+                        <button onclick="triggerSimulatedScanClick('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
                     </div>
                 </div>
             `}).join('');
 
             gridContainer.innerHTML = staticHtml + dynamicHtml;
+        }
+
+        /* HELPER FOR ADMIN PANEL SIMULATION BUTTONS TO CLEANLY MOCK SCANS */
+        function triggerSimulatedScanClick(wId, bName, siteAddr) {
+            // Admin portal simulation should behave cleanly like live scan but keep header visible if desired. 
+            // However, to ensure perfect tracking let's enforce user-view layout mock structure rules.
+            triggerCustomerScanPassthrough(wId, bName, siteAddr);
         }
 
         /* FIXED SCAN DATA PASSTHROUGH SIMULATION INJECTOR PIPELINE */
@@ -654,7 +671,17 @@
             document.getElementById('gps-status-text').className = "text-xs font-semibold text-red-500 flex items-center gap-1 mt-0.5";
             document.getElementById('gps-status-text').innerHTML = `<i class="fa-solid fa-circle-radiation text-brandOrange animate-pulse"></i> Location Verification Required`;
             
-            changeTab('dashboard');
+            // If it's a live customer QR scan view, reload back to clear state or retain single view layout parameters nicely
+            if (isCustomerLayoutViewMode) {
+                alert("Thank you! Your complaint has been lodged securely.");
+                // Simply clear form parameters and retain neat clean viewport state
+                document.getElementById('claim-serial').value = "";
+                document.getElementById('claim-project-name').value = "";
+                document.getElementById('claim-address').value = "";
+                changeTab('complaint');
+            } else {
+                changeTab('dashboard');
+            }
         }
 
         function renderDashboardTable() {
