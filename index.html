@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -222,12 +222,12 @@
                     <p class="text-xs text-textMuted mt-0.5">Real-time complaints management engine with automated validation markers.</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                    <input type="text" id="dashboard-search" oninput="filterDashboardTable()" placeholder="ðŸ” Search logs..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-44">
+                    <input type="text" id="dashboard-search" oninput="filterDashboardTable()" placeholder="Search logs..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-44">
                     <select id="dashboard-status-filter" onchange="filterDashboardTable()" class="bg-white border border-gray-300 text-xs rounded-lg px-2 py-1.5 font-bold focus:outline-none focus:border-brandOrange cursor-pointer text-textDark">
                         <option value="ALL">All Statuses</option>
-                        <option value="Open Fault">ðŸ”´ Open Fault</option>
-                        <option value="In Progress">ðŸŸ¡ In Progress</option>
-                        <option value="Resolved">ðŸŸ¢ Resolved</option>
+                        <option value="Open Fault">Open Fault</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Resolved">Resolved</option>
                     </select>
                     <button onclick="exportDashboardData()" class="bg-brandOrange hover:bg-brandOrangeHover text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 shadow-sm">
                         <i class="fa-solid fa-file-export"></i> Export CSV
@@ -293,7 +293,7 @@
                     </div>
                     
                     <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                        <input type="text" id="warranty-search-input" oninput="filterWarrantyTable()" placeholder="ðŸ” Search ID, Client, Project..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-64">
+                        <input type="text" id="warranty-search-input" oninput="filterWarrantyTable()" placeholder="Search ID, Client, Project..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-64">
                         
                         <label class="flex items-center gap-1.5 bg-cyberGreen hover:bg-emerald-600 text-white text-xs font-bold py-1.5 px-3 rounded-lg cursor-pointer transition-all shadow-sm uppercase tracking-wider">
                             <i class="fa-solid fa-file-excel"></i> Upload Master CSV
@@ -391,7 +391,7 @@
         // 1) WhatsApp/mail will work immediately from GitHub Pages.
         // 2) For mobile-scan data to appear on another device dashboard, paste your deployed Google Apps Script Web App URL below.
         const LINEA_SYNC_CONFIG = {
-            googleScriptUrl: "https://script.google.com/macros/s/AKfycbxizgIgCk9XSvJTnY8Ffluj0VKQT5p-4nWotH4jkg6Vu1CROAVH36NHqkfXMYv_hK_juQ/exec", // Paste deployed Google Apps Script Web App URL here.
+            googleScriptUrl: "https://script.google.com/macros/s/AKfycbyx1bYQ8Uvw7zs4_9BXcvv3CzeIUA3rt9zBERXx_54pEecEt1taejT4KFyLmN3Lxg4RCA/exec", // Paste deployed Google Apps Script Web App URL here.
             adminName: "Sudhanshu Shekhar",
             adminWhatsApp: "918698755608",
             adminEmail: "mis@hi-sign.com"
@@ -638,6 +638,24 @@
             }, 600);
         }
 
+        function fileToDataUrl(file) {
+            return new Promise((resolve) => {
+                if (!file) return resolve("");
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result || "");
+                reader.onerror = () => resolve("");
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function escapeHtml(value) {
+            return String(value || "")
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
         // FIXED SUBMISSION ENGINE: customer mobile submit -> central dashboard -> mail + WhatsApp alerts
         async function handleCustomerFormSubmission(event) {
             event.preventDefault();
@@ -655,13 +673,14 @@
             const personPhone = document.getElementById('claim-contact-phone').value.replace(/\D/g, '');
             const personEmail = (document.getElementById('claim-contact-email')?.value || '').trim();
             const fileCheck = document.getElementById('photo-mandatory').files[0];
+            let photoDataUrl = "";
 
             let faultsSelected = [];
             document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
             const activeFaultText = faultsSelected.join(', ') || 'Diagnostic Evaluation';
 
             const matchFoundInDatabase = masterWarrantyStorage.some(record => record.warrantyId.toUpperCase() === wId);
-            const matchStatusLabel = matchFoundInDatabase ? "✅ Verified Node Match" : "⚠️ Manual Network Registration";
+            const matchStatusLabel = matchFoundInDatabase ? "Verified Node Match" : "Manual Network Registration";
             const uniqueComplaintId = "COMP-" + Date.now();
 
             const complaintPayload = {
@@ -674,6 +693,8 @@
                 contactEmail: personEmail,
                 contact: `${personName} (${personPhone})`,
                 imageName: fileCheck ? fileCheck.name : "scanned_proof.jpg",
+                photoDataUrl: photoDataUrl,
+                photoUrl: photoDataUrl,
                 issue: activeFaultText,
                 gps: gpsLock,
                 matchStatus: matchStatusLabel,
@@ -683,9 +704,14 @@
             };
 
             upsertComplaintLocally(complaintPayload);
-            const cloudStatus = await saveComplaintToCentralDashboard(complaintPayload);
             openWhatsAppNotificationLinks(complaintPayload, 'registered');
             openCustomerMailDraft(complaintPayload, 'registered');
+
+            photoDataUrl = await fileToDataUrl(fileCheck);
+            complaintPayload.photoDataUrl = photoDataUrl;
+            complaintPayload.photoUrl = photoDataUrl || complaintPayload.photoUrl;
+            upsertComplaintLocally(complaintPayload);
+            const cloudStatus = await saveComplaintToCentralDashboard(complaintPayload);
             
             alert(`🚀 COMPLAINT LODGED SECURELY:\nComplaint ID: ${uniqueComplaintId}\nCross-Check Validation: ${matchStatusLabel}\n${cloudStatus}\nWhatsApp links and customer mail draft opened.`);
 
@@ -716,27 +742,26 @@
             renderDashboardTable();
         }
 
-        function buildComplaintMessage(item, eventType) {
-            const heading = eventType === 'status'
-                ? `LINEA LED STATUS UPDATED: ${item.status}`
-                : 'LINEA LED NEW COMPLAINT REGISTERED';
+        function buildComplaintMessage(item, eventType, audience = 'admin') {
+            const id = item.id || '';
+            const customerName = item.contactName || 'Customer';
+            const issue = item.issue || 'Service request';
+            const status = item.status || 'Open Fault';
 
-            return [
-                heading,
-                `Complaint ID: ${item.id}`,
-                `Warranty ID: ${item.warrantyId}`,
-                `Client/Branch: ${item.client}`,
-                `Customer: ${item.contact || ((item.contactName || '') + ' (' + (item.contactPhone || '') + ')')}`,
-                `Customer Email: ${item.contactEmail || 'N/A'}`,
-                `Issue: ${item.issue}`,
-                `Current Status: ${item.status}`,
-                `Address: ${item.siteAddress || 'N/A'}`,
-                `GPS: ${item.gps || 'N/A'}`,
-                `Photo: ${item.imageName || 'N/A'}`,
-                `Source: ${item.source || 'Portal'}`
-            ].join("\n");
+            if (audience === 'customer') {
+                if (eventType === 'status') {
+                    return `Hello Dear ${customerName},\n\nYour Linea LED complaint (${id}) status has been updated to: ${status}.\n\nOur engineering team is reviewing the case and will connect with you if any further details are required.\n\nThank you,\nLinea LED Support Team`;
+                }
+
+                return `Hello Dear ${customerName},\n\nYour Linea LED complaint has been registered successfully.\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nIssue: ${issue}\n\nOur engineering team is looking into it and will connect with you shortly.\n\nThank you,\nLinea LED Support Team`;
+            }
+
+            if (eventType === 'status') {
+                return `LINEA LED STATUS UPDATE\n\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nClient/Branch: ${item.client || 'N/A'}\nCustomer: ${item.contact || customerName}\nUpdated Status: ${status}\n\nPlease continue the required service follow-up.\n\nLinea LED Portal`;
+            }
+
+            return `LINEA LED NEW COMPLAINT ALERT\n\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nClient/Branch: ${item.client || 'N/A'}\nCustomer: ${item.contact || customerName}\nIssue: ${issue}\nStatus: ${status}\nPhoto: ${item.photoUrl || item.imageName || 'N/A'}\n\nA new customer complaint has been registered. Please assign engineering follow-up.\n\nLinea LED Portal`;
         }
-
         function formatIndiaWhatsAppNumber(phone) {
             const digits = String(phone || '').replace(/\D/g, '');
             if (digits.length === 10) return '91' + digits;
@@ -744,26 +769,22 @@
         }
 
         function openWhatsAppNotificationLinks(item, eventType) {
-            const message = buildComplaintMessage(item, eventType);
-            const adminUrl = `https://wa.me/${LINEA_SYNC_CONFIG.adminWhatsApp}?text=${encodeURIComponent(message)}`;
+            const adminMessage = buildComplaintMessage(item, eventType, 'admin');
+            const adminUrl = `https://wa.me/${LINEA_SYNC_CONFIG.adminWhatsApp}?text=${encodeURIComponent(adminMessage)}`;
             window.open(adminUrl, '_blank');
 
             const customerNumber = formatIndiaWhatsAppNumber(item.contactPhone);
             if (customerNumber) {
-                const customerMessage = eventType === 'status'
-                    ? `Dear ${item.contactName || 'Customer'}, your Linea LED complaint ${item.id} status is now: ${item.status}. Warranty ID: ${item.warrantyId}.`
-                    : `Dear ${item.contactName || 'Customer'}, your Linea LED complaint ${item.id} has been registered successfully. Current status: ${item.status}. Warranty ID: ${item.warrantyId}.`;
-                setTimeout(() => {
-                    window.open(`https://wa.me/${customerNumber}?text=${encodeURIComponent(customerMessage)}`, '_blank');
-                }, 800);
+                const customerMessage = buildComplaintMessage(item, eventType, 'customer');
+                const customerUrl = `https://wa.me/${customerNumber}?text=${encodeURIComponent(customerMessage)}`;
+                setTimeout(() => window.open(customerUrl, '_blank'), 300);
             }
         }
-
         function openCustomerMailDraft(item, eventType) {
             const subject = eventType === 'status'
                 ? `Linea LED Complaint Status Updated - ${item.id}`
                 : `Linea LED Complaint Registered - ${item.id}`;
-            const body = buildComplaintMessage(item, eventType);
+            const body = buildComplaintMessage(item, eventType, 'customer');
             setTimeout(() => {
                 const toList = [LINEA_SYNC_CONFIG.adminEmail, item.contactEmail].filter(Boolean).join(',');
                 window.location.href = `mailto:${toList}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
@@ -858,21 +879,21 @@
                 if (item.status === "In Progress") badgeClass = "bg-amber-100 text-amber-800 border border-amber-200";
                 if (item.status === "Resolved") badgeClass = "bg-emerald-100 text-emerald-800 border border-emerald-200";
 
-                const matchBadgeClass = item.matchStatus.includes("âœ…") ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-amber-700 bg-amber-50 border-amber-200";
+                const matchBadgeClass = String(item.matchStatus || "").includes("Verified") ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-amber-700 bg-amber-50 border-amber-200";
 
                 const rowHtml = `
                     <tr class="hover:bg-gray-50 border-b border-gray-200 text-textDark font-medium">
                         <td class="p-3 font-mono text-brandOrange font-bold">${item.warrantyId}</td>
                         <td class="p-3 font-bold font-sans">${item.client}</td>
                         <td class="p-3 text-textMuted font-sans">${item.contact}</td>
-                        <td class="p-3 text-cyberBlue font-mono font-semibold"><i class="fa-solid fa-paperclip text-xs mr-1"></i>${item.imageName}</td>
+                        <td class="p-3 text-cyberBlue font-mono font-semibold">${item.photoUrl ? `<a href="${item.photoUrl}" target="_blank" rel="noopener" class="hover:underline"><i class="fa-solid fa-paperclip text-xs mr-1"></i>${escapeHtml(item.imageName)}</a>` : `<span><i class="fa-solid fa-paperclip text-xs mr-1"></i>${escapeHtml(item.imageName)}</span>`}</td>
                         <td class="p-3"><span class="${badgeClass} px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-sans">${item.issue}</span></td>
                         <td class="p-3"><span class="border px-2 py-0.5 rounded text-[10px] font-bold font-mono ${matchBadgeClass}">${item.matchStatus}</span></td>
                         <td class="p-3 text-center">
                             <select onchange="updateRowStatus(${index}, this.value)" class="bg-white border border-gray-300 text-xs rounded-lg text-textDark px-2 py-1 font-bold focus:outline-none focus:border-brandOrange cursor-pointer shadow-sm">
-                                <option value="Open Fault" ${item.status === 'Open Fault' ? 'selected' : ''}>ðŸ”´ Open Fault</option>
-                                <option value="In Progress" ${item.status === 'In Progress' ? 'selected' : ''}>ðŸŸ¡ In Progress</option>
-                                <option value="Resolved" ${item.status === 'Resolved' ? 'selected' : ''}>ðŸŸ¢ Resolved</option>
+                                <option value="Open Fault" ${item.status === 'Open Fault' ? 'selected' : ''}>Open Fault</option>
+                                <option value="In Progress" ${item.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                <option value="Resolved" ${item.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
                             </select>
                         </td>
                     </tr>
@@ -948,6 +969,10 @@
     </script>
 </body>
 </html>
+
+
+
+
 
 
 
