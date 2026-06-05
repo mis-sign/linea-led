@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -163,7 +163,7 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-textMuted mb-1">Contact Person Name *</label>
                             <input type="text" id="claim-contact-name" required placeholder="Enter Name" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
@@ -171,6 +171,10 @@
                         <div>
                             <label class="block text-xs font-bold text-textMuted mb-1">Active WhatsApp Mobile *</label>
                             <input type="tel" id="claim-contact-phone" required placeholder="10 Digit Number" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-textMuted mb-1">Customer Email</label>
+                            <input type="email" id="claim-contact-email" placeholder="customer@email.com" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                         </div>
                     </div>
 
@@ -218,12 +222,12 @@
                     <p class="text-xs text-textMuted mt-0.5">Real-time complaints management engine with automated validation markers.</p>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                    <input type="text" id="dashboard-search" oninput="filterDashboardTable()" placeholder="🔍 Search logs..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-44">
+                    <input type="text" id="dashboard-search" oninput="filterDashboardTable()" placeholder="ðŸ” Search logs..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-44">
                     <select id="dashboard-status-filter" onchange="filterDashboardTable()" class="bg-white border border-gray-300 text-xs rounded-lg px-2 py-1.5 font-bold focus:outline-none focus:border-brandOrange cursor-pointer text-textDark">
                         <option value="ALL">All Statuses</option>
-                        <option value="Open Fault">🔴 Open Fault</option>
-                        <option value="In Progress">🟡 In Progress</option>
-                        <option value="Resolved">🟢 Resolved</option>
+                        <option value="Open Fault">ðŸ”´ Open Fault</option>
+                        <option value="In Progress">ðŸŸ¡ In Progress</option>
+                        <option value="Resolved">ðŸŸ¢ Resolved</option>
                     </select>
                     <button onclick="exportDashboardData()" class="bg-brandOrange hover:bg-brandOrangeHover text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 shadow-sm">
                         <i class="fa-solid fa-file-export"></i> Export CSV
@@ -289,7 +293,7 @@
                     </div>
                     
                     <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                        <input type="text" id="warranty-search-input" oninput="filterWarrantyTable()" placeholder="🔍 Search ID, Client, Project..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-64">
+                        <input type="text" id="warranty-search-input" oninput="filterWarrantyTable()" placeholder="ðŸ” Search ID, Client, Project..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-64">
                         
                         <label class="flex items-center gap-1.5 bg-cyberGreen hover:bg-emerald-600 text-white text-xs font-bold py-1.5 px-3 rounded-lg cursor-pointer transition-all shadow-sm uppercase tracking-wider">
                             <i class="fa-solid fa-file-excel"></i> Upload Master CSV
@@ -375,13 +379,23 @@
     </main>
 
     <footer id="main-footer" class="bg-white border-t border-borderGrey py-4 text-center text-xs text-textMuted shadow-inner">
-        <p>© 2026 <span class="text-brandOrange font-bold tracking-wider">LINEA LED SIGNAGE NETWORKS</span> | Deployed by <span class="text-textDark font-bold">Sudhanshu Shekhar</span></p>
+        <p>Â© 2026 <span class="text-brandOrange font-bold tracking-wider">LINEA LED SIGNAGE NETWORKS</span> | Deployed by <span class="text-textDark font-bold">Sudhanshu Shekhar</span></p>
     </footer>
 
     <script>
         let masterWarrantyStorage = JSON.parse(localStorage.getItem('linea_warranty_db')) || [];
         let complaintsResponseArray = JSON.parse(localStorage.getItem('linea_complaints_db')) || [];
         let customQRCardsArray = JSON.parse(localStorage.getItem('linea_custom_qr_cards')) || [];
+
+        // CENTRAL SYNC CONFIG:
+        // 1) WhatsApp/mail will work immediately from GitHub Pages.
+        // 2) For mobile-scan data to appear on another device dashboard, paste your deployed Google Apps Script Web App URL below.
+        const LINEA_SYNC_CONFIG = {
+            googleScriptUrl: "https://script.google.com/macros/s/AKfycbxizgIgCk9XSvJTnY8Ffluj0VKQT5p-4nWotH4jkg6Vu1CROAVH36NHqkfXMYv_hK_juQ/exec", // Paste deployed Google Apps Script Web App URL here.
+            adminName: "Sudhanshu Shekhar",
+            adminWhatsApp: "918698755608",
+            adminEmail: "mis@hi-sign.com"
+        };
 
         // Flag to tracking if user is currently inside customer layout simulation mode
         let isCustomerLayoutViewMode = false;
@@ -390,6 +404,7 @@
             renderWarrantyTable();
             renderDashboardTable();
             renderCustomQRCards();
+            pullCloudComplaintsIntoDashboard();
 
             // FIXED PIPELINE: Handle real-time mobile scan parameter processing on application initialization
             const urlParams = new URLSearchParams(window.location.search);
@@ -427,6 +442,7 @@
             document.getElementById('content-' + tabName).classList.add('block');
             document.getElementById('tab-' + tabName).classList.add('bg-brandOrange', 'text-white', 'shadow-sm');
             document.getElementById('tab-' + tabName).classList.remove('text-textMuted');
+            if (tabName === 'dashboard') pullCloudComplaintsIntoDashboard();
         }
 
         function parseWarrantyCSV(event) {
@@ -461,7 +477,7 @@
                 }
                 localStorage.setItem('linea_warranty_db', JSON.stringify(masterWarrantyStorage));
                 renderWarrantyTable();
-                alert(`✅ DATA INTEGRATED SAFELY: ${masterWarrantyStorage.length} Master spreadsheet rows registered!`);
+                alert(`âœ… DATA INTEGRATED SAFELY: ${masterWarrantyStorage.length} Master spreadsheet rows registered!`);
             };
             reader.readAsText(file);
         }
@@ -526,7 +542,7 @@
             document.getElementById('new-warranty-id').value = "";
             document.getElementById('new-branch-name').value = "";
             document.getElementById('new-site-address').value = "";
-            alert("✅ Dynamic QR Card compiled successfully!");
+            alert("âœ… Dynamic QR Card compiled successfully!");
         }
 
         function renderCustomQRCards() {
@@ -593,6 +609,8 @@
             // Fulfill user credentials automatically to bypass empty fields safely
             document.getElementById('claim-contact-name').value = "Sudhanshu Shekhar";
             document.getElementById('claim-contact-phone').value = "8698755608";
+            const emailInput = document.getElementById('claim-contact-email');
+            if (emailInput) emailInput.value = "";
             
             const mockFileSlot = document.getElementById('photo-mandatory');
             if (mockFileSlot) {
@@ -620,8 +638,8 @@
             }, 600);
         }
 
-        // FIXED SUBMISSION ENGINE: Completely dropped alert network interceptors to avoid Server Sync Error blocks
-        function handleCustomerFormSubmission(event) {
+        // FIXED SUBMISSION ENGINE: customer mobile submit -> central dashboard -> mail + WhatsApp alerts
+        async function handleCustomerFormSubmission(event) {
             event.preventDefault();
 
             const gpsLock = document.getElementById('gps-verified-data').value;
@@ -632,8 +650,10 @@
 
             const wId = document.getElementById('claim-serial').value.trim().toUpperCase();
             const pName = document.getElementById('claim-project-name').value;
+            const siteAddress = document.getElementById('claim-address').value;
             const personName = document.getElementById('claim-contact-name').value;
-            const personPhone = document.getElementById('claim-contact-phone').value;
+            const personPhone = document.getElementById('claim-contact-phone').value.replace(/\D/g, '');
+            const personEmail = (document.getElementById('claim-contact-email')?.value || '').trim();
             const fileCheck = document.getElementById('photo-mandatory').files[0];
 
             let faultsSelected = [];
@@ -642,25 +662,32 @@
 
             const matchFoundInDatabase = masterWarrantyStorage.some(record => record.warrantyId.toUpperCase() === wId);
             const matchStatusLabel = matchFoundInDatabase ? "✅ Verified Node Match" : "⚠️ Manual Network Registration";
+            const uniqueComplaintId = "COMP-" + Date.now();
 
-            const uniqueComplaintId = "COMP-" + Math.floor(1000 + Math.random() * 9000);
-
-            // Cleanly append data payload directly into internal system state
-            complaintsResponseArray.unshift({
+            const complaintPayload = {
                 id: uniqueComplaintId,
                 warrantyId: wId,
                 client: pName,
+                siteAddress: siteAddress,
+                contactName: personName,
+                contactPhone: personPhone,
+                contactEmail: personEmail,
                 contact: `${personName} (${personPhone})`,
                 imageName: fileCheck ? fileCheck.name : "scanned_proof.jpg",
                 issue: activeFaultText,
+                gps: gpsLock,
                 matchStatus: matchStatusLabel,
-                status: "Open Fault"
-            });
+                status: "Open Fault",
+                source: isCustomerLayoutViewMode ? "Customer Mobile QR Scan" : "Portal Direct Form",
+                createdAt: new Date().toISOString()
+            };
 
-            localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
-            renderDashboardTable();
+            upsertComplaintLocally(complaintPayload);
+            const cloudStatus = await saveComplaintToCentralDashboard(complaintPayload);
+            openWhatsAppNotificationLinks(complaintPayload, 'registered');
+            openCustomerMailDraft(complaintPayload, 'registered');
             
-            alert(`🚀 COMPLAINT LODGED SECURELY:\nCross-Check Validation: ${matchStatusLabel}\nData compiled and synced into localized memory successfully!`);
+            alert(`🚀 COMPLAINT LODGED SECURELY:\nComplaint ID: ${uniqueComplaintId}\nCross-Check Validation: ${matchStatusLabel}\n${cloudStatus}\nWhatsApp links and customer mail draft opened.`);
 
             event.target.reset();
             document.getElementById('photo-mandatory').required = true; 
@@ -678,6 +705,137 @@
             }
         }
 
+        function upsertComplaintLocally(item) {
+            const existingIndex = complaintsResponseArray.findIndex(row => row.id === item.id);
+            if (existingIndex >= 0) {
+                complaintsResponseArray[existingIndex] = { ...complaintsResponseArray[existingIndex], ...item };
+            } else {
+                complaintsResponseArray.unshift(item);
+            }
+            localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
+            renderDashboardTable();
+        }
+
+        function buildComplaintMessage(item, eventType) {
+            const heading = eventType === 'status'
+                ? `LINEA LED STATUS UPDATED: ${item.status}`
+                : 'LINEA LED NEW COMPLAINT REGISTERED';
+
+            return [
+                heading,
+                `Complaint ID: ${item.id}`,
+                `Warranty ID: ${item.warrantyId}`,
+                `Client/Branch: ${item.client}`,
+                `Customer: ${item.contact || ((item.contactName || '') + ' (' + (item.contactPhone || '') + ')')}`,
+                `Customer Email: ${item.contactEmail || 'N/A'}`,
+                `Issue: ${item.issue}`,
+                `Current Status: ${item.status}`,
+                `Address: ${item.siteAddress || 'N/A'}`,
+                `GPS: ${item.gps || 'N/A'}`,
+                `Photo: ${item.imageName || 'N/A'}`,
+                `Source: ${item.source || 'Portal'}`
+            ].join("\n");
+        }
+
+        function formatIndiaWhatsAppNumber(phone) {
+            const digits = String(phone || '').replace(/\D/g, '');
+            if (digits.length === 10) return '91' + digits;
+            return digits;
+        }
+
+        function openWhatsAppNotificationLinks(item, eventType) {
+            const message = buildComplaintMessage(item, eventType);
+            const adminUrl = `https://wa.me/${LINEA_SYNC_CONFIG.adminWhatsApp}?text=${encodeURIComponent(message)}`;
+            window.open(adminUrl, '_blank');
+
+            const customerNumber = formatIndiaWhatsAppNumber(item.contactPhone);
+            if (customerNumber) {
+                const customerMessage = eventType === 'status'
+                    ? `Dear ${item.contactName || 'Customer'}, your Linea LED complaint ${item.id} status is now: ${item.status}. Warranty ID: ${item.warrantyId}.`
+                    : `Dear ${item.contactName || 'Customer'}, your Linea LED complaint ${item.id} has been registered successfully. Current status: ${item.status}. Warranty ID: ${item.warrantyId}.`;
+                setTimeout(() => {
+                    window.open(`https://wa.me/${customerNumber}?text=${encodeURIComponent(customerMessage)}`, '_blank');
+                }, 800);
+            }
+        }
+
+        function openCustomerMailDraft(item, eventType) {
+            const subject = eventType === 'status'
+                ? `Linea LED Complaint Status Updated - ${item.id}`
+                : `Linea LED Complaint Registered - ${item.id}`;
+            const body = buildComplaintMessage(item, eventType);
+            setTimeout(() => {
+                const toList = [LINEA_SYNC_CONFIG.adminEmail, item.contactEmail].filter(Boolean).join(',');
+                window.location.href = `mailto:${toList}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            }, 1400);
+        }
+
+        async function saveComplaintToCentralDashboard(item) {
+            if (!LINEA_SYNC_CONFIG.googleScriptUrl) {
+                return "Saved in this browser only. Paste Google Apps Script URL to make mobile complaint visible on admin dashboard.";
+            }
+
+            try {
+                await fetch(LINEA_SYNC_CONFIG.googleScriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'create', complaint: item })
+                });
+                return "Central dashboard sync request sent.";
+            } catch (error) {
+                console.error('Central complaint sync failed:', error);
+                return "Central sync failed, but local dashboard and notification links are ready.";
+            }
+        }
+
+        async function sendStatusUpdateToCentralDashboard(item) {
+            if (!LINEA_SYNC_CONFIG.googleScriptUrl) return;
+
+            try {
+                await fetch(LINEA_SYNC_CONFIG.googleScriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'status', complaint: item })
+                });
+            } catch (error) {
+                console.error('Central status sync failed:', error);
+            }
+        }
+
+        function pullCloudComplaintsIntoDashboard() {
+            if (!LINEA_SYNC_CONFIG.googleScriptUrl) return;
+
+            const callbackName = 'lineaCloudCallback_' + Date.now();
+            const script = document.createElement('script');
+
+            window[callbackName] = function(cloudComplaints) {
+                try {
+                    if (!Array.isArray(cloudComplaints)) return;
+                    const merged = [...cloudComplaints, ...complaintsResponseArray];
+                    const uniqueById = new Map();
+                    merged.forEach(item => {
+                        if (item && item.id) uniqueById.set(item.id, item);
+                    });
+                    complaintsResponseArray = Array.from(uniqueById.values()).sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
+                    localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
+                    renderDashboardTable();
+                } finally {
+                    delete window[callbackName];
+                    script.remove();
+                }
+            };
+
+            script.onerror = function() {
+                console.error('Central dashboard load failed');
+                delete window[callbackName];
+                script.remove();
+            };
+
+            script.src = LINEA_SYNC_CONFIG.googleScriptUrl + '?action=list&callback=' + callbackName + '&ts=' + Date.now();
+            document.body.appendChild(script);
+        }
         function renderDashboardTable() {
             const tableBody = document.getElementById('dashboard-complaint-rows');
             if (!tableBody) return;
@@ -700,7 +858,7 @@
                 if (item.status === "In Progress") badgeClass = "bg-amber-100 text-amber-800 border border-amber-200";
                 if (item.status === "Resolved") badgeClass = "bg-emerald-100 text-emerald-800 border border-emerald-200";
 
-                const matchBadgeClass = item.matchStatus.includes("✅") ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-amber-700 bg-amber-50 border-amber-200";
+                const matchBadgeClass = item.matchStatus.includes("âœ…") ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-amber-700 bg-amber-50 border-amber-200";
 
                 const rowHtml = `
                     <tr class="hover:bg-gray-50 border-b border-gray-200 text-textDark font-medium">
@@ -712,9 +870,9 @@
                         <td class="p-3"><span class="border px-2 py-0.5 rounded text-[10px] font-bold font-mono ${matchBadgeClass}">${item.matchStatus}</span></td>
                         <td class="p-3 text-center">
                             <select onchange="updateRowStatus(${index}, this.value)" class="bg-white border border-gray-300 text-xs rounded-lg text-textDark px-2 py-1 font-bold focus:outline-none focus:border-brandOrange cursor-pointer shadow-sm">
-                                <option value="Open Fault" ${item.status === 'Open Fault' ? 'selected' : ''}>🔴 Open Fault</option>
-                                <option value="In Progress" ${item.status === 'In Progress' ? 'selected' : ''}>🟡 In Progress</option>
-                                <option value="Resolved" ${item.status === 'Resolved' ? 'selected' : ''}>🟢 Resolved</option>
+                                <option value="Open Fault" ${item.status === 'Open Fault' ? 'selected' : ''}>ðŸ”´ Open Fault</option>
+                                <option value="In Progress" ${item.status === 'In Progress' ? 'selected' : ''}>ðŸŸ¡ In Progress</option>
+                                <option value="Resolved" ${item.status === 'Resolved' ? 'selected' : ''}>ðŸŸ¢ Resolved</option>
                             </select>
                         </td>
                     </tr>
@@ -725,10 +883,16 @@
             updateCounters(complaintsResponseArray.length, pendingCount, resolvedCount);
         }
 
-        function updateRowStatus(index, newStatus) {
+        async function updateRowStatus(index, newStatus) {
             complaintsResponseArray[index].status = newStatus;
+            complaintsResponseArray[index].updatedAt = new Date().toISOString();
             localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
             renderDashboardTable();
+
+            await sendStatusUpdateToCentralDashboard(complaintsResponseArray[index]);
+            openWhatsAppNotificationLinks(complaintsResponseArray[index], 'status');
+            openCustomerMailDraft(complaintsResponseArray[index], 'status');
+            alert(`Status updated to ${newStatus}. Customer/admin notification links opened.`);
         }
 
         function updateCounters(total, pending, resolved) {
@@ -784,3 +948,6 @@
     </script>
 </body>
 </html>
+
+
+
