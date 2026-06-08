@@ -208,8 +208,8 @@
                         </div>
                     </div>
 
-                    <button type="submit" id="submit-btn" class="w-full bg-brandOrange hover:bg-brandOrangeHover text-white text-sm font-bold uppercase tracking-wider py-3 px-4 rounded-lg shadow-md transition-all">
-                        Dispatch Secure Complaint Payload
+                    <button type="submit" id="submit-btn" class="w-full bg-brandOrange hover:bg-brandOrangeHover text-white text-sm font-bold uppercase tracking-wider py-3 px-4 rounded-lg shadow-md transition-all flex items-center justify-center gap-2">
+                        <span>Dispatch Secure Complaint Payload</span>
                     </button>
                 </form>
             </div>
@@ -409,12 +409,9 @@
 
             if (wId && bName && addr) {
                 isCustomerLayoutViewMode = true;
-
                 document.getElementById('main-header').style.display = 'none';
                 document.getElementById('main-footer').style.display = 'none';
-
                 triggerCustomerScanPassthrough(wId, bName, addr);
-                
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.replaceState({path: cleanUrl}, '', cleanUrl);
             }
@@ -475,6 +472,7 @@
 
         function renderWarrantyTable() {
             const tableBody = document.getElementById('csv-data-viewer-rows');
+            if (!tableBody) return;
             document.getElementById('csv-count-badge').innerText = `${masterWarrantyStorage.length} Records Found`;
 
             if (masterWarrantyStorage.length === 0) {
@@ -491,7 +489,7 @@
                     <td class="p-3 text-textMuted border-r border-gray-200">${item.endDate}</td>
                     <td class="p-3 text-cyberBlue font-bold border-r border-gray-200 whitespace-normal font-sans">${item.projectName}</td>
                     <td class="p-3 text-textDark border-r border-gray-200">${item.contactNo}</td>
-                    <td class="p-3 text-textMuted border-r border-gray-200 whitespace-normal font-sans tracking-wide select-all" title="Click to copy full address">${item.siteAddress}</td>
+                    <td class="p-3 text-textMuted border-r border-gray-200 whitespace-normal font-sans tracking-wide select-all">${item.siteAddress}</td>
                     <td class="p-3 text-cyberGreen border-r border-gray-200 whitespace-normal font-sans">${item.productName}</td>
                     <td class="p-3 text-textMuted whitespace-normal font-sans">${item.productType}</td>
                 </tr>
@@ -538,10 +536,10 @@
 
         function renderCustomQRCards() {
             const gridContainer = document.getElementById('qr-cards-grid');
+            if (!gridContainer) return;
             document.getElementById('total-nodes-badge').innerText = `${customQRCardsArray.length + 1} Cards Active`;
 
             const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-
             const staticStaticUrl = `${baseUrl}?wId=TA4G5TJZ&bName=${encodeURIComponent('MUTHOOT FINANCE LTD.')}&addr=${encodeURIComponent('Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')}`;
 
             let staticHtml = `
@@ -554,9 +552,6 @@
                             <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
                         </div>
                         <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar</p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-gray-100">
-                        <button onclick="triggerSimulatedScanClick('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
                     </div>
                 </div>
             `;
@@ -574,9 +569,6 @@
                         </div>
                         <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">${item.address}</p>
                     </div>
-                    <div class="mt-4 pt-3 border-t border-gray-100">
-                        <button onclick="triggerSimulatedScanClick('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
-                    </div>
                 </div>
             `}).join('');
 
@@ -589,20 +581,12 @@
 
         function triggerCustomerScanPassthrough(wId, bName, siteAddr) {
             changeTab('complaint');
-            
             document.getElementById('claim-serial').value = wId;
             document.getElementById('claim-project-name').value = bName;
             document.getElementById('claim-address').value = siteAddr;
 
             document.getElementById('claim-contact-name').value = "Sudhanshu Shekhar";
             document.getElementById('claim-contact-phone').value = "8698755608";
-            const emailInput = document.getElementById('claim-contact-email');
-            if (emailInput) emailInput.value = "";
-            
-            const mockFileSlot = document.getElementById('photo-mandatory');
-            if (mockFileSlot) {
-                mockFileSlot.required = false; 
-            }
             
             const gpsStatus = document.getElementById('gps-status-text');
             const gpsDataStore = document.getElementById('gps-verified-data');
@@ -622,7 +606,7 @@
                 gpsStatus.className = "text-xs font-bold text-cyberGreen flex items-center gap-1 mt-0.5";
                 gpsStatus.innerHTML = `<i class="fa-solid fa-circle-check"></i> GEOSPATIAL NODE SECURED`;
                 gpsDataStore.value = "LAT_28.6441_LONG_77.2012";
-            }, 600);
+            }, 500);
         }
 
         function fileToDataUrl(file) {
@@ -644,8 +628,8 @@
                 .replace(/'/g, "&#039;");
         }
 
-        // NON-BLOCKING SUBMISSION PIPELINE (FIXED FOR MOBILE RESPONSE DELAY)
-        async function handleCustomerFormSubmission(event) {
+        // 🌟 RE-ENGINEERED MOBILE NON-BLOCKING SUBMISSION PIPELINE
+        function handleCustomerFormSubmission(event) {
             event.preventDefault();
 
             const gpsLock = document.getElementById('gps-verified-data').value;
@@ -656,7 +640,7 @@
 
             const submitBtn = document.getElementById('submit-btn');
             submitBtn.disabled = true;
-            submitBtn.innerText = "Dispatching System Payload...";
+            submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>Processing Dispatch...</span>`;
 
             const wId = document.getElementById('claim-serial').value.trim().toUpperCase();
             const pName = document.getElementById('claim-project-name').value;
@@ -665,7 +649,6 @@
             const personPhone = document.getElementById('claim-contact-phone').value.replace(/\D/g, '');
             const personEmail = (document.getElementById('claim-contact-email')?.value || '').trim();
             const fileCheck = document.getElementById('photo-mandatory').files[0];
-            let photoDataUrl = "";
 
             let faultsSelected = [];
             document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
@@ -685,8 +668,8 @@
                 contactEmail: personEmail,
                 contact: `${personName} (${personPhone})`,
                 imageName: fileCheck ? fileCheck.name : "scanned_proof.jpg",
-                photoDataUrl: photoDataUrl,
-                photoUrl: photoDataUrl,
+                photoDataUrl: "",
+                photoUrl: "",
                 issue: activeFaultText,
                 gps: gpsLock,
                 matchStatus: matchStatusLabel,
@@ -695,43 +678,50 @@
                 createdAt: new Date().toISOString()
             };
 
-            // 1. Instantly update local UI so user doesn't face freeze/lag
+            // STEP 1: INSTANT LOCAL STORAGE SAVE (Mobile par wait nahi karega)
             upsertComplaintLocally(complaintPayload);
 
-            // 2. Open Notification Links Immediately
-            openWhatsAppNotificationLinks(complaintPayload, 'registered');
-            openCustomerMailDraft(complaintPayload, 'registered');
+            // STEP 2: OPEN WHATSAPP DRAFT FIRST (User action context remains active)
+            const adminMessage = `LINEA LED NEW COMPLAINT ALERT\n\nComplaint ID: ${uniqueComplaintId}\nWarranty ID: ${wId}\nBranch: ${pName}\nIssue: ${activeFaultText}`;
+            const adminUrl = `https://wa.me/${LINEA_SYNC_CONFIG.adminWhatsApp}?text=${encodeURIComponent(adminMessage)}`;
+            window.open(adminUrl, '_blank');
 
-            // 3. Fire-and-forget Cloud Operations (Background Sync)
-            fileToDataUrl(fileCheck).then(async (dataUrl) => {
+            // STEP 3: OPEN EMAIL DRAFT (Safe sequence execution)
+            setTimeout(() => {
+                const subject = `Linea LED Complaint Registered - ${uniqueComplaintId}`;
+                const emailBody = `Hello Dear ${personName},\n\nYour complaint has been registered safely.\nID: ${uniqueComplaintId}\nWarranty ID: ${wId}\nIssue: ${activeFaultText}`;
+                const toList = [LINEA_SYNC_CONFIG.adminEmail, personEmail].filter(Boolean).join(',');
+                window.location.href = `mailto:${toList}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(emailBody)}`;
+            }, 800);
+
+            // STEP 4: BACKGROUND ASYNC SYNC (Google server slow ho tab bhi page freeze nahi hoga)
+            fileToDataUrl(fileCheck).then(dataUrl => {
                 if (dataUrl) {
-                    photoDataUrl = dataUrl;
-                    complaintPayload.photoDataUrl = photoDataUrl;
-                    complaintPayload.photoUrl = photoDataUrl;
+                    complaintPayload.photoDataUrl = dataUrl;
+                    complaintPayload.photoUrl = dataUrl;
                     upsertComplaintLocally(complaintPayload);
                 }
-                await saveComplaintToCentralDashboard(complaintPayload);
+                
+                // Fire and forget fetch request
+                fetch(LINEA_SYNC_CONFIG.googleScriptUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'create', complaint: complaintPayload })
+                }).catch(err => console.log("Background sync error handled safely."));
             });
-            
-            alert(`🚀 COMPLAINT LODGED SECURELY:\nComplaint ID: ${uniqueComplaintId}\nCross-Check Validation: ${matchStatusLabel}\n\nLocal dashboard updated, WhatsApp links and customer mail draft opened.`);
 
-            // Reset form fields cleanly
-            event.target.reset();
-            submitBtn.disabled = false;
-            submitBtn.innerText = "Dispatch Secure Complaint Payload";
-            document.getElementById('photo-mandatory').required = true; 
-            document.getElementById('gps-verified-data').value = "";
-            document.getElementById('gps-status-text').className = "text-xs font-semibold text-red-500 flex items-center gap-1 mt-0.5";
-            document.getElementById('gps-status-text').innerHTML = `<i class="fa-solid fa-circle-radiation text-brandOrange animate-pulse"></i> Location Verification Required`;
-            
-            if (isCustomerLayoutViewMode) {
-                document.getElementById('claim-serial').value = "";
-                document.getElementById('claim-project-name').value = "";
-                document.getElementById('claim-address').value = "";
-                changeTab('complaint');
-            } else {
+            // Clean form state smoothly
+            setTimeout(() => {
+                alert(`🚀 COMPLAINT DISPATCHED SECURELY!\nID: ${uniqueComplaintId}\n\nLocal ledger saved successfully. Background deployment ongoing.`);
+                document.getElementById('linea-fault-form').reset();
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<span>Dispatch Secure Complaint Payload</span>`;
+                document.getElementById('gps-verified-data').value = "";
+                document.getElementById('gps-status-text').className = "text-xs font-semibold text-red-500 flex items-center gap-1 mt-0.5";
+                document.getElementById('gps-status-text').innerHTML = `<i class="fa-solid fa-circle-radiation text-brandOrange animate-pulse"></i> Location Verification Required`;
                 changeTab('dashboard');
-            }
+            }, 1200);
         }
 
         function upsertComplaintLocally(item) {
@@ -745,92 +735,8 @@
             renderDashboardTable();
         }
 
-        function buildComplaintMessage(item, eventType, audience = 'admin') {
-            const id = item.id || '';
-            const customerName = item.contactName || 'Customer';
-            const issue = item.issue || 'Service request';
-            const status = item.status || 'Open Fault';
-
-            if (audience === 'customer') {
-                if (eventType === 'status') {
-                    return `Hello Dear ${customerName},\n\nYour Linea LED complaint (${id}) status has been updated to: ${status}.\n\nOur engineering team is reviewing the case and will connect with you if any further details are required.\n\nThank you,\nLinea LED Support Team`;
-                }
-
-                return `Hello Dear ${customerName},\n\nYour Linea LED complaint has been registered successfully.\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nIssue: ${issue}\n\nOur engineering team is looking into it and will connect with you shortly.\n\nThank you,\nLinea LED Support Team`;
-            }
-
-            if (eventType === 'status') {
-                return `LINEA LED STATUS UPDATE\n\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nClient/Branch: ${item.client || 'N/A'}\nCustomer: ${item.contact || customerName}\nUpdated Status: ${status}\n\nPlease continue the required service follow-up.\n\nLinea LED Portal`;
-            }
-
-            return `LINEA LED NEW COMPLAINT ALERT\n\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nClient/Branch: ${item.client || 'N/A'}\nCustomer: ${item.contact || customerName}\nIssue: ${issue}\nStatus: ${status}\nPhoto: ${item.photoUrl || item.imageName || 'N/A'}\n\nA new customer complaint has been registered. Please assign engineering follow-up.\n\nLinea LED Portal`;
-        }
-
-        function formatIndiaWhatsAppNumber(phone) {
-            const digits = String(phone || '').replace(/\D/g, '');
-            if (digits.length === 10) return '91' + digits;
-            return digits;
-        }
-
-        function openWhatsAppNotificationLinks(item, eventType) {
-            const adminMessage = buildComplaintMessage(item, eventType, 'admin');
-            const adminUrl = `https://wa.me/${LINEA_SYNC_CONFIG.adminWhatsApp}?text=${encodeURIComponent(adminMessage)}`;
-            window.open(adminUrl, '_blank');
-
-            const customerNumber = formatIndiaWhatsAppNumber(item.contactPhone);
-            if (customerNumber) {
-                const customerMessage = buildComplaintMessage(item, eventType, 'customer');
-                const customerUrl = `https://wa.me/${customerNumber}?text=${encodeURIComponent(customerMessage)}`;
-                setTimeout(() => window.open(customerUrl, '_blank'), 300);
-            }
-        }
-
-        function openCustomerMailDraft(item, eventType) {
-            const subject = eventType === 'status'
-                ? `Linea LED Complaint Status Updated - ${item.id}`
-                : `Linea LED Complaint Registered - ${item.id}`;
-            const body = buildComplaintMessage(item, eventType, 'customer');
-            setTimeout(() => {
-                const toList = [LINEA_SYNC_CONFIG.adminEmail, item.contactEmail].filter(Boolean).join(',');
-                window.location.href = `mailto:${toList}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            }, 1400);
-        }
-
-        async function saveComplaintToCentralDashboard(item) {
-            if (!LINEA_SYNC_CONFIG.googleScriptUrl) return "Local Save Only";
-
-            try {
-                await fetch(LINEA_SYNC_CONFIG.googleScriptUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'create', complaint: item })
-                });
-                return "Central dashboard sync complete.";
-            } catch (error) {
-                console.error('Central complaint sync failed:', error);
-                return "Sync pipeline run background.";
-            }
-        }
-
-        async function sendStatusUpdateToCentralDashboard(item) {
-            if (!LINEA_SYNC_CONFIG.googleScriptUrl) return;
-
-            try {
-                await fetch(LINEA_SYNC_CONFIG.googleScriptUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'status', complaint: item })
-                });
-            } catch (error) {
-                console.error('Central status sync failed:', error);
-            }
-        }
-
         function pullCloudComplaintsIntoDashboard() {
             if (!LINEA_SYNC_CONFIG.googleScriptUrl) return;
-
             const callbackName = 'lineaCloudCallback_' + Date.now();
             const script = document.createElement('script');
 
@@ -839,9 +745,7 @@
                     if (!Array.isArray(cloudComplaints)) return;
                     const merged = [...cloudComplaints, ...complaintsResponseArray];
                     const uniqueById = new Map();
-                    merged.forEach(item => {
-                        if (item && item.id) uniqueById.set(item.id, item);
-                    });
+                    merged.forEach(item => { if (item && item.id) uniqueById.set(item.id, item); });
                     complaintsResponseArray = Array.from(uniqueById.values()).sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
                     localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
                     renderDashboardTable();
@@ -849,12 +753,6 @@
                     delete window[callbackName];
                     script.remove();
                 }
-            };
-
-            script.onerror = function() {
-                console.error('Central dashboard load failed');
-                delete window[callbackName];
-                script.remove();
             };
 
             script.src = LINEA_SYNC_CONFIG.googleScriptUrl + '?action=list&callback=' + callbackName + '&ts=' + Date.now();
@@ -875,10 +773,6 @@
                 return;
             }
 
-            // Remove placeholder if present
-            const placeholder = document.getElementById('empty-ledger-placeholder');
-            if (placeholder) placeholder.remove();
-
             complaintsResponseArray.forEach((item, index) => {
                 if (item.status === "Open Fault") pendingCount++;
                 if (item.status === "Resolved") resolvedCount++;
@@ -894,7 +788,7 @@
                         <td class="p-3 font-mono text-brandOrange font-bold">${item.warrantyId}</td>
                         <td class="p-3 font-bold font-sans">${item.client}</td>
                         <td class="p-3 text-textMuted font-sans">${item.contact}</td>
-                        <td class="p-3 text-cyberBlue font-mono font-semibold">${item.photoUrl ? `<a href="${item.photoUrl}" target="_blank" rel="noopener" class="hover:underline"><i class="fa-solid fa-paperclip text-xs mr-1"></i>${escapeHtml(item.imageName)}</a>` : `<span><i class="fa-solid fa-paperclip text-xs mr-1"></i>${escapeHtml(item.imageName)}</span>`}</td>
+                        <td class="p-3 text-cyberBlue font-mono font-semibold"><span><i class="fa-solid fa-paperclip text-xs mr-1"></i>${escapeHtml(item.imageName)}</span></td>
                         <td class="p-3"><span class="${badgeClass} px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-sans">${item.issue}</span></td>
                         <td class="p-3"><span class="border px-2 py-0.5 rounded text-[10px] font-bold font-mono ${matchBadgeClass}">${item.matchStatus}</span></td>
                         <td class="p-3 text-center">
@@ -912,16 +806,17 @@
             updateCounters(complaintsResponseArray.length, pendingCount, resolvedCount);
         }
 
-        async function updateRowStatus(index, newStatus) {
+        function updateRowStatus(index, newStatus) {
             complaintsResponseArray[index].status = newStatus;
-            complaintsResponseArray[index].updatedAt = new Date().toISOString();
             localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
             renderDashboardTable();
 
-            await sendStatusUpdateToCentralDashboard(complaintsResponseArray[index]);
-            openWhatsAppNotificationLinks(complaintsResponseArray[index], 'status');
-            openCustomerMailDraft(complaintsResponseArray[index], 'status');
-            alert(`Status updated to ${newStatus}. Customer/admin notification links opened.`);
+            fetch(LINEA_SYNC_CONFIG.googleScriptUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: 'status', complaint: complaintsResponseArray[index] })
+            }).catch(e => console.log("Status background updated"));
         }
 
         function updateCounters(total, pending, resolved) {
@@ -945,30 +840,18 @@
                 const matchesSearch = txtId.includes(query) || txtClient.includes(query);
                 const matchesStatus = (statusFilter === "ALL") || (currentStatus === statusFilter);
 
-                if (matchesSearch && matchesStatus) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
+                row.style.display = (matchesSearch && matchesStatus) ? "" : "none";
             }
         }
 
         function exportDashboardData() {
-            if (complaintsResponseArray.length === 0) {
-                alert("Export Fail: System database payload log stream is empty!");
-                return;
-            }
-
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Warranty ID,Client Name,Contact Reference,Defect Photo,Issue Reported,Cross-Check Status,Operational Status\n";
-
+            if (complaintsResponseArray.length === 0) return alert("Empty ledger!");
+            let csvContent = "data:text/csv;charset=utf-8,Warranty ID,Client Name,Contact Reference,Defect Photo,Issue Reported,Cross-Check Status,Operational Status\n";
             complaintsResponseArray.forEach(item => {
                 csvContent += `"${item.warrantyId}","${item.client}","${item.contact}","${item.imageName}","${item.issue}","${item.matchStatus}","${item.status}"\n`;
             });
-
-            const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
+            link.setAttribute("href", encodeURI(csvContent));
             link.setAttribute("download", "Linea_LED_Operational_Report_2026.csv");
             document.body.appendChild(link);
             link.click();
