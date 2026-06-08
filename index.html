@@ -723,7 +723,7 @@ async function handleCustomerFormSubmission(event) {
         alert("🔄 Submitting your data to the network, please wait...");
 
         // Render URL lagaya hai yahan par
-        const response = await fetch('https://linea-led.onrender.com/submit', {
+        const response = await fetch('https://linea-led.onrender.com/api/register-complaint', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
