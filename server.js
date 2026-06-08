@@ -3,17 +3,20 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
+const bodyParser = require('body-parser'); // <-- 1. Naya package import kiya
 
 const app = express();
 
 // ==========================================
-// CORS CONFIGURATION & LARGE PAYLOAD LIMITS (FIXED)
+// STRICT CORE OVERRIDE FOR LARGE PAYLOADS (FIXED)
 // ==========================================
-app.use(cors()); 
+app.use(cors());
 
-// Photo upload handle karne ke liye 50mb ki limit set kar di hai
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+// Express ke purane tarike hata kar strict body-parser lagaya
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true, parameterLimit: 100000 }));
+
+// Iske Niche Aapka Baaki Saara Code (db.json, nodemailer, app.post) Bilkul Same Rahega...
 
 // ==========================================
 // 1. LIGHTWEIGHT DATABASE ENGINE (db.json)
