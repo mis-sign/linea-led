@@ -5,8 +5,15 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 
 const app = express();
-app.use(express.json());
-app.use(cors()); // Global Cross-origin access handle karne ke liye taaki GitHub se request block na ho
+
+// ==========================================
+// CORS CONFIGURATION & LARGE PAYLOAD LIMITS (FIXED)
+// ==========================================
+app.use(cors()); 
+
+// Photo upload handle karne ke liye 50mb ki limit set kar di hai
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // ==========================================
 // 1. LIGHTWEIGHT DATABASE ENGINE (db.json)
@@ -19,7 +26,7 @@ db.defaults({ complaints: [] }).write();
 // 2. CENTRAL EMAIL ACCOUNT PIPELINE
 // ==========================================
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com", // Aap apna enterprise dynamic mail provider configure kar sakte hain
+    host: "smtp.gmail.com", 
     port: 465,
     secure: true, 
     auth: {
@@ -44,19 +51,25 @@ app.get('/api/get-complaints', (req, res) => {
     return res.status(200).json({ success: true, data: records });
 });
 
-// POST API: Complaint Registration & Immediate Dispatch Flow
-app.post('/api/register-complaint', async (req, res) => {
+// POST API: Complaint Registration (UPDATED ROUTE PATH TO MATCH FRONTEND)
+app.post('/submit', async (req, res) => {
     try {
-        const { warrantyId, clientName, contactName, contactPhone, issueReported } = req.body;
+        // Frontend payload ke hisab se exact fields nikaal rahe hain
+        const { warrantyId, client, contactName, contactPhone, issue, photoUrl, gps, matchStatus, source } = req.body;
+        
         const uniqueTicketId = Math.floor(100000 + Math.random() * 900000);
 
         const newComplaintRecord = {
             id: uniqueTicketId,
-            warrantyId,
-            clientName,
-            contactName,
-            contactPhone,
-            issueReported,
+            warrantyId: warrantyId || "UNKNOWN",
+            clientName: client || "Anonymous Client",
+            contactName: contactName || "No Name",
+            contactPhone: contactPhone || "No Phone",
+            issueReported: issue || "Diagnostic Evaluation",
+            photoUrl: photoUrl || "",
+            gps: gps || "No GPS Telemetry",
+            matchStatus: matchStatus || "Manual Network Registration",
+            source: source || "Portal Direct Form",
             status: "Open Fault",
             createdAt: new Date().toISOString()
         };
@@ -68,19 +81,16 @@ app.post('/api/register-complaint', async (req, res) => {
         const enterpriseAdminMail = "mis@hi-sign.com";
         const enterpriseAdminPhone = "8698755608"; // Sudhanshu Shekhar Fixed Contact Parameters
 
-        // --- ENTERPRISE ALERTS TRANSLATION (PROFESSIONAL ENGLISH ONLY) ---
-        
-        // Customer View Outgoing Elements
+        // --- ENTERPRISE ALERTS TRANSLATION ---
         const customerEmailSubject = `Complaint Service Ticket Logged - Ticket ID #${uniqueTicketId}`;
-        const customerEmailBody = `Dear ${contactName},\n\nThank you for reaching out to Linea LED Support. Your equipment service complaint has been successfully registered in our automation pipeline.\n\n**Service Parameters:**\n- Reference Ticket ID: #${uniqueTicketId}\n- Signage Location/Client: ${clientName}\n- Warranty Serial Reference: ${warrantyId}\n- System Fault Diagnostics: ${issueReported}\n\nOur service operations team has queued your ticket. An field executive will contact you shortly.\n\nBest Regards,\nOperations Desk\nLinea LED Signage Networks`;
+        const customerEmailBody = `Dear ${newComplaintRecord.contactName},\n\nThank you for reaching out to Linea LED Support. Your equipment service complaint has been successfully registered in our automation pipeline.\n\n**Service Parameters:**\n- Reference Ticket ID: #${uniqueTicketId}\n- Signage Location/Client: ${newComplaintRecord.clientName}\n- Warranty Serial Reference: ${newComplaintRecord.warrantyId}\n- System Fault Diagnostics: ${newComplaintRecord.issueReported}\n\nOur service operations team has queued your ticket. An field executive will contact you shortly.\n\nBest Regards,\nOperations Desk\nLinea LED Signage Networks`;
         
-        const customerWhatsAppMessage = `Dear ${contactName}, your Linea LED service request has been logged. Ticket Reference: #${uniqueTicketId}. Our maintenance team is analyzing the payload parameters. Thank you.`;
+        const customerWhatsAppMessage = `Dear ${newComplaintRecord.contactName}, your Linea LED service request has been logged. Ticket Reference: #${uniqueTicketId}. Our maintenance team is analyzing the payload parameters. Thank you.`;
 
-        // Administration View Outgoing Elements
         const adminEmailSubject = `[URGENT INCIDENT LOG] Priority Ticket Dispatched - #${uniqueTicketId}`;
-        const adminEmailBody = `Attention Administration Desk,\n\nA new operational defect incident has been registered by an end-user interface node.\n\n**Incident Blueprint:**\n- Ticket Reference: #${uniqueTicketId}\n- Site/Branch: ${clientName}\n- Node Contact Name: ${contactName}\n- Mobile Line: ${contactPhone}\n- Defect Vectors: ${issueReported}\n\nPlease access the Central Management Admin Console to route this incident payload to a field engineer immediately.\n\nSystem Core Automation,\nLinea LED Network Node`;
+        const adminEmailBody = `Attention Administration Desk,\n\nA new operational defect incident has been registered by an end-user interface node.\n\n**Incident Blueprint:**\n- Ticket Reference: #${uniqueTicketId}\n- Site/Branch: ${newComplaintRecord.clientName}\n- Node Contact Name: ${newComplaintRecord.contactName}\n- Mobile Line: ${newComplaintRecord.contactPhone}\n- Defect Vectors: ${newComplaintRecord.issueReported}\n\nPlease access the Central Management Admin Console to route this incident payload to a field engineer immediately.\n\nSystem Core Automation,\nLinea LED Network Node`;
 
-        const adminWhatsAppMessage = `Enterprise Dispatch Alert: New high priority signage ticket (#${uniqueTicketId}) generated for ${clientName}. Diagnostic Issue: ${issueReported}. Check your active system terminal immediately.`;
+        const adminWhatsAppMessage = `Enterprise Dispatch Alert: New high priority signage ticket (#${uniqueTicketId}) generated for ${newComplaintRecord.clientName}. Diagnostic Issue: ${newComplaintRecord.issueReported}. Check your active system terminal immediately.`;
 
         // Execute Transporter Processes Securely
         try {
@@ -91,12 +101,13 @@ app.post('/api/register-complaint', async (req, res) => {
         }
 
         // WhatsApp Integrations Trigger Routing
-        await triggerWhatsAppGateway(contactPhone, customerWhatsAppMessage);
+        await triggerWhatsAppGateway(newComplaintRecord.contactPhone, customerWhatsAppMessage);
         await triggerWhatsAppGateway(enterpriseAdminPhone, adminWhatsAppMessage);
 
         return res.status(201).json({ success: true, message: "Incident logged successfully on Cloud Storage Node.", data: newComplaintRecord });
 
     } catch (error) {
+        console.error("Critical Server Crash Error Context:", error);
         return res.status(500).json({ success: false, message: "Critical Server Crash Error Context", error: error.message });
     }
 });
