@@ -27,13 +27,24 @@
         }
     </script>
     <style>
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #f3f4f6; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* Professional Premium Scrollbar to Match Orange-Grey Theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f3f4f6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 </head>
-<body class="bg-bgLightGrey text-textDark font-sans antialiased">
+<body class="bg-bgLightGrey text-textDark font-sans antialiased selection:bg-brandOrange/20 selection:text-brandOrange">
 
     <div id="system-toast-container" class="fixed top-5 right-5 z-50 space-y-3 pointer-events-none"></div>
 
@@ -43,7 +54,9 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-gradient-to-br from-brandOrange to-red-600 rounded-xl flex items-center justify-center shadow-md shadow-brandOrange/20">
-                        <i class="fa-solid fa-bolt text-white text-lg"></i>
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
                     </div>
                     <div>
                         <h1 class="text-xl font-black tracking-tight text-textDark flex items-center">
@@ -55,52 +68,66 @@
                 
                 <div class="flex items-center space-x-2">
                     <button id="toggle-view-btn" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition-all uppercase tracking-wide flex items-center gap-1.5 shadow-sm">
-                        <i class="fa-solid fa-sliders"></i> Switch Interface Mode
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                        </svg>
+                        Switch Interface Mode
                     </button>
                 </div>
             </div>
         </header>
 
         <main id="layout-admin-hub" class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+            
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <div class="bg-white border border-borderGrey rounded-xl p-5 shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-xs font-bold text-textMuted uppercase tracking-wider">Total Service Incidents</p>
                         <h3 id="metric-total" class="text-2xl font-black text-textDark mt-1">0</h3>
                     </div>
-                    <div class="w-12 h-12 bg-blue-50 text-cyberBlue rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-folder-open"></i></div>
+                    <div class="w-12 h-12 bg-blue-50 text-cyberBlue rounded-xl flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-folder-open"></i>
+                    </div>
                 </div>
                 <div class="bg-white border border-borderGrey rounded-xl p-5 shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-xs font-bold text-textMuted uppercase tracking-wider">Active Open Faults</p>
                         <h3 id="metric-open" class="text-2xl font-black text-red-600 mt-1">0</h3>
                     </div>
-                    <div class="w-12 h-12 bg-red-50 text-red-500 rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <div class="w-12 h-12 bg-red-50 text-red-500 rounded-xl flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
                 </div>
                 <div class="bg-white border border-borderGrey rounded-xl p-5 shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-xs font-bold text-textMuted uppercase tracking-wider">Resolved Tickets</p>
                         <h3 id="metric-resolved" class="text-2xl font-black text-cyberGreen mt-1">0</h3>
                     </div>
-                    <div class="w-12 h-12 bg-emerald-50 text-cyberGreen rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="w-12 h-12 bg-emerald-50 text-cyberGreen rounded-xl flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
                 </div>
                 <div class="bg-white border border-borderGrey rounded-xl p-5 shadow-sm flex items-center justify-between">
                     <div>
                         <p class="text-xs font-bold text-textMuted uppercase tracking-wider">Verified Warranty Matches</p>
                         <h3 id="metric-verified" class="text-2xl font-black text-brandOrange mt-1">0</h3>
                     </div>
-                    <div class="w-12 h-12 bg-orange-50 text-brandOrange rounded-xl flex items-center justify-center text-lg"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="w-12 h-12 bg-orange-50 text-brandOrange rounded-xl flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
                 </div>
             </div>
 
             <div class="bg-white border border-borderGrey rounded-xl p-4 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div class="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div class="relative">
-                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-sm"></i>
-                        <input type="text" id="dashboard-search-input" onkeyup="filterDashboardTableEngine()" placeholder="Search site client, ticket id or reference parameters..." class="w-full bg-slate-50 border border-slate-300 text-textDark placeholder-slate-400 text-sm rounded-lg pl-9 pr-3 py-2 focus:outline-none focus:border-brandOrange">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <input type="text" id="dashboard-search-input" onkeyup="filterDashboardTableEngine()" placeholder="Search site client, ticket id or reference parameters..." class="w-full bg-slate-50 border border-slate-300 text-textDark placeholder-slate-400 text-sm rounded-lg pl-9 pr-3 py-2.5 focus:outline-none focus:border-brandOrange transition-all font-medium">
                     </div>
                     <div>
-                        <select id="dashboard-status-filter" onchange="filterDashboardTableEngine()" class="w-full bg-slate-50 border border-slate-300 text-textDark text-sm rounded-lg px-3 py-2 focus:outline-none focus:border-brandOrange cursor-pointer">
+                        <select id="dashboard-status-filter" onchange="filterDashboardTableEngine()" class="w-full bg-slate-50 border border-slate-300 text-textDark text-sm rounded-lg px-3 py-2.5 focus:outline-none focus:border-brandOrange transition-all cursor-pointer font-bold">
                             <option value="ALL">All Operational Status Statuses</option>
                             <option value="Open Fault">Open Fault (Unresolved Incident)</option>
                             <option value="Resolved Operational">Resolved Operational (Fixed)</option>
@@ -108,8 +135,12 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="fetchActiveComplaintsLogStream()" class="bg-white hover:bg-slate-50 text-textDark border border-slate-300 px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-rotate"></i> Refresh Log</button>
-                    <button onclick="exportDashboardData()" class="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all shadow-sm flex items-center gap-1.5"><i class="fa-solid fa-file-export"></i> Export CSV</button>
+                    <button onclick="fetchActiveComplaintsLogStream()" class="bg-white hover:bg-slate-50 text-textDark border border-slate-300 px-4 py-2.5 rounded-lg text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 uppercase tracking-wide">
+                        <i class="fa-solid fa-rotate"></i> Refresh Log
+                    </button>
+                    <button onclick="exportDashboardData()" class="bg-slate-900 hover:bg-black text-white px-4 py-2.5 rounded-lg text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 uppercase tracking-wide">
+                        <i class="fa-solid fa-file-export"></i> Export CSV
+                    </button>
                 </div>
             </div>
 
@@ -129,7 +160,9 @@
                         </thead>
                         <tbody id="dashboard-table-body" class="divide-y divide-borderGrey font-medium">
                             <tr>
-                                <td colspan="7" class="px-6 py-12 text-center text-textMuted font-bold">Initializing connection stack pipeline. Loading payload analytics...</td>
+                                <td colspan="7" class="px-6 py-12 text-center text-textMuted font-bold">
+                                    Initializing connection stack pipeline. Loading payload analytics...
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -137,65 +170,90 @@
             </div>
         </main>
 
-        <main id="layout-customer-portal" class="hidden flex-1 max-w-xl w-full mx-auto p-4 sm:p-6 flex items-center justify-center">
-            <div class="bg-white border border-borderGrey rounded-2xl shadow-xl w-full p-6 space-y-6">
-                <div class="text-center space-y-1.5">
-                    <h2 class="text-2xl font-black tracking-tight text-textDark">INCIDENT DISPATCH REGISTRATION</h2>
-                    <p class="text-xs text-textMuted font-bold tracking-widest uppercase">Automated End-User Telemetry Node Portal</p>
+        <main id="layout-customer-portal" class="hidden flex-1 w-full flex items-center justify-center p-0 sm:p-6 bg-cover bg-center relative" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80');">
+            <div class="absolute inset-0 bg-slate-950/80 backdrop-blur-sm z-0"></div>
+
+            <div class="w-full max-w-2xl bg-slate-900/40 border border-white/10 rounded-2xl p-6 space-y-6 relative z-10 my-4 shadow-2xl backdrop-blur-xl">
+                
+                <div class="text-center space-y-2">
+                    <h1 class="text-3xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400 uppercase">
+                        Linea Systems
+                    </h1>
+                    <p class="text-xs text-slate-400 font-bold tracking-widest uppercase">
+                        Automated Service Request & Network Telemetry Node
+                    </p>
                 </div>
 
-                <form id="customer-submission-form" class="space-y-4">
-                    <div class="space-y-1">
-                        <label class="block text-xs font-bold text-textDark uppercase tracking-wide">GPS Coordinate Lock Verification</label>
-                        <div class="flex gap-2">
-                            <input type="text" id="gps-verified-data" readonly required placeholder="Awaiting GPS Telemetry Authentication Lock" class="flex-1 bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none">
-                            <button type="button" id="btn-gps-lock" class="bg-slate-900 hover:bg-black text-white px-4 py-2 rounded-lg text-xs font-bold transition-all shadow-sm">Get GPS Lock</button>
-                        </div>
-                    </div>
-
-                    <div class="space-y-1">
-                        <label class="block text-xs font-bold text-textDark uppercase tracking-wide">Warranty Serial Reference ID</label>
-                        <input type="text" id="claim-serial" required placeholder="e.g., LIN-LED-773910" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
-                    </div>
-
-                    <div class="space-y-1">
-                        <label class="block text-xs font-bold text-textDark uppercase tracking-wide">Client Identity / Project Site Name</label>
-                        <input type="text" id="claim-project-name" required placeholder="Enter corporate site identity details" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
-                    </div>
-
-                    <div class="space-y-1">
-                        <label class="block text-xs font-bold text-textDark uppercase tracking-wide">Physical Installation Coordinates / Location</label>
-                        <textarea id="claim-address" required rows="2" placeholder="Full physical routing terminal address parameters..." class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange resize-none"></textarea>
-                    </div>
-
-                    <div class="space-y-1">
-                        <label class="block text-xs font-bold text-textDark uppercase tracking-wide">On-Site Spoc / Node Contact Name</label>
-                        <input type="text" id="claim-contact-name" required placeholder="Authorized site coordinator personnel" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
-                    </div>
-
-                    <div class="space-y-1">
-                        <label class="block text-xs font-bold text-textDark uppercase tracking-wide">Active Mobile Contact Line</label>
-                        <input type="tel" id="claim-contact-phone" required placeholder="WhatsApp notifications capable primary number" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
-                    </div>
-
+                <form id="customer-submission-form" class="space-y-4 text-slate-200 font-medium">
                     <div class="space-y-1.5">
-                        <label class="block text-xs font-bold text-textDark uppercase tracking-wide">Observed Hardware Defect Diagnostics</label>
-                        <div class="grid grid-cols-2 gap-2 text-xs font-bold text-textMuted">
-                            <label class="flex items-center space-x-2 bg-slate-50 p-2.5 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-100"><input type="checkbox" name="faults" value="Complete Matrix Blackout" class="rounded text-brandOrange focus:ring-0"><span>Matrix Blackout</span></label>
-                            <label class="flex items-center space-x-2 bg-slate-50 p-2.5 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-100"><input type="checkbox" name="faults" value="Flickering/Module Distortion" class="rounded text-brandOrange focus:ring-0"><span>Module Flickering</span></label>
-                            <label class="flex items-center space-x-2 bg-slate-50 p-2.5 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-100"><input type="checkbox" name="faults" value="SMPS Power Supply Failure" class="rounded text-brandOrange focus:ring-0"><span>SMPS Failure</span></label>
-                            <label class="flex items-center space-x-2 bg-slate-50 p-2.5 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-100"><input type="checkbox" name="faults" value="Receiving Card Data Drop" class="rounded text-brandOrange focus:ring-0"><span>Data Card Drop</span></label>
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">GPS Telemetry Configuration</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="gps-verified-data" readonly placeholder="Authorize GPS Telemetry Lock" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-lg px-3 py-2 text-sm text-slate-300 focus:outline-none">
+                            <button type="button" id="btn-gps-lock" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-xs font-bold transition-all whitespace-nowrap uppercase tracking-wider shadow-md shadow-blue-900/30">Fetch GPS</button>
                         </div>
                     </div>
 
                     <div class="space-y-1">
-                        <label class="block text-xs font-bold text-textDark uppercase tracking-wide">Mandatory Fault Validation Proof Image</label>
-                        <input type="file" id="photo-mandatory" required accept="image/*" class="w-full text-xs text-textMuted file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border file:border-slate-300 file:bg-white file:text-textDark file:font-bold hover:file:bg-slate-50 file:cursor-pointer cursor-pointer">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Warranty Serial ID Reference</label>
+                        <input type="text" id="claim-serial" required placeholder="e.g. LIN-LED-XXXXXX" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-all">
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Client / Signage Project Name</label>
+                        <input type="text" id="claim-project-name" required placeholder="Enter installation site client identity" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-all">
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Installation Site Physical Address</label>
+                        <textarea id="claim-address" required rows="2" placeholder="Full operational coordinates and structural address parameters..." class="w-full bg-slate-950/60 border border-slate-700/60 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-all resize-none"></textarea>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">On-Site Spoc / Node Contact Name</label>
+                        <input type="text" id="claim-contact-name" required placeholder="Authorized technician or operations manager name" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-all">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Active Mobile Number</label>
+                            <input type="tel" id="claim-contact-phone" required placeholder="WhatsApp enabled primary network line" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-all">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Email Address Reference</label>
+                            <input type="email" id="claim-contact-email" placeholder="official@domain.com (Optional Parameters)" class="w-full bg-slate-950/60 border border-slate-700/60 rounded-lg px-3 py-2 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-blue-500 transition-all">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Observed Defect / Hardware Diagnostics</label>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold text-slate-300">
+                            <label class="flex items-center space-x-2 bg-slate-950/40 p-2.5 rounded border border-slate-800 cursor-pointer hover:bg-slate-950/80 transition-all">
+                                <input type="checkbox" name="faults" value="Complete Matrix Blackout" class="rounded text-blue-500 focus:ring-0 bg-slate-950 border-slate-700">
+                                <span>Matrix Blackout Failure</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-slate-950/40 p-2.5 rounded border border-slate-800 cursor-pointer hover:bg-slate-950/80 transition-all">
+                                <input type="checkbox" name="faults" value="Flickering/Module Distortion" class="rounded text-blue-500 focus:ring-0 bg-slate-950 border-slate-700">
+                                <span>Module Flickering Distortion</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-slate-950/40 p-2.5 rounded border border-slate-800 cursor-pointer hover:bg-slate-950/80 transition-all">
+                                <input type="checkbox" name="faults" value="SMPS Power Supply Failure" class="rounded text-blue-500 focus:ring-0 bg-slate-950 border-slate-700">
+                                <span>SMPS Power Unit Dead</span>
+                            </label>
+                            <label class="flex items-center space-x-2 bg-slate-950/40 p-2.5 rounded border border-slate-800 cursor-pointer hover:bg-slate-950/80 transition-all">
+                                <input type="checkbox" name="faults" value="Receiving Card Data Drop" class="rounded text-blue-500 focus:ring-0 bg-slate-950 border-slate-700">
+                                <span>Receiving Card Data Drop</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1">
+                        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wide">Mandatory Proof Upload (Active Glitch Photo)</label>
+                        <input type="file" id="photo-mandatory" required accept="image/*" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border file:border-slate-700 file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 file:cursor-pointer cursor-pointer">
                     </div>
 
                     <div class="pt-2">
-                        <button type="submit" id="submit-btn" class="w-full bg-gradient-to-r from-brandOrange to-red-600 hover:from-brandOrangeHover hover:to-red-700 text-white font-black py-3 px-4 rounded-xl shadow-md shadow-brandOrange/20 transition-all uppercase tracking-wider text-xs transform active:scale-[0.99]">
-                            DISPATCH REPAIR INCIDENT PAYLOAD
+                        <button type="submit" id="submit-btn" class="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white font-black py-3 px-4 rounded-xl shadow-lg shadow-blue-900/40 transform transition-all active:scale-[0.99] uppercase text-xs tracking-wider">
+                            DISPATCH REPAIR INCIDENT payload
                         </button>
                     </div>
                 </form>
@@ -207,65 +265,65 @@
         let complaintsResponseArray = [];
         const BACKEND_URL = "https://linea-led.onrender.com";
 
-        // View Switching Engine
-        let activeViewMode = "ADMIN";
-        const btnToggleView = document.getElementById("toggle-view-btn");
-        const layoutAdminHub = document.getElementById("layout-admin-hub");
-        const layoutCustomerPortal = document.getElementById("layout-customer-portal");
+        // View Mode Switching Router Pipeline State Configuration
+        let currentActiveLayoutViewMode = "ADMIN";
+        const btnToggleLayoutInterface = document.getElementById("toggle-view-btn");
+        const layoutAdminHubSectionNode = document.getElementById("layout-admin-hub");
+        const layoutCustomerPortalSectionNode = document.getElementById("layout-customer-portal");
 
-        btnToggleView.addEventListener("click", () => {
-            if (activeViewMode === "ADMIN") {
-                activeViewMode = "CUSTOMER";
-                layoutAdminHub.classList.add("hidden");
-                layoutCustomerPortal.classList.remove("hidden");
-                btnToggleView.innerHTML = `<i class="fa-solid fa-table-columns"></i> Switch to Admin Console`;
+        btnToggleLayoutInterface.addEventListener("click", () => {
+            if (currentActiveLayoutViewMode === "ADMIN") {
+                currentActiveLayoutViewMode = "CUSTOMER";
+                layoutAdminHubSectionNode.classList.add("hidden");
+                layoutCustomerPortalSectionNode.classList.remove("hidden");
+                btnToggleLayoutInterface.innerHTML = `<i class="fa-solid fa-table-columns"></i> Switch to Admin Console`;
             } else {
-                activeViewMode = "ADMIN";
-                layoutCustomerPortal.classList.add("hidden");
-                layoutAdminHub.classList.remove("hidden");
-                btnToggleView.innerHTML = `<i class="fa-solid fa-sliders"></i> Switch Interface Mode`;
+                currentActiveLayoutViewMode = "ADMIN";
+                layoutCustomerPortalSectionNode.classList.add("hidden");
+                layoutAdminHubSectionNode.classList.remove("hidden");
+                btnToggleLayoutInterface.innerHTML = `<i class="fa-solid fa-sliders"></i> Switch Interface Mode`;
                 fetchActiveComplaintsLogStream();
             }
         });
 
-        // GPS Telemetry Engine
+        // GPS Telemetry Data Retrieval Module Functionality Block
         document.getElementById('btn-gps-lock').addEventListener('click', () => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition((pos) => {
                     const coordString = `Lat: ${pos.coords.latitude.toFixed(4)}, Lon: ${pos.coords.longitude.toFixed(4)}`;
                     document.getElementById('gps-verified-data').value = coordString;
-                    triggerNotificationToast("🎯 GPS Location Telemetry Locked Successfully.", "SUCCESS");
+                    triggerToastNotificationBox("🎯 GPS Telemetry Position Locked Securely.", "SUCCESS");
                 }, () => {
-                    document.getElementById('gps-verified-data').value = "Lat: 28.6139, Lon: 77.2090 (Default Corporate Hub)";
+                    document.getElementById('gps-verified-data').value = "Lat: 28.6139, Lon: 77.2090 (Default Nodes)";
                 });
             } else {
-                document.getElementById('gps-verified-data').value = "Lat: 28.6139, Lon: 77.2090 (Default Corporate Hub)";
+                document.getElementById('gps-verified-data').value = "Lat: 28.6139, Lon: 77.2090 (Default Nodes)";
             }
         });
 
-        // Toast Alert Dispatcher
-        function triggerNotificationToast(msg, type = "SUCCESS") {
-            const container = document.getElementById("system-toast-container");
-            const toast = document.createElement("div");
-            toast.className = `p-4 rounded-xl shadow-lg border text-xs font-black tracking-wide uppercase transition-all duration-300 transform translate-x-10 pointer-events-auto flex items-center space-x-2 ${
-                type === "SUCCESS" ? "bg-emerald-50 border-emerald-200 text-cyberGreen" : "bg-red-50 border-red-200 text-red-600"
+        // Elite Real-Time System Notification Toast Dispatch System
+        function triggerToastNotificationBox(msg, variantType = "SUCCESS") {
+            const containerNode = document.getElementById("system-toast-container");
+            const toastFrame = document.createElement("div");
+            toastFrame.className = `p-4 rounded-xl shadow-lg border text-xs font-black tracking-wide uppercase transition-all duration-300 transform translate-x-10 pointer-events-auto flex items-center space-x-2 ${
+                variantType === "SUCCESS" ? "bg-emerald-50 border-emerald-200 text-cyberGreen" : "bg-red-50 border-red-200 text-red-600"
             }`;
-            toast.innerHTML = `<i class="${type === 'SUCCESS' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'} text-sm"></i> <span>${msg}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => { toast.classList.remove("translate-x-10"); }, 10);
+            toastFrame.innerHTML = `<i class="${variantType === 'SUCCESS' ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle-xmark'} text-sm"></i> <span>${msg}</span>`;
+            containerNode.appendChild(toastFrame);
+            setTimeout(() => { toastFrame.classList.remove("translate-x-10"); }, 10);
             setTimeout(() => {
-                toast.classList.add("opacity-0", "translate-y-[-10px]");
-                setTimeout(() => { toast.remove(); }, 300);
+                toastFrame.classList.add("opacity-0", "translate-y-[-10px]");
+                setTimeout(() => { toastFrame.remove(); }, 300);
             }, 4000);
         }
 
-        // FULL FIXED CUSTOMER FORM SUBMISSION ENGINE
+        // CHOSEN FIXED CUSTOMER SUBMISSION HANDLER ROUTE FIXED
         async function handleCustomerFormSubmission(event) {
             event.preventDefault();
 
             const gpsLock = document.getElementById('gps-verified-data').value;
             if (!gpsLock) {
-                alert("🚨 DISPATCH DENIED: Please authorize site GPS telemetry lock configuration first.");
+                alert("🚨 DISPATCH DENIED: Please authorize site GPS telemetry configuration verification first.");
                 return;
             }
 
@@ -274,13 +332,14 @@
             const siteAddress = document.getElementById('claim-address').value;
             const personName = document.getElementById('claim-contact-name').value;
             const personPhone = document.getElementById('claim-contact-phone').value.replace(/\D/g, '');
+            const personEmail = (document.getElementById('claim-contact-email')?.value || '').trim();
             
             const fileInput = document.getElementById('photo-mandatory');
             const fileCheck = fileInput.files[0];
             let photoDataUrl = "";
 
             if (fileCheck) {
-                alert("📸 Processing picture payload telemetry stream. Please hold on...");
+                alert("📸 Processing image payload telemetry stream, please wait...");
                 const reader = new FileReader();
                 photoDataUrl = await new Promise((resolve) => {
                     reader.onloadend = () => resolve(reader.result);
@@ -292,28 +351,35 @@
             document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
             const activeFaultText = faultsSelected.join(', ') || 'Diagnostic Evaluation';
 
+            const uniqueComplaintId = "COMP-" + Date.now();
+
             const complaintPayload = {
+                id: uniqueComplaintId,
                 warrantyId: wId,
                 client: pName,
                 siteAddress: siteAddress,
                 contactName: personName,
                 contactPhone: personPhone,
+                contactEmail: personEmail,
+                contact: `${personName} (${personPhone})`,
                 imageName: fileCheck ? fileCheck.name : "scanned_proof.jpg",
                 photoUrl: photoDataUrl,
                 issue: activeFaultText,
                 gps: gpsLock,
                 matchStatus: "Manual Network Registration",
-                source: "Customer Mobile QR Scan"
+                status: "Open Fault",
+                source: "Customer Mobile QR Scan",
+                createdAt: new Date().toISOString()
             };
 
             try {
                 const submitBtn = document.getElementById('submit-btn');
                 if (submitBtn) {
                     submitBtn.disabled = true;
-                    submitBtn.innerText = "TRANSMITTING DATA PACKET STRATA...";
+                    submitBtn.innerText = "TRANSMITTING DATA STRATA...";
                 }
 
-                alert("🔄 Transmitting priority network payload cluster to Render cloud...");
+                alert("🔄 Transmitting priority packet cluster to Render backend cloud...");
 
                 const response = await fetch(`${BACKEND_URL}/submit`, {
                     method: 'POST',
@@ -322,151 +388,160 @@
                 });
 
                 if (response.ok) {
-                    alert("✅ SUCCESS: Incident registered successfully on server node! Corporate alerts dispatched.");
+                    alert("✅ SUCCESS: Incident registered successfully! Operational dashboard, corporate mail & WhatsApp routing alerts triggered.");
                     document.getElementById('customer-submission-form').reset();
-                    btnToggleView.click(); // Switch back to admin to view live entry
+                    btnToggleLayoutInterface.click(); // Switch back to admin panel layout view
                 } else {
                     const errorText = await response.text();
-                    alert("❌ SERVER PIPELINE FAILURE: " + errorText);
+                    alert("❌ CLOUD ROUTING INCIDENT ERROR: " + errorText);
                 }
             } catch (error) {
-                console.error("Submission Failure Log:", error);
-                alert("🚨 TERMINAL NETWORK EXCEPTION: Render server endpoint missing. Check backend state.");
+                console.error("Submission Error Stack Trace:", error);
+                alert("🚨 TERMINAL NETWORK EXCEPTION: Render server connectivity missing. Confirm backend service configuration state.");
             } finally {
                 const submitBtn = document.getElementById('submit-btn');
                 if (submitBtn) {
                     submitBtn.disabled = false;
-                    submitBtn.innerText = "DISPATCH REPAIR INCIDENT PAYLOAD";
+                    submitBtn.innerText = "DISPATCH REPAIR INCIDENT payload";
                 }
             }
         }
 
-        // Admin Hub Logger Stream Fetch Engine
+        // Live Log Cloud Database Analytics Stream Downloader Function
         async function fetchActiveComplaintsLogStream() {
-            const tableBody = document.getElementById("dashboard-table-body");
+            const tableBodyPlaceholder = document.getElementById("dashboard-table-body");
             try {
-                const response = await fetch(`${BACKEND_URL}/api/get-complaints`);
-                const jsonResult = await response.json();
+                const endpointResponse = await fetch(`${BACKEND_URL}/api/get-complaints`);
+                const computationalResultJson = await endpointResponse.json();
                 
-                if (jsonResult.success) {
-                    complaintsResponseArray = jsonResult.data;
+                if (computationalResultJson.success) {
+                    complaintsResponseArray = computationalResultJson.data;
                     renderDashboardTableEngine();
                 } else {
-                    tableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-red-500 font-bold">Failed to load payload catalog stream structure.</td></tr>`;
+                    tableBodyPlaceholder.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-red-500 font-bold">Failed to load payload catalog stream structure.</td></tr>`;
                 }
-            } catch (err) {
-                console.error("Database Link Fetch Failure:", err);
-                tableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-red-500 font-bold">Network Down: Backend endpoint node communication error state.</td></tr>`;
+            } catch (networkExceptionError) {
+                console.error("Database Core Telemetry Extraction Exception Link Down:", networkExceptionError);
+                tableBodyPlaceholder.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-red-500 font-bold">Network Down: Backend endpoint node communication error state.</td></tr>`;
             }
         }
 
-        // Render Dashboard Engine
+        // Central Analytics Rendering Loop Visual Grid UI Engine
         function renderDashboardTableEngine() {
-            const tableBody = document.getElementById("dashboard-table-body");
-            tableBody.innerHTML = "";
+            const tableContainerBodyTarget = document.getElementById("dashboard-table-body");
+            tableContainerBodyTarget.innerHTML = "";
 
-            let totalCount = complaintsResponseArray.length;
-            let openCount = 0;
-            let resolvedCount = 0;
-            let verifiedCount = 0;
+            let aggregationTotal = complaintsResponseArray.length;
+            let accumulationOpen = 0;
+            let accumulationResolved = 0;
+            let accumulationVerified = 0;
 
-            if (totalCount === 0) {
-                tableBody.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-textMuted font-bold">No registered operational incident records exist inside cloud node database.</td></tr>`;
-                updateMetricsDisplay(0, 0, 0, 0);
+            if (aggregationTotal === 0) {
+                tableContainerBodyTarget.innerHTML = `<tr><td colspan="7" class="px-6 py-8 text-center text-textMuted font-bold">No registered operational incident records exist inside cloud node database.</td></tr>`;
+                refreshAnalyticalMetricsCountersPanel(0, 0, 0, 0);
                 return;
             }
 
-            complaintsResponseArray.forEach(item => {
-                if (item.status === "Open Fault") openCount++;
-                if (item.status === "Resolved Operational") resolvedCount++;
-                if (item.matchStatus && item.matchStatus.includes("Verified")) verifiedCount++;
+            complaintsResponseArray.forEach(itemNode => {
+                if (itemNode.status === "Open Fault") accumulationOpen++;
+                if (itemNode.status === "Resolved Operational") accumulationResolved++;
+                if (itemNode.matchStatus && itemNode.matchStatus.includes("Verified")) accumulationVerified++;
 
-                const row = document.createElement("tr");
-                row.className = "hover:bg-slate-50 transition-colors border-b border-borderGrey";
+                const htmlRowElementFrame = document.createElement("tr");
+                htmlRowElementFrame.className = "hover:bg-slate-50 transition-colors border-b border-borderGrey";
                 
-                row.innerHTML = `
+                htmlRowElementFrame.innerHTML = `
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-xs font-black text-slate-900">#${item.id || 'N/A'}</div>
-                        <div class="text-[10px] text-textMuted mt-0.5">${item.createdAt ? new Date(item.createdAt).toLocaleString() : 'N/A'}</div>
+                        <div class="text-xs font-black text-slate-900">#${itemNode.id || 'N/A'}</div>
+                        <div class="text-[10px] text-textMuted mt-0.5">${itemNode.createdAt ? new Date(itemNode.createdAt).toLocaleString() : 'N/A'}</div>
                     </td>
                     <td class="px-6 py-4">
-                        <div class="text-xs font-black text-slate-800">${item.clientName || item.client || 'N/A'}</div>
-                        <div class="text-[10px] text-brandOrange font-bold mt-0.5"><i class="fa-solid fa-key"></i> ${item.warrantyId}</div>
+                        <div class="text-xs font-black text-slate-800">${itemNode.clientName || itemNode.client || 'N/A'}</div>
+                        <div class="text-[10px] text-brandOrange font-bold mt-0.5"><i class="fa-solid fa-key text-[9px]"></i> ${itemNode.warrantyId}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-xs">
-                        <div class="text-slate-800 font-bold">${item.contactName || 'N/A'}</div>
-                        <div class="text-textMuted text-[11px] mt-0.5"><i class="fa-solid fa-phone text-[10px]"></i> ${item.contactPhone || 'N/A'}</div>
+                        <div class="text-slate-800 font-bold">${itemNode.contactName || 'N/A'}</div>
+                        <div class="text-textMuted text-[11px] mt-0.5"><i class="fa-solid fa-phone text-[10px]"></i> ${itemNode.contactPhone || 'N/A'}</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        ${item.photoUrl ? `<a href="${item.photoUrl}" target="_blank" class="text-xs font-bold text-cyberBlue hover:underline flex items-center gap-1"><i class="fa-solid fa-image"></i> View Photo Asset</a>` : `<span class="text-xs text-textMuted italic">No Asset Attached</span>`}
+                        ${itemNode.photoUrl ? `<a href="${itemNode.photoUrl}" target="_blank" class="text-xs font-bold text-cyberBlue hover:underline flex items-center gap-1"><i class="fa-solid fa-image"></i> View Photo Asset</a>` : `<span class="text-xs text-textMuted italic">No Asset Attached</span>`}
                     </td>
-                    <td class="px-6 py-4 text-xs font-bold text-slate-600 max-w-xs truncate">${item.issueReported || item.issue || 'Diagnostic Check'}</td>
-                    <td class="px-6 py-4机制 whitespace-nowrap">
-                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wide bg-orange-50 text-brandOrange border border-orange-200">${item.matchStatus || 'Manual Entry'}</span>
+                    <td class="px-6 py-4 text-xs font-bold text-slate-600 max-w-xs truncate">${itemNode.issueReported || itemNode.issue || 'Diagnostic Check'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wide bg-orange-50 text-brandOrange border border-orange-200">${itemNode.matchStatus || 'Manual Entry'}</span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wide ${item.status === 'Open Fault' ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-emerald-50 text-cyberGreen border border-emerald-200'}">${item.status}</span>
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wide ${itemNode.status === 'Open Fault' ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-emerald-50 text-cyberGreen border border-emerald-200'}">${itemNode.status}</span>
                     </td>
                 `;
-                tableBody.appendChild(row);
+                tableContainerBodyTarget.appendChild(htmlRowElementFrame);
             });
 
-            updateMetricsDisplay(totalCount, openCount, resolvedCount, verifiedCount);
+            refreshAnalyticalMetricsCountersPanel(aggregationTotal, accumulationOpen, accumulationResolved, accumulationVerified);
         }
 
-        function updateMetricsDisplay(t, o, r, v) {
-            document.getElementById("metric-total").innerText = t;
-            document.getElementById("metric-open").innerText = o;
-            document.getElementById("metric-resolved").innerText = r;
-            document.getElementById("metric-verified").innerText = v;
+        // Update Counter Display Panel Nodes
+        function refreshAnalyticalMetricsCountersPanel(total, open, resolved, verified) {
+            document.getElementById("metric-total").innerText = total;
+            document.getElementById("metric-open").innerText = open;
+            document.getElementById("metric-resolved").innerText = resolved;
+            document.getElementById("metric-verified").innerText = verified;
         }
 
-        // Live Search Filter Engine
+        // Live Real-Time Dashboard Catalog Search/Filter Mechanical Query Processing Logic
         function filterDashboardTableEngine() {
-            const query = document.getElementById("dashboard-search-input").value.toLowerCase();
-            const statusFilter = document.getElementById("dashboard-status-filter").value;
-            const tableBody = document.getElementById("dashboard-table-body");
-            const rows = tableBody.getElementsByTagName("tr");
+            const currentSearchQueryValue = document.getElementById("dashboard-search-input").value.toLowerCase();
+            const currentSelectedStatusFilterValue = document.getElementById("dashboard-status-filter").value;
+            const targetTableBodyContainerNode = document.getElementById("dashboard-table-body");
+            const structuralRowsCollection = targetTableBodyContainerNode.getElementsByTagName("tr");
 
-            for (let i = 0; i < rows.length; i++) {
-                const row = rows[i];
-                if (row.cells.length < 7) continue;
+            for (let indexLoopCounter = 0; indexLoopCounter < structuralRowsCollection.length; indexLoopCounter++) {
+                const rowTargetPointer = structuralRowsCollection[indexLoopCounter];
+                if (rowTargetPointer.cells.length < 7) continue;
 
-                const txtId = row.cells[0].textContent.toLowerCase();
-                const txtClient = row.cells[1].textContent.toLowerCase();
-                const currentStatus = row.cells[6].textContent.trim();
+                const textualNodeIDValue = rowTargetPointer.cells[0].textContent.toLowerCase();
+                const textualNodeClientNameValue = rowTargetPointer.cells[1].textContent.toLowerCase();
+                const textStatusLabelStringValue = rowTargetPointer.cells[6].textContent.trim();
 
-                const matchesSearch = txtId.includes(query) || txtClient.includes(query);
-                const matchesStatus = (statusFilter === "ALL") || (currentStatus === statusFilter);
+                const evaluateSearchConditionStateMatch = textualNodeIDValue.includes(currentSearchQueryValue) || textualNodeClientNameValue.includes(currentSearchQueryValue);
+                const evaluateStatusConditionStateMatch = (currentSelectedStatusFilterValue === "ALL") || (textStatusLabelStringValue === currentSelectedStatusFilterValue);
 
-                row.style.display = (matchesSearch && matchesStatus) ? "" : "none";
+                if (evaluateSearchConditionStateMatch && evaluateStatusConditionStateMatch) {
+                    rowTargetPointer.style.display = "";
+                } else {
+                    rowTargetPointer.style.display = "none";
+                }
             }
         }
 
-        // CSV Exporter Engine
+        // Enterprise Standard CSV Data Export Core Script Operation
         function exportDashboardData() {
             if (complaintsResponseArray.length === 0) {
                 alert("Export Fail: System database payload log stream is empty!");
                 return;
             }
-            let csvContent = "data:text/csv;charset=utf-8,Ticket ID,Client Name,Contact Reference,Issue Reported,Cross-Check Status,Operational Status\n";
-            complaintsResponseArray.forEach(item => {
-                csvContent += `"${item.id}","${item.clientName || item.client}","${item.contactName} (${item.contactPhone})","${item.issueReported || item.issue}","${item.matchStatus}","${item.status}"\n`;
+
+            let csvDataContentStreamBuilder = "data:text/csv;charset=utf-8,";
+            csvDataContentStreamBuilder += "Warranty ID,Client Name,Contact Reference,Defect Photo,Issue Reported,Cross-Check Status,Operational Status\n";
+
+            complaintsResponseArray.forEach(dataRecordRowObject => {
+                csvDataContentStreamBuilder += `"${dataRecordRowObject.warrantyId}","${dataRecordRowObject.client}","${dataRecordRowObject.contact}","${dataRecordRowObject.imageName}","${dataRecordRowObject.issue}","${dataRecordRowObject.matchStatus}","${dataRecordRowObject.status}"\n`;
             });
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "Linea_LED_Operational_Report.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+
+            const targetEncodedUriStringPayload = encodeURI(csvDataContentStreamBuilder);
+            const hiddenDownloadAnchorTrigger = document.createElement("a");
+            hiddenDownloadAnchorTrigger.setAttribute("href", targetEncodedUriStringPayload);
+            hiddenDownloadAnchorTrigger.setAttribute("download", "Linea_LED_Operational_Report_2026.csv");
+            document.body.appendChild(hiddenDownloadAnchorTrigger);
+            hiddenDownloadAnchorTrigger.click();
+            document.body.removeChild(hiddenDownloadAnchorTrigger);
         }
 
-        // Direct Execution Wire-up
+        // Hardwire JavaScript Registration Engine
         document.addEventListener("DOMContentLoaded", () => {
-            const entryForm = document.getElementById('customer-submission-form');
-            if (entryForm) {
-                entryForm.addEventListener('submit', handleCustomerFormSubmission);
+            const elementFormSelectorNodeRef = document.getElementById('customer-submission-form');
+            if (elementFormSelectorNodeRef) {
+                elementFormSelectorNodeRef.addEventListener('submit', handleCustomerFormSubmission);
                 console.log("🚀 SUBMISSION WIRE-UP: Custom handler connected successfully via event pipeline.");
             }
             fetchActiveComplaintsLogStream();
