@@ -27,7 +27,6 @@
         }
     </script>
     <style>
-        /* Professional Premium Scrollbar to Match Orange-Grey Theme */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -387,13 +386,12 @@
         let complaintsResponseArray = JSON.parse(localStorage.getItem('linea_complaints_db')) || [];
         let customQRCardsArray = JSON.parse(localStorage.getItem('linea_custom_qr_cards')) || [];
 
-        // CENTRAL SYNC CONFIG:
         const LINEA_SYNC_CONFIG = {
             googleScriptUrl: "https://script.google.com/macros/s/AKfycbzwf2oJHSJaAeE1Mc6IVwsEQSaY0guaNlJXRIgghql-k0vG0Fl8BFNjsHycfSd4SzPFOg/exec",
             adminName: "Sudhanshu Shekhar",
             adminWhatsApp: "918698755608",
             adminEmail: "mis@hi-sign.com",
-            renderBackendUrl: "https://linea-led.onrender.com" // CONNECTED SECURE RENDER CLOUD NODE
+            renderBackendUrl: "https://linea-led.onrender.com"
         };
 
         let isCustomerLayoutViewMode = false;
@@ -411,10 +409,8 @@
 
             if (wId && bName && addr) {
                 isCustomerLayoutViewMode = true;
-
                 document.getElementById('main-header').style.display = 'none';
                 document.getElementById('main-footer').style.display = 'none';
-
                 triggerCustomerScanPassthrough(wId, bName, addr);
                 
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
@@ -627,16 +623,6 @@
             }, 600);
         }
 
-        function fileToDataUrl(file) {
-            return new Promise((resolve) => {
-                if (!file) return resolve("");
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result || "");
-                reader.onerror = () => resolve("");
-                reader.readAsDataURL(file);
-            });
-        }
-
         function escapeHtml(value) {
             return String(value || "")
                 .replace(/&/g, "&amp;")
@@ -646,7 +632,7 @@
                 .replace(/'/g, "&#039;");
         }
 
-        // FIXED SUBMISSION PIPELINE - EMAIL FALLBACK SECURED
+        // FIXED SUBMISSION PIPELINE - FIXED HEAVY CRASH FOR MOBILE BROWSER
         async function handleCustomerFormSubmission(event) {
             event.preventDefault();
 
@@ -662,12 +648,11 @@
             const personName = document.getElementById('claim-contact-name').value;
             const personPhone = document.getElementById('claim-contact-phone').value.replace(/\D/g, '');
             
-            // EMAIL FALLBACK SAFE FIX
             const emailField = document.getElementById('claim-contact-email');
             const personEmail = emailField && emailField.value ? emailField.value.trim() : "";
             
             const fileCheck = document.getElementById('photo-mandatory').files[0];
-            let photoDataUrl = "";
+            const imageNameSaved = fileCheck ? fileCheck.name : "scanned_proof.jpg";
 
             let faultsSelected = [];
             document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
@@ -676,10 +661,6 @@
             const matchFoundInDatabase = masterWarrantyStorage.some(record => record.warrantyId.toUpperCase() === wId);
             const matchStatusLabel = matchFoundInDatabase ? "Verified Node Match" : "Manual Network Registration";
             const uniqueComplaintId = "COMP-" + Date.now();
-
-            if (fileCheck) {
-                photoDataUrl = await fileToDataUrl(fileCheck);
-            }
 
             const complaintPayload = {
                 id: uniqueComplaintId,
@@ -690,8 +671,8 @@
                 contactPhone: personPhone,
                 contactEmail: personEmail,
                 contact: `${personName} (${personPhone})`,
-                imageName: fileCheck ? fileCheck.name : "scanned_proof.jpg",
-                photoUrl: photoDataUrl,
+                imageName: imageNameSaved,
+                photoUrl: "", // Removed heavy Base64 payload text to stop mobile browser freeze
                 issue: activeFaultText,
                 gps: gpsLock,
                 matchStatus: matchStatusLabel,
@@ -700,12 +681,14 @@
                 createdAt: new Date().toISOString()
             };
 
-            // 1. Save locally and trigger social alerts instantly
+            // 1. Save Locally
             upsertComplaintLocally(complaintPayload);
+            
+            // 2. Open Notification links instantly (Safe without heavy file text strings)
             openWhatsAppNotificationLinks(complaintPayload, 'registered');
             openCustomerMailDraft(complaintPayload, 'registered');
 
-            // 2. Transmit Cluster to Render Backend Endpoint Cloud Structure
+            // 3. Sync Render Backend
             let cloudStatusText = "";
             try {
                 const response = await fetch(`${LINEA_SYNC_CONFIG.renderBackendUrl}/submit`, {
@@ -720,10 +703,10 @@
                 }
             } catch (err) {
                 console.error("Render core sync failure:", err);
-                cloudStatusText = "Render server down, local data safe.";
+                cloudStatusText = "Render server offline, local data safe.";
             }
 
-            // 3. Sync to Google Sheet Backup Nodes
+            // 4. Sync Google Sheets Backup Node
             const sheetStatus = await saveComplaintToCentralDashboard(complaintPayload);
             
             alert(`🚀 COMPLAINT LODGED SECURELY:\nComplaint ID: ${uniqueComplaintId}\nValidation: ${matchStatusLabel}\n\n[Status]: ${cloudStatusText}\n[Backup]: ${sheetStatus}\n\nWhatsApp alerts and corporate mail pipeline triggered!`);
@@ -763,15 +746,15 @@
 
             if (audience === 'customer') {
                 if (eventType === 'status') {
-                    return `Hello Dear ${customerName},\n\nYour Linea LED complaint (${id}) status has been updated to: ${status}.\n\nOur engineering team is reviewing the case and will connect with you if any further details are required.\n\nThank you,\nLinea LED Support Team`;
+                    return `Hello Dear ${customerName},\n\nYour Linea LED complaint (${id}) status has been updated to: ${status}.\n\nOur engineering team is reviewing the case.\n\nThank you,\nLinea LED Support Team`;
                 }
-                return `Hello Dear ${customerName},\n\nYour Linea LED complaint has been registered successfully.\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nIssue: ${issue}\n\nOur engineering team is looking into it and will connect with you shortly.\n\nThank you,\nLinea LED Support Team`;
+                return `Hello Dear ${customerName},\n\nYour Linea LED complaint has been registered successfully.\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nIssue: ${issue}\n\nOur engineering team will connect with you shortly.\n\nThank you,\nLinea LED Support Team`;
             }
 
             if (eventType === 'status') {
-                return `LINEA LED STATUS UPDATE\n\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nClient/Branch: ${item.client || 'N/A'}\nCustomer: ${item.contact || customerName}\nUpdated Status: ${status}\n\nPlease continue the required service follow-up.\n\nLinea LED Portal`;
+                return `LINEA LED STATUS UPDATE\n\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nClient/Branch: ${item.client || 'N/A'}\nCustomer: ${item.contact || customerName}\nUpdated Status: ${status}\n\nLinea LED Portal`;
             }
-            return `LINEA LED NEW COMPLAINT ALERT\n\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nClient/Branch: ${item.client || 'N/A'}\nCustomer: ${item.contact || customerName}\nIssue: ${issue}\nStatus: ${status}\nPhoto: ${item.photoUrl || item.imageName || 'N/A'}\n\nA new customer complaint has been registered. Please assign engineering follow-up.\n\nLinea LED Portal`;
+            return `LINEA LED NEW COMPLAINT ALERT\n\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nClient/Branch: ${item.client || 'N/A'}\nCustomer: ${item.contact || customerName}\nIssue: ${issue}\nStatus: ${status}\nPhoto Proof File: ${item.imageName || 'N/A'}\n\nA new customer complaint has been registered.\n\nLinea LED Portal`;
         }
 
         function formatIndiaWhatsAppNumber(phone) {
@@ -896,7 +879,10 @@
                         <td class="p-3 font-mono text-brandOrange font-bold">${item.warrantyId}</td>
                         <td class="p-3 font-bold font-sans">${item.client}</td>
                         <td class="p-3 text-textMuted font-sans">${item.contact}</td>
-                        <td class="p-3 text-cyberBlue font-mono font-semibold">${item.photoUrl ? `<a href="${item.photoUrl}" target="_blank" rel="noopener" class="hover:underline"><i class="fa-solid fa-paperclip text-xs mr-1"></i>${escapeHtml(item.imageName)}</a>` : `<span><i class="fa-solid fa-paperclip text-xs mr-1"></i>${escapeHtml(item.imageName)}</span>`}</td>
+                        <td class="p-3 text-cyberBlue font-mono font-semibold flex items-center gap-1">
+                             <i class="fa-solid fa-paperclip text-xs text-textMuted"></i>
+                             <span>${escapeHtml(item.imageName || "attached_file.jpg")}</span>
+                        </td>
                         <td class="p-3"><span class="${badgeClass} px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-sans">${item.issue}</span></td>
                         <td class="p-3"><span class="border px-2 py-0.5 rounded text-[10px] font-bold font-mono ${matchBadgeClass}">${item.matchStatus}</span></td>
                         <td class="p-3 text-center">
@@ -926,7 +912,6 @@
             alert(`Status updated to ${newStatus}. Customer/admin notification links opened.`);
         }
 
-        // UPDATE DISPATCHDisplay Panel Metrics Counters
         function updateCounters(total, pending, resolved) {
             document.getElementById('dash-counter-total').innerText = total;
             document.getElementById('dash-counter-pending').innerText = pending;
