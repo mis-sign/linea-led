@@ -597,6 +597,7 @@
 
             document.getElementById('claim-contact-name').value = "Sudhanshu Shekhar";
             document.getElementById('claim-contact-phone').value = "8698755608";
+            
             const emailInput = document.getElementById('claim-contact-email');
             if (emailInput) emailInput.value = "";
             
@@ -645,7 +646,7 @@
                 .replace(/'/g, "&#039;");
         }
 
-        // FIXED INTEGRATED SUBMISSION ENGINE WITH PROPER RENDER API PIPELINE
+        // FIXED SUBMISSION PIPELINE - EMAIL FALLBACK SECURED
         async function handleCustomerFormSubmission(event) {
             event.preventDefault();
 
@@ -660,7 +661,11 @@
             const siteAddress = document.getElementById('claim-address').value;
             const personName = document.getElementById('claim-contact-name').value;
             const personPhone = document.getElementById('claim-contact-phone').value.replace(/\D/g, '');
-            const personEmail = (document.getElementById('claim-contact-email')?.value || '').trim();
+            
+            // EMAIL FALLBACK SAFE FIX
+            const emailField = document.getElementById('claim-contact-email');
+            const personEmail = emailField && emailField.value ? emailField.value.trim() : "";
+            
             const fileCheck = document.getElementById('photo-mandatory').files[0];
             let photoDataUrl = "";
 
