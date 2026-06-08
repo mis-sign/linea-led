@@ -289,7 +289,7 @@
                 <div class="border-b border-gray-200 pb-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
                         <h2 class="text-base font-bold text-textDark border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-file-invoice text-brandOrange mr-1"></i> Master Warranty Registrations Database</h2>
-                        <p class="text-xs text-textMuted mt-0.5">Sudhanshu bhai, yahan aapka master CSV spreadsheet data safe load hoga.</p>
+                        <p class="text-xs text-textMuted mt-0.5">Yahan aapka master CSV spreadsheet data safe load hoga.</p>
                     </div>
                     
                     <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
@@ -350,7 +350,7 @@
                 <div class="space-y-3 bg-gray-50 p-4 rounded-xl border border-borderGrey">
                     <div>
                         <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Admin Executive Name</label>
-                        <input type="text" id="admin-user-name" readonly value="Sudhanshu Shekhar" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark font-bold cursor-not-allowed shadow-sm">
+                        <input type="text" id="admin-user-name" readonly value="Goutam Diggiwal" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark font-bold cursor-not-allowed shadow-sm">
                     </div>
                     <div>
                         <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Registered Contact Number</label>
@@ -379,7 +379,7 @@
     </main>
 
     <footer id="main-footer" class="bg-white border-t border-borderGrey py-4 text-center text-xs text-textMuted shadow-inner">
-        <p>© 2026 <span class="text-brandOrange font-bold tracking-wider">LINEA LED SIGNAGE NETWORKS</span> | Deployed by <span class="text-textDark font-bold">Sudhanshu Shekhar</span></p>
+        <p>© 2026 <span class="text-brandOrange font-bold tracking-wider">LINEA LED SIGNAGE NETWORKS</span> | Deployed by <span class="text-textDark font-bold">Goutam Diggiwal</span></p>
     </footer>
 
     <script>
@@ -387,10 +387,10 @@
         let complaintsResponseArray = JSON.parse(localStorage.getItem('linea_complaints_db')) || [];
         let customQRCardsArray = JSON.parse(localStorage.getItem('linea_custom_qr_cards')) || [];
 
-        // CENTRAL SYNC CONFIG CHANGED: Google Script URL is kept blank to bypass infinite processing loops.
+        // CENTRAL SYNC CONFIG: Google Script URL is kept blank to bypass infinite processing loops.
         const LINEA_SYNC_CONFIG = {
-            googleScriptUrl: "", // Blanked safely to resolve "round round ghumne" wali issue.
-            adminName: "Sudhanshu Shekhar",
+            googleScriptUrl: "", 
+            adminName: "Goutam Diggiwal",
             adminWhatsApp: "918698755608",
             adminEmail: "mis@hi-sign.com"
         };
@@ -605,7 +605,7 @@
             document.getElementById('claim-address').value = siteAddr;
 
             // Fulfill user credentials automatically to bypass empty fields safely
-            document.getElementById('claim-contact-name').value = "Sudhanshu Shekhar";
+            document.getElementById('claim-contact-name').value = "Goutam Diggiwal";
             document.getElementById('claim-contact-phone').value = "8698755608";
             const emailInput = document.getElementById('claim-contact-email');
             if (emailInput) emailInput.value = "";
@@ -694,7 +694,6 @@
                 issue: activeFaultText,
                 gps: gpsLock,
                 matchStatus: matchStatusLabel,
-                matchStatus: matchStatusLabel,
                 status: "Open Fault",
                 source: isCustomerLayoutViewMode ? "Customer Mobile QR Scan" : "Portal Direct Form",
                 createdAt: new Date().toISOString()
@@ -765,6 +764,7 @@
             return digits;
         }
 
+        // UPDATED DISPATCH LOGIC FOR NEW ID MANAGEMENT
         function openWhatsAppNotificationLinks(item, eventType) {
             const adminMessage = buildComplaintMessage(item, eventType, 'admin');
             const adminUrl = `https://wa.me/${LINEA_SYNC_CONFIG.adminWhatsApp}?text=${encodeURIComponent(adminMessage)}`;
