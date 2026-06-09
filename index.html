@@ -135,7 +135,6 @@
                             <label class="block text-[11px] font-bold text-textMuted mb-0.5">Address</label>
                             <textarea id="claim-address" readonly placeholder="Address details auto loaded..." class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-textMuted cursor-not-allowed h-16 resize-none focus:outline-none"></textarea>
                         </div>
-
                         <div>
                             <label class="block text-[10px] font-bold text-emerald-600 mb-0.5 uppercase tracking-wide"><i class="fa-solid fa-location-crosshairs"></i> GPS Location Locked</label>
                             <input type="text" id="claim-gps-coordinates" readonly value="Detecting Satellites Network..." class="w-full bg-emerald-50 text-emerald-700 font-mono font-bold border border-emerald-200 rounded-lg px-3 py-1.5 text-xs cursor-not-allowed">
@@ -206,7 +205,7 @@
                         
                         <div class="bg-gray-50 p-3 rounded-lg border border-borderGrey space-y-2">
                             <label class="flex items-start gap-2 cursor-pointer select-none text-[11px] font-bold text-textDark">
-                                <input type="checkbox" name="faults" value="Any other issue" id="any-other-cb" class="mt-0.5 accent-brandOrange" checked>
+                                <input type="checkbox" name="faults" value="Any other issue" id="any-other-cb" class="mt-0.5 accent-brandOrange">
                                 <span>Any other issue:</span>
                             </label>
                             <textarea id="fault-custom-description" placeholder="Specify clear fields/details about your issues here..." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark h-16 resize-none focus:outline-none focus:border-brandOrange"></textarea>
@@ -239,15 +238,15 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm text-center">
                     <span class="text-[11px] text-textMuted uppercase font-black tracking-wider block">Total Claims</span>
-                    <span id="dash-counter-total" class="text-2xl font-black text-textDark block mt-1 font-mono">5</span>
+                    <span id="dash-counter-total" class="text-2xl font-black text-textDark block mt-1 font-mono">0</span>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm text-center border-l-4 border-red-500">
                     <span class="text-[11px] text-red-600 uppercase font-black tracking-wider block">Pending Claims</span>
-                    <span id="dash-counter-pending" class="text-2xl font-black text-red-600 block mt-1 font-mono">3</span>
+                    <span id="dash-counter-pending" class="text-2xl font-black text-red-600 block mt-1 font-mono">0</span>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm text-center border-l-4 border-emerald-500">
                     <span class="text-[11px] text-emerald-600 uppercase font-black tracking-wider block">Resolved Claims</span>
-                    <span id="dash-counter-resolved" class="text-2xl font-black text-emerald-600 block mt-1 font-mono">1</span>
+                    <span id="dash-counter-resolved" class="text-2xl font-black text-emerald-600 block mt-1 font-mono">0</span>
                 </div>
             </div>
 
@@ -396,7 +395,6 @@
         function activateMobileFormView(wId, bName, addr) {
             isScannedClientSession = true;
             
-            // Hide tracking UI but DO NOT remove them from page structure
             const navBar = document.getElementById('main-header');
             if(navBar) navBar.style.display = 'none';
             const footBar = document.getElementById('main-footer');
@@ -418,7 +416,6 @@
             document.getElementById('claim-address').value = addr ? decodeURIComponent(addr) : "Registered Location Base Address Setup";
         }
 
-        // REDIRECT PASSTHROUGH LINK CLICK FUNCTION (PORTAL INLINE LOAD)
         function triggerInlineFormLoad(wId, bName, addr) {
             activateMobileFormView(wId, bName, addr);
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -461,7 +458,6 @@
             }
         }
 
-        // COMPLAINT SUBMISSION CORE ENGINE
         function handleCustomerFormSubmission(event) {
             event.preventDefault();
             
@@ -506,16 +502,12 @@
                 phone: personPhone
             };
 
-            // Save to database
+            // Database Save
             complaintsResponseArray.unshift(payload);
             localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
-
-            // Sync Table
             renderDashboardTable();
 
-            // =========================================================================
-            // ACTIVE ROUTE 1: AUTOMATIC WHATSAPP ENGINE DISPATCH via UltraMsg
-            // =========================================================================
+            // WhatsApp Notification Stack Dispatch
             const txtMessageBody = `🚨 *NEW WARRANTY CLAIM LOGGED* 🚨\n\n*Ticket ID:* ${generatedId}\n*Warranty ID:* ${wId}\n*Client:* ${pName}\n*Address:* ${siteAddress}\n*Issue:* ${completeFaultText}\n*Contact:* ${personName} (${personPhone})\n*GPS:* ${gpsLoc}`;
             
             fetch(`https://api.ultramsg.com/instance${phoneIdCfg}/messages/chat`, {
@@ -524,12 +516,10 @@
                 body: `token=${tokenSecureId}&to=${adminPhoneReceiver}&body=${encodeURIComponent(txtMessageBody)}&priority=10`
             })
             .then(res => res.json())
-            .then(data => console.log("[WHATSAPP GATEWAY DISPATCH COMPLETE]:", data))
-            .catch(err => console.log("[WHATSAPP STACK QUEUED IN LOGS]:", err));
+            .then(data => console.log("WhatsApp Output Logs:", data))
+            .catch(err => console.log("WhatsApp API Failure Log:", err));
 
-            // =========================================================================
-            // ACTIVE ROUTE 2: BACKEND EMAIL GENERATION PIPELINE
-            // =========================================================================
+            // Email Pipeline Routing Execution
             const emailSubject = encodeURIComponent(`Warranty Ticket Registered: ${generatedId}`);
             const emailBody = encodeURIComponent(`Hello Team,\n\nA new claim has been registered:\n\nTicket ID: ${generatedId}\nWarranty ID: ${wId}\nClient Branch: ${pName}\nAddress: ${siteAddress}\nReported Issues: ${completeFaultText}\nLogged By: ${personName} (${personPhone})\nGPS Location Matrix: ${gpsLoc}`);
             
@@ -539,7 +529,6 @@
             document.body.appendChild(bgMailPing);
             setTimeout(() => bgMailPing.remove(), 1000);
 
-            // SHOW POPUP MODAL ON SCREEN
             document.getElementById('popup-complaint-id').innerText = generatedId;
             document.getElementById('success-popup-modal').classList.remove('hidden');
 
@@ -565,7 +554,6 @@
                 target.status = newStatus;
                 localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
                 renderDashboardTable();
-                alert(`✅ Ticket ${id} updated to "${newStatus}".`);
             }
         }
 
@@ -588,7 +576,7 @@
                         <div class="my-4 bg-gray-50 border border-borderGrey p-3 rounded-lg inline-block mx-auto">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(fullUrlLink)}" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
                             <button onclick="triggerInlineFormLoad('${item.warrantyId}', '${encodeURIComponent(item.projectName)}', '${encodeURIComponent(item.siteAddress)}')" class="text-[9px] text-brandOrange font-bold block mt-2 hover:underline">
-                                <i class="fa-solid fa-mobile-screen"></i> Scan to open Form on Mobile
+                                Scan to open Form on Mobile
                             </button>
                         </div>
                         <p class="text-[11px] text-textMuted font-sans truncate">${item.siteAddress}</p>
@@ -606,7 +594,7 @@
                         <div class="my-4 bg-gray-50 border border-borderGrey p-3 rounded-lg inline-block mx-auto">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(fullUrlLink)}" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
                             <button onclick="triggerInlineFormLoad('${item.id}', '${encodeURIComponent(item.client)}', '${encodeURIComponent(item.address)}')" class="text-[9px] text-brandOrange font-bold block mt-2 hover:underline">
-                                <i class="fa-solid fa-mobile-screen"></i> Scan to open Form on Mobile
+                                Scan to open Form on Mobile
                             </button>
                         </div>
                         <p class="text-[11px] text-textMuted font-sans truncate">${item.address}</p>
@@ -637,7 +625,6 @@
             } else {
                 btn.innerHTML = `<i class="fa-solid fa-pen-to-square mr-1"></i> EDIT CONFIG`;
                 btn.className = "bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg shadow-sm";
-                alert("✅ Credentials Config Successfully Saved and Locked!");
             }
         }
 
@@ -654,7 +641,6 @@
             document.getElementById('new-warranty-id').value = "";
             document.getElementById('new-branch-name').value = "";
             document.getElementById('new-site-address').value = "";
-            alert("✅ Custom Card Generated!");
         }
 
         function filterRegistryCards() {
@@ -766,7 +752,6 @@
                 localStorage.setItem('linea_warranty_db', JSON.stringify(masterWarrantyStorage));
                 renderWarrantyTable();
                 renderCustomQRCards();
-                alert(`✅ LOADED ${masterWarrantyStorage.length} RECORDS FROM CSV STACK.`);
             };
             reader.readAsText(file);
         }
