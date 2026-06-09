@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linea LED - Executive Premium Control Hub</title>
+    <title>Linea LED - Warranty Claim Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -27,7 +27,6 @@
         }
     </script>
     <style>
-        /* Professional Premium Scrollbar to Match Orange-Grey Theme */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -50,7 +49,7 @@
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
             <div>
                 <h1 class="text-xl font-black text-textDark tracking-wide flex items-center gap-2">
-                    <span class="text-brandOrange"><i class="fa-solid fa-bolt"></i> LINEA LED</span> GATEWAY CONTROL HUB
+                    <span class="text-brandOrange"><i class="fa-solid fa-bolt"></i> LINEA LED</span> WARRANTY CLAIM HUB
                 </h1>
                 <p class="text-[10px] text-textMuted tracking-wider font-semibold">REAL-TIME SIGNAGE SYSTEM AUTOMATION</p>
             </div>
@@ -69,9 +68,13 @@
         
         <div id="content-qr" class="tab-section block space-y-6">
             <div class="bg-cardBg p-5 rounded-xl border border-borderGrey shadow-sm space-y-4">
-                <div>
-                    <h2 class="text-sm font-bold text-textDark uppercase tracking-wider border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-qrcode text-brandOrange mr-1"></i> Custom QR Generator Tab</h2>
-                    <p class="text-xs text-textMuted mt-0.5">Yahan apna explicit variables daal kar manual dynamic QR card generate kijiye.</p>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                    <div>
+                        <h2 class="text-sm font-bold text-textDark uppercase tracking-wider border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-qrcode text-brandOrange mr-1"></i> QR Generator Tab</h2>
+                    </div>
+                    <div class="w-full sm:w-64">
+                        <input type="text" id="qr-registry-search" oninput="filterRegistryCards()" placeholder="Search Registry..." class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange shadow-inner">
+                    </div>
                 </div>
 
                 <div class="space-y-3 bg-gray-50 p-4 rounded-xl border border-borderGrey">
@@ -81,12 +84,12 @@
                             <input type="text" id="new-warranty-id" placeholder="e.g. TA4G5TJZ" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark font-mono uppercase focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-textMuted mb-1">Branch Name / Client *</label>
+                            <label class="block text-xs font-bold text-textMuted mb-1">Branch Code / Client Name *</label>
                             <input type="text" id="new-branch-name" placeholder="e.g. MUTHOOT FINANCE LTD." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-textMuted mb-1">Site Verified Full Location Address *</label>
+                        <label class="block text-xs font-bold text-textMuted mb-1">Address *</label>
                         <input type="text" id="new-site-address" placeholder="Enter full physical landmark details..." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
                     </div>
                     <button onclick="addManualQRCard()" class="w-full bg-brandOrange hover:bg-brandOrangeHover text-white text-sm font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 uppercase tracking-wide">
@@ -105,8 +108,7 @@
         <div id="content-complaint" class="tab-section hidden">
             <div class="bg-cardBg border border-borderGrey rounded-xl shadow-md overflow-hidden max-w-xl mx-auto">
                 <div class="bg-gray-50 px-6 py-4 border-b border-borderGrey text-center">
-                    <span class="text-brandOrange uppercase text-[10px] font-bold tracking-widest font-mono block">End-User Signage Fault Panel</span>
-                    <h2 class="text-base font-black text-textDark tracking-wide mt-0.5"><i class="fa-solid fa-screwdriver-wrench text-brandOrange"></i> Linea Signage Fault Registration</h2>
+                    <h2 class="text-base font-black text-textDark tracking-wide mt-0.5">Complaint Register</h2>
                 </div>
                 
                 <form onsubmit="handleCustomerFormSubmission(event)" class="p-6 space-y-4">
@@ -119,7 +121,7 @@
                                 <input type="text" id="claim-serial" readonly placeholder="Awaiting Valid Scan" class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-brandOrange font-mono font-bold cursor-not-allowed">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-textMuted mb-0.5">Project / Branch Identity</label>
+                                <label class="block text-[11px] font-bold text-textMuted mb-0.5">Branch Code / Client Name</label>
                                 <input type="text" id="claim-project-name" readonly placeholder="Awaiting Valid Scan" class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-textDark font-bold cursor-not-allowed">
                             </div>
                         </div>
@@ -129,58 +131,33 @@
                         </div>
                     </div>
 
-                    <div class="bg-gray-50 p-3 rounded-lg border border-borderGrey flex justify-between items-center">
-                        <div>
-                            <span class="block text-[10px] uppercase font-bold tracking-wider text-textMuted">Geospatial Node Telemetry *</span>
-                            <span id="gps-status-text" class="text-xs font-bold text-red-500 flex items-center gap-1 mt-0.5">
-                                <i class="fa-solid fa-circle-radiation text-brandOrange animate-pulse"></i> Location Verification Required
-                            </span>
-                            <input type="hidden" id="gps-verified-data" required>
-                        </div>
-                        <button type="button" onclick="lockGPSCoordinates()" class="bg-white hover:bg-gray-100 text-xs font-bold text-textDark px-3 py-2 rounded-md transition-all border border-gray-300 shadow-sm uppercase tracking-wider">
-                            Verify Site Location
-                        </button>
-                    </div>
+                    <input type="hidden" id="gps-verified-data" value="LAT_28.6441_LONG_77.2012">
 
                     <div class="bg-gray-50 p-4 rounded-xl border border-borderGrey space-y-3">
-                        <span class="block text-xs font-bold uppercase tracking-wider text-brandOrange"><i class="fa-solid fa-camera"></i> Upload Defective Product Photographs</span>
-                        <div class="space-y-3">
-                            <div>
-                                <label class="block text-[11px] font-bold text-textMuted mb-1 flex justify-between">
-                                    <span>Photo 1 (Mandatory Close-up View) *</span>
-                                    <span class="text-red-500 text-[9px] font-bold">REQUIRED</span>
-                                </label>
-                                <input type="file" id="photo-mandatory" required accept="image/*" class="w-full bg-white text-xs text-textMuted file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-brandOrange file:text-white hover:file:bg-brandOrangeHover cursor-pointer border border-gray-300 rounded-lg p-1 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-textMuted mb-1">Photo 2 (Optional Wide-angle View)</label>
-                                <input type="file" id="photo-extra1" accept="image/*" class="w-full bg-white text-xs text-textMuted file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-gray-500 file:text-white hover:file:bg-gray-600 cursor-pointer border border-gray-300 rounded-lg p-1 shadow-sm">
-                            </div>
-                            <div>
-                                <label class="block text-[11px] font-bold text-textMuted mb-1">Photo 3 (Optional Driver View)</label>
-                                <input type="file" id="photo-extra2" accept="image/*" class="w-full bg-white text-xs text-textMuted file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-gray-700 file:text-white hover:file:bg-gray-600 cursor-pointer border border-gray-300 rounded-lg p-1 shadow-sm">
-                            </div>
+                        <span class="block text-xs font-bold uppercase tracking-wider text-brandOrange"><i class="fa-solid fa-camera"></i> Upload Defective Product Photograph</span>
+                        <div>
+                            <input type="file" id="photo-mandatory" accept="image/*" class="w-full bg-white text-xs text-textMuted file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-brandOrange file:text-white hover:file:bg-brandOrangeHover cursor-pointer border border-gray-300 rounded-lg p-1 shadow-sm">
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-textMuted mb-1">Contact Person Name *</label>
                             <input type="text" id="claim-contact-name" required placeholder="Enter Name" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-textMuted mb-1">Active WhatsApp Mobile *</label>
+                            <label class="block text-xs font-bold text-textMuted mb-1">WhatsApp Number *</label>
                             <input type="tel" id="claim-contact-phone" required placeholder="10 Digit Number" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                         </div>
-                        <div>
-                            <label class="block text-xs font-bold text-textMuted mb-1">Customer Email</label>
-                            <input type="email" id="claim-contact-email" placeholder="customer@email.com" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
-                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-textMuted mb-1">Email ID</label>
+                        <input type="email" id="claim-contact-email" placeholder="customer@email.com" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-textMuted mb-2">Signage Technical Fault Diagnosis *</label>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
                             <label class="flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg border border-borderGrey cursor-pointer select-none text-[11px]">
                                 <input type="checkbox" name="faults" value="Complete LED Blackout" class="mt-0.5 accent-brandOrange" checked>
                                 <span class="text-textDark font-medium">Complete LED Blackout</span>
@@ -206,10 +183,18 @@
                                 <span class="text-textDark font-medium">Structural Damage</span>
                             </label>
                         </div>
+                        
+                        <div class="bg-gray-50 p-3 rounded-lg border border-borderGrey space-y-2">
+                            <label class="flex items-center gap-2 cursor-pointer select-none text-[11px] font-bold text-textDark">
+                                <input type="checkbox" id="fault-any-other" value="Any Other Issue" class="accent-brandOrange">
+                                <span>Any Other Issue</span>
+                            </label>
+                            <textarea id="fault-custom-description" placeholder="Specify clear details about the issue here..." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark h-16 resize-none focus:outline-none focus:border-brandOrange"></textarea>
+                        </div>
                     </div>
 
                     <button type="submit" class="w-full bg-brandOrange hover:bg-brandOrangeHover text-white text-sm font-bold uppercase tracking-wider py-3 px-4 rounded-lg shadow-md transition-all">
-                        Dispatch Secure Complaint Payload
+                        Submit
                     </button>
                 </form>
             </div>
@@ -218,8 +203,7 @@
         <div id="content-dashboard" class="tab-section hidden space-y-6">
             <div class="bg-cardBg p-5 rounded-xl border border-borderGrey shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h2 class="text-base font-bold text-textDark tracking-wide border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-desktop text-brandOrange mr-1"></i> Customer Responses & Operational Matrix</h2>
-                    <p class="text-xs text-textMuted mt-0.5">Real-time complaints management engine with automated validation markers.</p>
+                    <h2 class="text-base font-bold text-textDark tracking-wide border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-desktop text-brandOrange mr-1"></i> Live Dashboard</h2>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
                     <input type="text" id="dashboard-search" oninput="filterDashboardTable()" placeholder="Search logs..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-44">
@@ -237,35 +221,27 @@
 
             <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
                 <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm relative overflow-hidden">
-                    <span class="text-[10px] text-textMuted uppercase font-bold tracking-wider block">Total Dispatched Claims</span>
+                    <span class="text-[10px] text-textMuted uppercase font-bold tracking-wider block">Total Claims</span>
                     <span id="dash-counter-total" class="text-2xl font-black text-textDark block mt-1 font-mono">0</span>
-                    <span class="text-[9px] text-textMuted block mt-1">Fired from scanned incoming logs</span>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm relative overflow-hidden border-l-4 border-red-500">
-                    <span class="text-[10px] text-red-600 uppercase font-bold tracking-wider block">Pending / Open Faults</span>
+                    <span class="text-[10px] text-red-600 uppercase font-bold tracking-wider block">Pending Claims</span>
                     <span id="dash-counter-pending" class="text-2xl font-black text-red-600 block mt-1 font-mono">0</span>
-                    <span class="text-[9px] text-cyberAmber font-bold block mt-1"><i class="fa-solid fa-circle-notch animate-spin mr-0.5"></i> Awaiting Action</span>
                 </div>
                 <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm relative overflow-hidden border-l-4 border-emerald-500">
-                    <span class="text-[10px] text-emerald-600 uppercase font-bold tracking-wider block">Resolved Signages</span>
+                    <span class="text-[10px] text-emerald-600 uppercase font-bold tracking-wider block">Resolved Claims</span>
                     <span id="dash-counter-resolved" class="text-2xl font-black text-emerald-600 block mt-1 font-mono">0</span>
-                    <span class="text-[9px] text-cyberGreen font-bold block mt-1"><i class="fa-solid fa-check-double"></i> Service Complete</span>
                 </div>
             </div>
 
             <div class="bg-white rounded-xl border border-borderGrey overflow-hidden shadow-sm">
-                <div class="bg-gray-50 px-5 py-3 border-b border-borderGrey flex justify-between items-center">
-                    <h3 class="text-xs font-bold text-textDark uppercase tracking-wider"><i class="fa-solid fa-list text-brandOrange mr-1"></i> Real-time Complaint Response Ledger</h3>
-                    <span class="text-[9px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md border border-emerald-200 font-mono font-bold">Operational Node Live</span>
-                </div>
-
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse text-xs">
                         <thead>
                             <tr class="bg-gray-100 text-textMuted border-b border-borderGrey uppercase tracking-wider font-mono text-[10px]">
                                 <th class="p-3">Warranty ID</th>
                                 <th class="p-3">Client / Branch Name</th>
-                                <th class="p-3">Contact Reference</th>
+                                <th class="p-3">Site Address</th> <th class="p-3">Contact Reference</th>
                                 <th class="p-3">Verified Photo Attachment</th>
                                 <th class="p-3">Diagnostic Issue</th>
                                 <th class="p-3">System Match Status</th>
@@ -274,7 +250,7 @@
                         </thead>
                         <tbody id="dashboard-complaint-rows" class="divide-y divide-gray-200 font-medium text-textDark">
                             <tr id="empty-ledger-placeholder">
-                                <td colspan="7" class="p-10 text-center text-textMuted font-medium italic">
+                                <td colspan="8" class="p-10 text-center text-textMuted font-medium italic">
                                     <i class="fa-solid fa-receipt text-3xl block mb-2 text-gray-300"></i> Koi response abhi tak generate nahi hua hai. Warranty QR scan karke complaint submit kijiye!
                                 </td>
                             </tr>
@@ -289,12 +265,10 @@
                 <div class="border-b border-gray-200 pb-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
                         <h2 class="text-base font-bold text-textDark border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-file-invoice text-brandOrange mr-1"></i> Master Warranty Registrations Database</h2>
-                        <p class="text-xs text-textMuted mt-0.5">Yahan aapka master CSV spreadsheet data safe load hoga.</p>
                     </div>
                     
                     <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
                         <input type="text" id="warranty-search-input" oninput="filterWarrantyTable()" placeholder="Search ID, Client, Project..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-64">
-                        
                         <label class="flex items-center gap-1.5 bg-cyberGreen hover:bg-emerald-600 text-white text-xs font-bold py-1.5 px-3 rounded-lg cursor-pointer transition-all shadow-sm uppercase tracking-wider">
                             <i class="fa-solid fa-file-excel"></i> Upload Master CSV
                             <input type="file" id="warranty-csv-import" accept=".csv" onchange="parseWarrantyCSV(event)" class="hidden">
@@ -304,7 +278,7 @@
 
                 <div class="bg-white rounded-xl border border-borderGrey overflow-hidden">
                     <div class="p-3 bg-gray-50 border-b border-borderGrey flex justify-between items-center">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-textMuted">CSV Spreadsheet Framework Viewer (Horizontal Drag Active)</span>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-textMuted">Spreadsheet Records</span>
                         <span id="csv-count-badge" class="text-[10px] bg-orange-100 text-brandOrange font-mono px-2 py-0.5 rounded border border-orange-200 font-bold">0 Records Found</span>
                     </div>
                     
@@ -317,7 +291,7 @@
                                     <th class="p-3 border-r border-gray-200 w-[100px]">Total Warranty</th>
                                     <th class="p-3 border-r border-gray-200 w-[100px]">Start Date</th>
                                     <th class="p-3 border-r border-gray-200 w-[100px]">End Date</th>
-                                    <th class="p-3 border-r border-gray-200 w-[200px]">Project / Branch Name</th>
+                                    <th class="p-3 border-r border-gray-200 w-[200px]">Branch Code / Client Name</th>
                                     <th class="p-3 border-r border-gray-200 w-[130px]">Contact Number</th>
                                     <th class="p-3 border-r border-gray-200 w-[350px]">Site Address (Full)</th>
                                     <th class="p-3 border-r border-gray-200 w-[180px]">Product Name</th>
@@ -343,34 +317,21 @@
                     <span class="text-brandOrange text-xl"><i class="fa-solid fa-shield-halved"></i></span>
                     <div>
                         <h3 class="text-sm font-bold text-textDark uppercase tracking-wider">Central Admin Credentials Dashboard</h3>
-                        <p class="text-[11px] text-textMuted">Secure Identity & Gateway Parameters Locked Configuration</p>
                     </div>
                 </div>
                 
                 <div class="space-y-3 bg-gray-50 p-4 rounded-xl border border-borderGrey">
                     <div>
                         <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Admin Executive Name</label>
-                        <input type="text" id="admin-user-name" readonly value="Goutam Diggiwal" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark font-bold cursor-not-allowed shadow-sm">
+                        <input type="text" id="admin-user-name" readonly value="Sudhanshu Shekhar" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark font-bold cursor-not-allowed shadow-sm">
                     </div>
                     <div>
                         <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Registered Contact Number</label>
-                        <input type="text" id="admin-user-phone" readonly value="8698755608" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-cyberBlue font-mono font-bold cursor-not-allowed shadow-sm">
+                        <input type="text" id="admin-user-phone" readonly value="7004456935" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-cyberBlue font-mono font-bold cursor-not-allowed shadow-sm">
                     </div>
                     <div>
                         <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">System Registered Mail ID</label>
-                        <input type="text" id="admin-user-email" readonly value="mis@hi-sign.com" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark font-mono font-semibold cursor-not-allowed shadow-sm">
-                    </div>
-                    <div class="pt-2 border-t border-gray-200">
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Product ID Key</label>
-                        <input type="text" id="admin-product-id" readonly value="3a950ac6-e427-45db-848b-21ca1f292072" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-brandOrange font-mono font-bold cursor-not-allowed shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Token Secure ID</label>
-                        <input type="text" id="admin-token-id" readonly value="01c04aaa-7588-4989-b435-13a873c5e9b3" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textMuted font-mono cursor-not-allowed shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Phone Configuration ID</label>
-                        <input type="text" id="admin-phone-id" readonly value="58852" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-cyberGreen font-mono font-bold cursor-not-allowed shadow-sm">
+                        <input type="text" id="admin-user-email" readonly value="operations@linealed.com" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark font-mono font-semibold cursor-not-allowed shadow-sm">
                     </div>
                 </div>
             </div>
@@ -379,7 +340,7 @@
     </main>
 
     <footer id="main-footer" class="bg-white border-t border-borderGrey py-4 text-center text-xs text-textMuted shadow-inner">
-        <p>© 2026 <span class="text-brandOrange font-bold tracking-wider">LINEA LED SIGNAGE NETWORKS</span> | Deployed by <span class="text-textDark font-bold">Goutam Diggiwal</span></p>
+        <p>© 2026 <span class="text-brandOrange font-bold tracking-wider">LINEA LED SIGNAGE NETWORKS</span> | Deployed by <span class="text-textDark font-bold">Sudhanshu Shekhar</span></p>
     </footer>
 
     <script>
@@ -387,41 +348,31 @@
         let complaintsResponseArray = JSON.parse(localStorage.getItem('linea_complaints_db')) || [];
         let customQRCardsArray = JSON.parse(localStorage.getItem('linea_custom_qr_cards')) || [];
 
-        // CENTRAL SYNC CONFIG: Google Script URL is kept blank to bypass infinite processing loops.
         const LINEA_SYNC_CONFIG = {
             googleScriptUrl: "", 
-            adminName: "Goutam Diggiwal",
-            adminWhatsApp: "918698755608",
-            adminEmail: "mis@hi-sign.com"
+            adminName: "Sudhanshu Shekhar",
+            adminWhatsApp: "917004456935",
+            adminEmail: "operations@linealed.com"
         };
 
-        // Flag to tracking if user is currently inside customer layout simulation mode
         let isCustomerLayoutViewMode = false;
 
         window.onload = function() {
             renderWarrantyTable();
             renderDashboardTable();
             renderCustomQRCards();
-            pullCloudComplaintsIntoDashboard();
 
-            // FIXED PIPELINE: Handle real-time mobile scan parameter processing on application initialization
             const urlParams = new URLSearchParams(window.location.search);
             const wId = urlParams.get('wId');
             const bName = urlParams.get('bName');
             const addr = urlParams.get('addr');
 
             if (wId && bName && addr) {
-                // Set the layout view toggle flag true
                 isCustomerLayoutViewMode = true;
-
-                // Completely hide navigation interface panel & footer container completely
                 document.getElementById('main-header').style.display = 'none';
                 document.getElementById('main-footer').style.display = 'none';
-
-                // If deep link payload parameters exist, cleanly inject into user view layout context area instantly
                 triggerCustomerScanPassthrough(wId, bName, addr);
                 
-                // Clear URL parameters from browser address bar smoothly without refreshing the page
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.replaceState({path: cleanUrl}, '', cleanUrl);
             }
@@ -440,7 +391,6 @@
             document.getElementById('content-' + tabName).classList.add('block');
             document.getElementById('tab-' + tabName).classList.add('bg-brandOrange', 'text-white', 'shadow-sm');
             document.getElementById('tab-' + tabName).classList.remove('text-textMuted');
-            if (tabName === 'dashboard') pullCloudComplaintsIntoDashboard();
         }
 
         function parseWarrantyCSV(event) {
@@ -498,7 +448,7 @@
                     <td class="p-3 text-textMuted border-r border-gray-200">${item.endDate}</td>
                     <td class="p-3 text-cyberBlue font-bold border-r border-gray-200 whitespace-normal font-sans">${item.projectName}</td>
                     <td class="p-3 text-textDark border-r border-gray-200">${item.contactNo}</td>
-                    <td class="p-3 text-textMuted border-r border-gray-200 whitespace-normal font-sans tracking-wide select-all" title="Click to copy full address">${item.siteAddress}</td>
+                    <td class="p-3 text-textMuted border-r border-gray-200 whitespace-normal font-sans tracking-wide select-all">${item.siteAddress}</td>
                     <td class="p-3 text-cyberGreen border-r border-gray-200 whitespace-normal font-sans">${item.productName}</td>
                     <td class="p-3 text-textMuted whitespace-normal font-sans">${item.productType}</td>
                 </tr>
@@ -547,24 +497,19 @@
             const gridContainer = document.getElementById('qr-cards-grid');
             document.getElementById('total-nodes-badge').innerText = `${customQRCardsArray.length + 1} Cards Active`;
 
-            // FIXED SYSTEM ENG: Capture base URL correctly without appending multi-query string blocks
             const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-
             const staticStaticUrl = `${baseUrl}?wId=TA4G5TJZ&bName=${encodeURIComponent('MUTHOOT FINANCE LTD.')}&addr=${encodeURIComponent('Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')}`;
 
             let staticHtml = `
-                <div class="bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
+                <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
                     <div>
                         <h4 class="font-bold text-textDark text-sm tracking-wide font-sans">MUTHOOT FINANCE LTD.</h4>
                         <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">Warranty ID: TA4G5TJZ</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerSimulatedScanClick('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')">
+                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerCustomerScanPassthrough('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(staticStaticUrl)}" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
                             <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
                         </div>
                         <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar</p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-gray-100">
-                        <button onclick="triggerSimulatedScanClick('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
                     </div>
                 </div>
             `;
@@ -572,18 +517,15 @@
             let dynamicHtml = customQRCardsArray.map(item => {
                 const qrPayloadUrl = `${baseUrl}?wId=${encodeURIComponent(item.id)}&bName=${encodeURIComponent(item.client)}&addr=${encodeURIComponent(item.address)}`;
                 return `
-                <div class="bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
+                <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
                     <div>
                         <h4 class="font-bold text-textDark text-sm tracking-wide font-sans">${item.client}</h4>
                         <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">Warranty ID: ${item.id}</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerSimulatedScanClick('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
+                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerCustomerScanPassthrough('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrPayloadUrl)}" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
                             <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
                         </div>
                         <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">${item.address}</p>
-                    </div>
-                    <div class="mt-4 pt-3 border-t border-gray-100">
-                        <button onclick="triggerSimulatedScanClick('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')" class="w-full bg-gray-100 hover:bg-brandOrange hover:text-white text-[11px] font-bold py-2 rounded-lg text-textMuted transition-all border border-borderGrey">Simulate Customer Mobile Scan</button>
                     </div>
                 </div>
             `}).join('');
@@ -591,49 +533,25 @@
             gridContainer.innerHTML = staticHtml + dynamicHtml;
         }
 
-        /* HELPER FOR ADMIN PANEL SIMULATION BUTTONS TO CLEANLY MOCK SCANS */
-        function triggerSimulatedScanClick(wId, bName, siteAddr) {
-            triggerCustomerScanPassthrough(wId, bName, siteAddr);
+        function filterRegistryCards() {
+            const query = document.getElementById('qr-registry-search').value.toLowerCase().trim();
+            const cards = document.getElementsByClassName('qr-registry-node');
+            for (let card of cards) {
+                if (card.innerText.toLowerCase().includes(query)) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            }
         }
 
-        /* FIXED SCAN DATA PASSTHROUGH SIMULATION INJECTOR PIPELINE */
         function triggerCustomerScanPassthrough(wId, bName, siteAddr) {
             changeTab('complaint');
-            
             document.getElementById('claim-serial').value = wId;
             document.getElementById('claim-project-name').value = bName;
             document.getElementById('claim-address').value = siteAddr;
-
-            // Fulfill user credentials automatically to bypass empty fields safely
-            document.getElementById('claim-contact-name').value = "Goutam Diggiwal";
-            document.getElementById('claim-contact-phone').value = "8698755608";
-            const emailInput = document.getElementById('claim-contact-email');
-            if (emailInput) emailInput.value = "";
-            
-            const mockFileSlot = document.getElementById('photo-mandatory');
-            if (mockFileSlot) {
-                mockFileSlot.required = false; 
-            }
-            
-            const gpsStatus = document.getElementById('gps-status-text');
-            const gpsDataStore = document.getElementById('gps-verified-data');
-            if (gpsStatus && gpsDataStore) {
-                gpsStatus.className = "text-xs font-bold text-cyberGreen flex items-center gap-1 mt-0.5";
-                gpsStatus.innerHTML = `<i class="fa-solid fa-circle-check"></i> SCAN TELEMETRY LOCKED ON SITE`;
-                gpsDataStore.value = "LAT_28.6441_LONG_77.2012";
-            }
-        }
-
-        function lockGPSCoordinates() {
-            const gpsStatus = document.getElementById('gps-status-text');
-            const gpsDataStore = document.getElementById('gps-verified-data');
-            gpsStatus.innerHTML = `<i class="fa-solid fa-satellite-dish animate-spin text-brandOrange"></i> Security Locking...`;
-            
-            setTimeout(() => {
-                gpsStatus.className = "text-xs font-bold text-cyberGreen flex items-center gap-1 mt-0.5";
-                gpsStatus.innerHTML = `<i class="fa-solid fa-circle-check"></i> GEOSPATIAL NODE SECURED`;
-                gpsDataStore.value = "LAT_28.6441_LONG_77.2012";
-            }, 600);
+            document.getElementById('claim-contact-name').value = "Sudhanshu Shekhar";
+            document.getElementById('claim-contact-phone').value = "7004456935";
         }
 
         function fileToDataUrl(file) {
@@ -655,13 +573,9 @@
                 .replace(/'/g, "&#039;");
         }
 
-        // FIXED SUBMISSION ENGINE WITH AUTO-GPS BYPASS
         async function handleCustomerFormSubmission(event) {
             event.preventDefault();
-
-            // Auto fallback coordinates injected to avoid "DISPATCH DENIED" lock
             const gpsLock = document.getElementById('gps-verified-data').value || "LAT_28.6441_LONG_77.2012";
-
             const wId = document.getElementById('claim-serial').value.trim().toUpperCase();
             const pName = document.getElementById('claim-project-name').value;
             const siteAddress = document.getElementById('claim-address').value;
@@ -673,29 +587,35 @@
 
             let faultsSelected = [];
             document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
+            
+            if (document.getElementById('fault-any-other').checked) {
+                const customText = document.getElementById('fault-custom-description').value.trim();
+                faultsSelected.push(customText ? `Other: ${customText}` : 'Any Other Issue');
+            }
+            
             const activeFaultText = faultsSelected.join(', ') || 'Diagnostic Evaluation';
 
+            // Check if input ID exists in Warranty DB, else explicitly declare label status
             const matchFoundInDatabase = masterWarrantyStorage.some(record => record.warrantyId.toUpperCase() === wId);
-            const matchStatusLabel = matchFoundInDatabase ? "Verified Node Match" : "Manual Network Registration";
+            const matchStatusLabel = (wId.length > 0 && matchFoundInDatabase) ? "Verified Node Match" : "NO WARRANTY CLAIM";
             const uniqueComplaintId = "COMP-" + Date.now();
 
             const complaintPayload = {
                 id: uniqueComplaintId,
-                warrantyId: wId,
-                client: pName,
-                siteAddress: siteAddress,
+                warrantyId: wId || 'UNLISTED_ID',
+                client: pName || 'Manual Registration',
+                siteAddress: siteAddress || 'Direct Form Input Location',
                 contactName: personName,
                 contactPhone: personPhone,
                 contactEmail: personEmail,
                 contact: `${personName} (${personPhone})`,
-                imageName: fileCheck ? fileCheck.name : "scanned_proof.jpg",
+                imageName: fileCheck ? fileCheck.name : "attached_proof.jpg",
                 photoDataUrl: photoDataUrl,
                 photoUrl: photoDataUrl,
                 issue: activeFaultText,
                 gps: gpsLock,
                 matchStatus: matchStatusLabel,
                 status: "Open Fault",
-                source: isCustomerLayoutViewMode ? "Customer Mobile QR Scan" : "Portal Direct Form",
                 createdAt: new Date().toISOString()
             };
 
@@ -707,24 +627,10 @@
             complaintPayload.photoDataUrl = photoDataUrl;
             complaintPayload.photoUrl = photoDataUrl || complaintPayload.photoUrl;
             upsertComplaintLocally(complaintPayload);
-            const cloudStatus = await saveComplaintToCentralDashboard(complaintPayload);
             
-            alert(`🚀 COMPLAINT LODGED SECURELY:\nComplaint ID: ${uniqueComplaintId}\nCross-Check Validation: ${matchStatusLabel}\n${cloudStatus}\nWhatsApp links and customer mail draft opened.`);
-
+            alert(`🚀 COMPLAINT PROCESSED SUCCESSFULLY:\nID: ${uniqueComplaintId}\nStatus verification context: ${matchStatusLabel}`);
             event.target.reset();
-            document.getElementById('photo-mandatory').required = true; 
-            document.getElementById('gps-verified-data').value = "";
-            document.getElementById('gps-status-text').className = "text-xs font-semibold text-red-500 flex items-center gap-1 mt-0.5";
-            document.getElementById('gps-status-text').innerHTML = `<i class="fa-solid fa-circle-radiation text-brandOrange animate-pulse"></i> Location Verification Required`;
-            
-            if (isCustomerLayoutViewMode) {
-                document.getElementById('claim-serial').value = "";
-                document.getElementById('claim-project-name').value = "";
-                document.getElementById('claim-address').value = "";
-                changeTab('complaint');
-            } else {
-                changeTab('dashboard');
-            }
+            changeTab('dashboard');
         }
 
         function upsertComplaintLocally(item) {
@@ -745,115 +651,24 @@
             const status = item.status || 'Open Fault';
 
             if (audience === 'customer') {
-                if (eventType === 'status') {
-                    return `Hello Dear ${customerName},\n\nYour Linea LED complaint (${id}) status has been updated to: ${status}.\n\nOur engineering team is reviewing the case and will connect with you if any further details are required.\n\nThank you,\nLinea LED Support Team`;
-                }
-
-                return `Hello Dear ${customerName},\n\nYour Linea LED complaint has been registered successfully.\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nIssue: ${issue}\n\nOur engineering team is looking into it and will connect with you shortly.\n\nThank you,\nLinea LED Support Team`;
+                return `Hello Dear ${customerName},\n\nYour complaint status is now: ${status}.\nComplaint ID: ${id}\nWarranty Context: ${item.matchStatus}\n\nThank you,\nLinea LED Team`;
             }
-
-            if (eventType === 'status') {
-                return `LINEA LED STATUS UPDATE\n\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nClient/Branch: ${item.client || 'N/A'}\nCustomer: ${item.contact || customerName}\nUpdated Status: ${status}\n\nPlease continue the required service follow-up.\n\nLinea LED Portal`;
-            }
-
-            return `LINEA LED NEW COMPLAINT ALERT\n\nComplaint ID: ${id}\nWarranty ID: ${item.warrantyId || 'N/A'}\nClient/Branch: ${item.client || 'N/A'}\nCustomer: ${item.contact || customerName}\nIssue: ${issue}\nStatus: ${status}\nPhoto: ${item.photoUrl || item.imageName || 'N/A'}\n\nA new customer complaint has been registered. Please assign engineering follow-up.\n\nLinea LED Portal`;
-        }
-        function formatIndiaWhatsAppNumber(phone) {
-            const digits = String(phone || '').replace(/\D/g, '');
-            if (digits.length === 10) return '91' + digits;
-            return digits;
+            return `LINEA LED ALERT\n\nID: ${id}\nBranch/Client: ${item.client}\nAddress: ${item.siteAddress}\nIssue: ${issue}\nStatus Flag: ${item.matchStatus}`;
         }
 
-        // UPDATED DISPATCH LOGIC FOR NEW ID MANAGEMENT
         function openWhatsAppNotificationLinks(item, eventType) {
             const adminMessage = buildComplaintMessage(item, eventType, 'admin');
-            const adminUrl = `https://wa.me/${LINEA_SYNC_CONFIG.adminWhatsApp}?text=${encodeURIComponent(adminMessage)}`;
-            window.open(adminUrl, '_blank');
-
-            const customerNumber = formatIndiaWhatsAppNumber(item.contactPhone);
-            if (customerNumber) {
-                const customerMessage = buildComplaintMessage(item, eventType, 'customer');
-                const customerUrl = `https://wa.me/${customerNumber}?text=${encodeURIComponent(customerMessage)}`;
-                setTimeout(() => window.open(customerUrl, '_blank'), 300);
-            }
+            window.open(`https://wa.me/${LINEA_SYNC_CONFIG.adminWhatsApp}?text=${encodeURIComponent(adminMessage)}`, '_blank');
         }
+
         function openCustomerMailDraft(item, eventType) {
-            const subject = eventType === 'status'
-                ? `Linea LED Complaint Status Updated - ${item.id}`
-                : `Linea LED Complaint Registered - ${item.id}`;
+            const subject = `Linea LED Update - ${item.id}`;
             const body = buildComplaintMessage(item, eventType, 'customer');
             setTimeout(() => {
-                const toList = [LINEA_SYNC_CONFIG.adminEmail, item.contactEmail].filter(Boolean).join(',');
-                window.location.href = `mailto:${toList}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            }, 1400);
+                window.location.href = `mailto:${LINEA_SYNC_CONFIG.adminEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            }, 1000);
         }
 
-        async function saveComplaintToCentralDashboard(item) {
-            if (!LINEA_SYNC_CONFIG.googleScriptUrl) {
-                return "Saved in local browser node database stream flawlessly.";
-            }
-
-            try {
-                await fetch(LINEA_SYNC_CONFIG.googleScriptUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'create', complaint: item })
-                });
-                return "Central dashboard sync request sent.";
-            } catch (error) {
-                console.error('Central complaint sync failed:', error);
-                return "Central sync skipped smoothly.";
-            }
-        }
-
-        async function sendStatusUpdateToCentralDashboard(item) {
-            if (!LINEA_SYNC_CONFIG.googleScriptUrl) return;
-
-            try {
-                await fetch(LINEA_SYNC_CONFIG.googleScriptUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'status', complaint: item })
-                });
-            } catch (error) {
-                console.error('Central status sync failed:', error);
-            }
-        }
-
-        function pullCloudComplaintsIntoDashboard() {
-            if (!LINEA_SYNC_CONFIG.googleScriptUrl) return;
-
-            const callbackName = 'lineaCloudCallback_' + Date.now();
-            const script = document.createElement('script');
-
-            window[callbackName] = function(cloudComplaints) {
-                try {
-                    if (!Array.isArray(cloudComplaints)) return;
-                    const merged = [...cloudComplaints, ...complaintsResponseArray];
-                    const uniqueById = new Map();
-                    merged.forEach(item => {
-                        if (item && item.id) uniqueById.set(item.id, item);
-                    });
-                    complaintsResponseArray = Array.from(uniqueById.values()).sort((a, b) => String(b.createdAt || '').localeCompare(String(a.createdAt || '')));
-                    localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
-                    renderDashboardTable();
-                } finally {
-                    delete window[callbackName];
-                    script.remove();
-                }
-            };
-
-            script.onerror = function() {
-                console.error('Central dashboard load failed');
-                delete window[callbackName];
-                script.remove();
-            };
-
-            script.src = LINEA_SYNC_CONFIG.googleScriptUrl + '?action=list&callback=' + callbackName + '&ts=' + Date.now();
-            document.body.appendChild(script);
-        }
         function renderDashboardTable() {
             const tableBody = document.getElementById('dashboard-complaint-rows');
             if (!tableBody) return;
@@ -863,7 +678,7 @@
             let resolvedCount = 0;
 
             if (complaintsResponseArray.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="7" class="p-10 text-center text-textMuted font-medium italic">Koi response abhi tak generate nahi hua hai. Warranty QR scan karke complaint submit kijiye!</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="8" class="p-10 text-center text-textMuted font-medium italic">Koi response abhi tak generate nahi hua hai. Warranty QR scan karke complaint submit kijiye!</td></tr>`;
                 updateCounters(0, 0, 0);
                 return;
             }
@@ -876,18 +691,18 @@
                 if (item.status === "In Progress") badgeClass = "bg-amber-100 text-amber-800 border border-amber-200";
                 if (item.status === "Resolved") badgeClass = "bg-emerald-100 text-emerald-800 border border-emerald-200";
 
-                const matchBadgeClass = String(item.matchStatus || "").includes("Verified") ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-amber-700 bg-amber-50 border-amber-200";
+                const matchBadgeClass = String(item.matchStatus).includes("Verified") ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-red-700 bg-red-50 border-red-200";
 
                 const rowHtml = `
                     <tr class="hover:bg-gray-50 border-b border-gray-200 text-textDark font-medium">
                         <td class="p-3 font-mono text-brandOrange font-bold">${item.warrantyId}</td>
                         <td class="p-3 font-bold font-sans">${item.client}</td>
-                        <td class="p-3 text-textMuted font-sans">${item.contact}</td>
-                        <td class="p-3 text-cyberBlue font-mono font-semibold">${item.photoUrl ? `<a href="${item.photoUrl}" target="_blank" rel="noopener" class="hover:underline"><i class="fa-solid fa-paperclip text-xs mr-1"></i>${escapeHtml(item.imageName)}</a>` : `<span><i class="fa-solid fa-paperclip text-xs mr-1"></i>${escapeHtml(item.imageName)}</span>`}</td>
-                        <td class="p-3"><span class="${badgeClass} px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider font-sans">${item.issue}</span></td>
+                        <td class="p-3 text-textDark font-sans whitespace-normal">${item.siteAddress}</td> <td class="p-3 text-textMuted font-sans">${item.contact}</td>
+                        <td class="p-3 text-cyberBlue font-mono font-semibold">${escapeHtml(item.imageName)}</td>
+                        <td class="p-3"><span class="bg-gray-100 text-textDark px-2 py-0.5 rounded text-[10px] font-bold uppercase">${item.issue}</span></td>
                         <td class="p-3"><span class="border px-2 py-0.5 rounded text-[10px] font-bold font-mono ${matchBadgeClass}">${item.matchStatus}</span></td>
                         <td class="p-3 text-center">
-                            <select onchange="updateRowStatus(${index}, this.value)" class="bg-white border border-gray-300 text-xs rounded-lg text-textDark px-2 py-1 font-bold focus:outline-none focus:border-brandOrange cursor-pointer shadow-sm">
+                            <select onchange="updateRowStatus(${index}, this.value)" class="bg-white border border-gray-300 text-xs rounded-lg text-textDark px-2 py-1 font-bold focus:outline-none cursor-pointer">
                                 <option value="Open Fault" ${item.status === 'Open Fault' ? 'selected' : ''}>Open Fault</option>
                                 <option value="In Progress" ${item.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
                                 <option value="Resolved" ${item.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
@@ -901,16 +716,11 @@
             updateCounters(complaintsResponseArray.length, pendingCount, resolvedCount);
         }
 
-        async function updateRowStatus(index, newStatus) {
+        function updateRowStatus(index, newStatus) {
             complaintsResponseArray[index].status = newStatus;
-            complaintsResponseArray[index].updatedAt = new Date().toISOString();
             localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
             renderDashboardTable();
-
-            await sendStatusUpdateToCentralDashboard(complaintsResponseArray[index]);
             openWhatsAppNotificationLinks(complaintsResponseArray[index], 'status');
-            openCustomerMailDraft(complaintsResponseArray[index], 'status');
-            alert(`Status updated to ${newStatus}. Customer/admin notification links opened.`);
         }
 
         function updateCounters(total, pending, resolved) {
@@ -928,37 +738,24 @@
                 if (row.cells.length < 2) continue;
                 const txtId = row.cells[0].innerText.toLowerCase();
                 const txtClient = row.cells[1].innerText.toLowerCase();
-                const selectEl = row.cells[6].getElementsByTagName('select')[0];
-                const currentStatus = selectEl ? selectEl.value : '';
+                const currentStatus = row.cells[7].getElementsByTagName('select')[0]?.value || '';
 
                 const matchesSearch = txtId.includes(query) || txtClient.includes(query);
                 const matchesStatus = (statusFilter === "ALL") || (currentStatus === statusFilter);
 
-                if (matchesSearch && matchesStatus) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
+                row.style.display = (matchesSearch && matchesStatus) ? "" : "none";
             }
         }
 
         function exportDashboardData() {
-            if (complaintsResponseArray.length === 0) {
-                alert("Export Fail: System database payload log stream is empty!");
-                return;
-            }
-
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Warranty ID,Client Name,Contact Reference,Defect Photo,Issue Reported,Cross-Check Status,Operational Status\n";
-
+            let csvContent = "data:text/csv;charset=utf-8,Warranty ID,Client,Address,Contact,Issue,Match Status,Status\n";
             complaintsResponseArray.forEach(item => {
-                csvContent += `"${item.warrantyId}","${item.client}","${item.contact}","${item.imageName}","${item.issue}","${item.matchStatus}","${item.status}"\n`;
+                csvContent += `"${item.warrantyId}","${item.client}","${item.siteAddress}","${item.contact}","${item.issue}","${item.matchStatus}","${item.status}"\n`;
             });
-
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "Linea_LED_Operational_Report_2026.csv");
+            link.setAttribute("download", "Linea_LED_Report.csv");
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
