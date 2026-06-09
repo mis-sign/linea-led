@@ -389,32 +389,40 @@
             const addr = urlParams.get('addr');
 
             if (wId || bName || addr) {
-                isScannedClientSession = true;
-                
-                const navBar = document.getElementById('main-header');
-                if(navBar) navBar.remove();
-                const footBar = document.getElementById('main-footer');
-                if(footBar) footBar.remove();
-                
-                // Hide or isolate other tabs but don't completely destroy them yet to avoid submission crash
-                document.querySelectorAll('.tab-section').forEach(s => {
-                    if(s.id !== 'content-complaint') {
-                        s.style.display = 'none';
-                        s.classList.add('hidden');
-                    }
-                });
-
-                const targetSection = document.getElementById('content-complaint');
-                if(targetSection) {
-                    targetSection.classList.remove('hidden');
-                    targetSection.style.display = 'block';
-                }
-
-                document.getElementById('claim-serial').value = wId ? decodeURIComponent(wId) : "DIRECT-NODE";
-                document.getElementById('claim-project-name').value = bName ? decodeURIComponent(bName) : "LINEA CLIENT BRANCH";
-                document.getElementById('claim-address').value = addr ? decodeURIComponent(addr) : "Registered Location Base Address Setup";
+                activateMobileFormView(wId, bName, addr);
             }
         };
+
+        function activateMobileFormView(wId, bName, addr) {
+            isScannedClientSession = true;
+            
+            // Hide tracking UI but DO NOT remove them from page structure
+            const navBar = document.getElementById('main-header');
+            if(navBar) navBar.style.display = 'none';
+            const footBar = document.getElementById('main-footer');
+            if(footBar) footBar.style.display = 'none';
+            
+            document.querySelectorAll('.tab-section').forEach(s => {
+                s.style.display = 'none';
+                s.classList.add('hidden');
+            });
+
+            const targetSection = document.getElementById('content-complaint');
+            if(targetSection) {
+                targetSection.classList.remove('hidden');
+                targetSection.style.display = 'block';
+            }
+
+            document.getElementById('claim-serial').value = wId ? decodeURIComponent(wId) : "DIRECT-NODE";
+            document.getElementById('claim-project-name').value = bName ? decodeURIComponent(bName) : "LINEA CLIENT BRANCH";
+            document.getElementById('claim-address').value = addr ? decodeURIComponent(addr) : "Registered Location Base Address Setup";
+        }
+
+        // REDIRECT PASSTHROUGH LINK CLICK FUNCTION (PORTAL INLINE LOAD)
+        function triggerInlineFormLoad(wId, bName, addr) {
+            activateMobileFormView(wId, bName, addr);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
         function triggerGPSLocationFetch() {
             if (navigator.geolocation) {
@@ -498,15 +506,15 @@
                 phone: personPhone
             };
 
-            // Save to local storage database immediately
+            // Save to database
             complaintsResponseArray.unshift(payload);
             localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
 
-            // CRASH SHIELD: Refresh dashboard row elements ONLY if the layout exists in page DOM
+            // Sync Table
             renderDashboardTable();
 
             // =========================================================================
-            // ACTIVE ROUTE 1: AUTOMATIC WHATSAPP ENGINE DISPATCH via UltraMsg / Maytapi API
+            // ACTIVE ROUTE 1: AUTOMATIC WHATSAPP ENGINE DISPATCH via UltraMsg
             // =========================================================================
             const txtMessageBody = `🚨 *NEW WARRANTY CLAIM LOGGED* 🚨\n\n*Ticket ID:* ${generatedId}\n*Warranty ID:* ${wId}\n*Client:* ${pName}\n*Address:* ${siteAddress}\n*Issue:* ${completeFaultText}\n*Contact:* ${personName} (${personPhone})\n*GPS:* ${gpsLoc}`;
             
@@ -538,12 +546,11 @@
             event.target.reset();
         }
 
-        // LOCK AND DESTROY VIEWS SO CUSTOMER CANNOT ACCESS DASHBOARD
         function closeSuccessModalAndFreeze() {
             document.getElementById('success-popup-modal').classList.add('hidden');
             
             const formContainer = document.getElementById('content-complaint');
-            if(formContainer) formContainer.remove();
+            if(formContainer) formContainer.style.display = 'none';
             
             const thankYouScreen = document.getElementById('client-thankyou-screen');
             if(thankYouScreen) {
@@ -558,8 +565,7 @@
                 target.status = newStatus;
                 localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
                 renderDashboardTable();
-                console.log(`[STATUS ALERT DISPATCH] Ticket ${id} set to ${newStatus}`);
-                alert(`✅ Ticket ${id} updated to "${newStatus}". Notification queued for customer.`);
+                alert(`✅ Ticket ${id} updated to "${newStatus}".`);
             }
         }
 
@@ -581,7 +587,9 @@
                         <p class="text-[11px] text-brandOrange font-mono font-bold mt-0.5">WARRANTY ID: ${item.warrantyId}</p>
                         <div class="my-4 bg-gray-50 border border-borderGrey p-3 rounded-lg inline-block mx-auto">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(fullUrlLink)}" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
-                            <span class="text-[9px] text-brandOrange font-bold block mt-2"><i class="fa-solid fa-mobile-screen"></i> Scan to open Form on Mobile</span>
+                            <button onclick="triggerInlineFormLoad('${item.warrantyId}', '${encodeURIComponent(item.projectName)}', '${encodeURIComponent(item.siteAddress)}')" class="text-[9px] text-brandOrange font-bold block mt-2 hover:underline">
+                                <i class="fa-solid fa-mobile-screen"></i> Scan to open Form on Mobile
+                            </button>
                         </div>
                         <p class="text-[11px] text-textMuted font-sans truncate">${item.siteAddress}</p>
                     </div>
@@ -597,7 +605,9 @@
                         <p class="text-[11px] text-brandOrange font-mono font-bold mt-0.5">WARRANTY ID: ${item.id}</p>
                         <div class="my-4 bg-gray-50 border border-borderGrey p-3 rounded-lg inline-block mx-auto">
                             <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(fullUrlLink)}" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
-                            <span class="text-[9px] text-brandOrange font-bold block mt-2"><i class="fa-solid fa-mobile-screen"></i> Scan to open Form on Mobile</span>
+                            <button onclick="triggerInlineFormLoad('${item.id}', '${encodeURIComponent(item.client)}', '${encodeURIComponent(item.address)}')" class="text-[9px] text-brandOrange font-bold block mt-2 hover:underline">
+                                <i class="fa-solid fa-mobile-screen"></i> Scan to open Form on Mobile
+                            </button>
                         </div>
                         <p class="text-[11px] text-textMuted font-sans truncate">${item.address}</p>
                     </div>
@@ -658,7 +668,6 @@
         function renderDashboardTable() {
             const tableBody = document.getElementById('dashboard-complaint-rows');
             
-            // CRASH PROTECTOR FOR MOBILE QR MODE
             if (document.getElementById('dash-counter-total')) {
                 document.getElementById('dash-counter-total').innerText = complaintsResponseArray.length;
             }
@@ -669,7 +678,7 @@
                 document.getElementById('dash-counter-resolved').innerText = complaintsResponseArray.filter(c => c.status === "Resolved").length;
             }
 
-            if (!tableBody) return; // Breaks out safely if element is hidden/not rendered
+            if (!tableBody) return; 
 
             tableBody.innerHTML = complaintsResponseArray.map(item => `
                 <tr class="hover:bg-gray-50 border-b border-gray-200">
