@@ -362,7 +362,7 @@
             renderDashboardTable();
             renderCustomQRCards();
 
-            // FIX: Checking URL for Scanner parameter mappings to trigger complaint system automatically
+            // FIXED: Scan mapping captures parameters and enforces immediate focus onto Section 2 Form
             const urlParams = new URLSearchParams(window.location.search);
             const wId = urlParams.get('wId');
             const bName = urlParams.get('bName');
@@ -370,7 +370,7 @@
 
             if (wId && bName && addr) {
                 simulateScan(wId, bName, addr);
-                // Clean browser URL safely without hard reload
+                // Cleans browser parameters seamlessly
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.replaceState({path: cleanUrl}, '', cleanUrl);
             }
@@ -438,7 +438,7 @@
 
             const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
             
-            // TARGET FOR SCAN ACTION: Enforces routing straight to complaint inputs
+            // TARGET FOR SCAN ACTION: Enforces parameters onto url string so scanner redirects directly into complaint inputs
             const staticPayloadUrl = `${baseUrl}?wId=TA4G5TJZ&bName=${encodeURIComponent('MUTHOOT FINANCE LTD.')}&addr=${encodeURIComponent('Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk Showroom, Hajipur, Dist - Vaishali, Bihar')}`;
 
             let staticHtml = `
@@ -482,6 +482,7 @@
         }
 
         function simulateScan(wId, bName, addr) {
+            // Immediately route layout straight to section 2 form
             changeTab('complaint');
             document.getElementById('claim-serial').value = wId;
             document.getElementById('claim-project-name').value = bName;
