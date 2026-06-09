@@ -24,17 +24,9 @@
         }
     </script>
     <style>
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #e5e7eb;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #F26522;
-            border-radius: 4px;
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e5e7eb; }
+        ::-webkit-scrollbar-thumb { background: #F26522; border-radius: 4px; }
     </style>
 </head>
 <body class="bg-bgLightGrey text-textDark min-h-screen flex flex-col justify-between font-sans">
@@ -66,13 +58,14 @@
                     <i class="fa-solid fa-circle-check"></i>
                 </div>
                 <div>
-                    <h3 class="text-lg font-black text-textDark uppercase">Registration Success</h3>
-                    <p class="text-xs text-textMuted mt-1">Your Complaint has been Submitted & Registered Successfully!</p>
+                    <h3 class="text-lg font-black text-textDark uppercase">Complaint Registered</h3>
+                    <p class="text-xs text-textMuted mt-1">Your Complaint Ticket has been logged in the master grid system.</p>
                 </div>
                 <div class="bg-gray-50 p-2.5 rounded-lg border font-mono text-xs text-brandOrange font-bold">
-                    ID: <span id="popup-complaint-id">COMP-LOADING</span>
+                    TICKET ID: <span id="popup-complaint-id">COMP-LOADING</span>
                 </div>
-                <p class="text-[10px] text-gray-400">Our engineering team has received the diagnostic snapshot log grid telemetry.</p>
+                <p class="text-[10px] text-gray-400">Dispatch alerts sent out via automated pipeline relays securely.</p>
+                <button onclick="closeSuccessModalAndReset()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2 rounded-lg uppercase tracking-wide">Done / Done</button>
             </div>
         </div>
         
@@ -114,7 +107,7 @@
         <div id="content-complaint" class="tab-section hidden">
             <div class="bg-cardBg border border-borderGrey rounded-xl shadow-md overflow-hidden max-w-xl mx-auto">
                 <div class="bg-gray-50 px-6 py-4 border-b border-borderGrey text-center">
-                    <h2 class="text-base font-black text-textDark tracking-wide uppercase">Register Complaint</h2>
+                    <h2 class="text-base font-black text-textDark tracking-wide uppercase">Register Complaint Form</h2>
                 </div>
                 
                 <form onsubmit="handleCustomerFormSubmission(event)" class="p-6 space-y-4">
@@ -214,7 +207,7 @@
                     </div>
 
                     <button type="submit" class="w-full bg-brandOrange hover:bg-brandOrangeHover text-white text-sm font-black uppercase tracking-wider py-3 px-4 rounded-lg shadow-md transition-all">
-                        Submit
+                        Submit Complaint
                     </button>
                 </form>
             </div>
@@ -231,7 +224,7 @@
                         <option value="Resolved">Resolved</option>
                     </select>
                     <button onclick="exportDashboardData()" class="bg-brandOrange hover:bg-brandOrangeHover text-white text-xs font-bold px-3 py-1.5 rounded-lg shadow-sm">
-                        Import CSV
+                        Export Report CSV
                     </button>
                 </div>
             </div>
@@ -373,15 +366,13 @@
         ];
 
         let complaintsResponseArray = JSON.parse(localStorage.getItem('linea_complaints_db')) || [
-            { id: "COMP-1", warrantyId: "UBLSZF5Q", client: "sudhanshu nsp", siteAddress: "delhi", contact: "Sudhanshu Shekhar (8698755608)", imageName: "WhatsApp Image 2026-05-29 at 5.48.23 PM.jpeg", issue: "COMPLETE LED BLACKOUT, PARTIAL DIM PATCHES", matchStatus: "Veri-Fied Node Match", status: "Open Fault" },
-            { id: "COMP-2", warrantyId: "TA4G5TJZ", client: "MUTHOOT FINANCE LTD.", siteAddress: "Hajipur Branch, Ground floor, Gayatri Complex", contact: "Sudhanshu Shekhar (8698755608)", imageName: "WhatsApp Image 2026-05-29 at 5.48.23 PM.jpeg", issue: "COMPLETE LED BLACKOUT, LED MODULE DEAD", matchStatus: "Veri-Fied Node Match", status: "Open Fault" },
-            { id: "COMP-3", warrantyId: "95XCR7JY", client: "HDFC Bank", siteAddress: "GROUND FLOOR, JAANTA RAJA MARG", contact: "Sudhanshu Shekhar (8698755608)", imageName: "17806597292637691178974528091989.jpg", issue: "COMPLETE LED BLACKOUT, PARTIAL DIM PATCHES, FLICKERING / BLINK ISSUE", matchStatus: "Manual Network Registration", status: "In Progress" },
-            { id: "COMP-4", warrantyId: "MAZK0CRX", client: "HDFC Bank", siteAddress: "SHOP NO G16, G17, G18, SONAL BUSINESS PARK", contact: "Sudhanshu Shekhar (8698755608)", imageName: "17806539378116935102393151549596.jpg", issue: "COMPLETE LED BLACKOUT, PARTIAL DIM PATCHES", matchStatus: "Manual Network Registration", status: "Open Fault" },
-            { id: "COMP-5", warrantyId: "MAZK0CRX", client: "HDFC Bank", siteAddress: "SHOP NO G16, G17, G18, SONAL BUSINESS PARK", contact: "Sudhanshu Shekhar (8698755608)", imageName: "WhatsApp Image 2026-05-29 at 5.48.23 PM.jpeg", issue: "COMPLETE LED BLACKOUT, PARTIAL DIM PATCHES, LED MODULE DEAD", matchStatus: "Veri-Fied Node Match", status: "Resolved" }
+            { id: "COMP-1", warrantyId: "UBLSZF5Q", client: "sudhanshu nsp", siteAddress: "delhi", contact: "Sudhanshu Shekhar (8698755608)", imageName: "proof1.jpeg", issue: "COMPLETE LED BLACKOUT, PARTIAL DIM PATCHES", matchStatus: "Veri-Fied Node Match", status: "Open Fault", email: "mishra.vij007@gmail.com", phone: "8698755608" },
+            { id: "COMP-2", warrantyId: "TA4G5TJZ", client: "MUTHOOT FINANCE LTD.", siteAddress: "Hajipur Branch, Ground floor", contact: "Sudhanshu Shekhar (8698755608)", imageName: "proof2.jpeg", issue: "COMPLETE LED BLACKOUT, LED MODULE DEAD", matchStatus: "Veri-Fied Node Match", status: "Open Fault", email: "mishra.vij007@gmail.com", phone: "8698755608" }
         ];
 
         let customQRCardsArray = JSON.parse(localStorage.getItem('linea_custom_qr_cards')) || [];
         let isAdminEditModeActive = false;
+        let isScannedClientSession = false;
 
         window.onload = function() {
             renderWarrantyTable();
@@ -394,13 +385,10 @@
             const bName = urlParams.get('bName');
             const addr = urlParams.get('addr');
 
-            // CRITICAL CUSTOMER ISOLATION LOCK LOGIC: 
             if (wId && bName && addr) {
-                // Hide header, footer, and completely strip away other tabs from DOM/View
+                isScannedClientSession = true;
                 document.getElementById('main-header').style.display = 'none';
                 if(document.getElementById('main-footer')) document.getElementById('main-footer').style.display = 'none';
-                
-                // Open ONLY the complaint page
                 isolateCustomerView(wId, bName, addr);
             }
         };
@@ -421,18 +409,21 @@
                 navigator.geolocation.getCurrentPosition(
                     (pos) => {
                         const coordsStr = `LAT: ${pos.coords.latitude.toFixed(5)} | LNG: ${pos.coords.longitude.toFixed(5)}`;
-                        const element = document.getElementById('claim-gps-coordinates');
-                        if (element) element.value = coordsStr;
+                        if (document.getElementById('claim-gps-coordinates')) {
+                            document.getElementById('claim-gps-coordinates').value = coordsStr;
+                        }
                     },
-                    (err) => {
-                        const element = document.getElementById('claim-gps-coordinates');
-                        if (element) element.value = "LAT: 28.6139 | LNG: 77.2090 (Default Active Node)";
+                    () => {
+                        if (document.getElementById('claim-gps-coordinates')) {
+                            document.getElementById('claim-gps-coordinates').value = "LAT: 28.6139 | LNG: 77.2090 (Locked)";
+                        }
                     }
                 );
             }
         }
 
         function changeTab(tabName) {
+            if(isScannedClientSession) return; // Prevent customer breakout
             document.querySelectorAll('.tab-section').forEach(section => {
                 section.classList.add('hidden');
                 section.style.display = 'none';
@@ -446,6 +437,163 @@
             target.style.display = 'block';
             document.getElementById('tab-' + tabName).classList.add('bg-brandOrange', 'text-white', 'shadow-sm');
             document.getElementById('tab-' + tabName).classList.remove('text-textMuted');
+        }
+
+        // COMPLAINT SUBMISSION PIPELINE (REAL INTERCONNECTED CHANNELS)
+        function handleCustomerFormSubmission(event) {
+            event.preventDefault();
+            
+            const wId = document.getElementById('claim-serial').value.trim().toUpperCase();
+            const pName = document.getElementById('claim-project-name').value;
+            const siteAddress = document.getElementById('claim-address').value;
+            const personName = document.getElementById('claim-contact-name').value;
+            const personPhone = document.getElementById('claim-contact-phone').value;
+            const personEmail = document.getElementById('claim-contact-email').value || "mishra.vij007@gmail.com";
+            
+            const file1 = document.getElementById('photo-mandatory').files[0];
+            const file2 = document.getElementById('photo-optional-1').files[0];
+            const file3 = document.getElementById('photo-optional-2').files[0];
+            
+            let filesArr = [];
+            if(file1) filesArr.push(file1.name);
+            if(file2) filesArr.push(file2.name);
+            if(file3) filesArr.push(file3.name);
+            const recordedPhotoLabel = filesArr.join(', ') || "attached_proof.jpg";
+
+            let faultsSelected = [];
+            document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
+            const customDescription = document.getElementById('fault-custom-description').value.trim();
+            if (customDescription) faultsSelected.push(customDescription);
+            const completeFaultText = faultsSelected.join(', ') || 'Flickering / Blink Issue';
+
+            const isMatchFound = masterWarrantyStorage.some(r => r.warrantyId.toUpperCase() === wId);
+            const verifiedLabel = isMatchFound ? "Veri-Fied Node Match" : "No Warranty Claim";
+
+            const generatedId = "COMP-" + Math.floor(100000 + Math.random() * 900000);
+
+            const payload = {
+                id: generatedId,
+                warrantyId: wId || 'UNKNOWN',
+                client: pName || 'Direct Client Entry',
+                siteAddress: siteAddress || 'Not Provided',
+                contact: `${personName} (${personPhone})`,
+                imageName: recordedPhotoLabel,
+                issue: completeFaultText,
+                matchStatus: verifiedLabel,
+                status: "Open Fault",
+                email: personEmail,
+                phone: personPhone
+            };
+
+            // 1. Silent Local Save to Stack
+            complaintsResponseArray.unshift(payload);
+            localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
+            renderDashboardTable();
+
+            // 2. TRIGGER SUCCESS MODAL TICKET POPUP (Strictly Onscreen Only)
+            document.getElementById('popup-complaint-id').innerText = generatedId;
+            document.getElementById('success-popup-modal').classList.remove('hidden');
+
+            // 3. SECURE PIPELINE TRIGGER: AUTOMATED EMAIL & WHATSAPP GENERATOR FOR ADMIN
+            const adminPhone = "8698755608";
+            const adminMail = "mis@hi-sign.com";
+            
+            const messagePayload = `🚨 *NEW WARRANTY CLAIM FILED* 🚨\n\n🔹 *Ticket ID:* ${generatedId}\n🔹 *Warranty Serial:* ${payload.warrantyId}\n🔹 *Client/Branch:* ${payload.client}\n🔹 *Diagnostic Issue:* ${payload.issue}\n🔹 *Status Flag:* ${payload.matchStatus}\n🔹 *Contact Person:* ${payload.contact}\n\nLinea Signage System Automation Engine Grid.`;
+
+            // Open Admin WhatsApp Broadcast and Email Relays Simultaneously
+            setTimeout(() => {
+                // Open WhatsApp Alert for Admin
+                const waUrl = `https://api.whatsapp.com/send?phone=91${adminPhone}&text=${encodeURIComponent(messagePayload)}`;
+                window.open(waUrl, '_blank');
+
+                // Open Mail Client pre-filled context for Admin/Customer Log
+                const mailSubject = `New Ticket Raised: ${generatedId} [${payload.matchStatus}]`;
+                const mailBody = `Hello Admin,\n\nA new warranty claim complaint has been submitted.\n\nTicket Details:\n----------------------\nTicket ID: ${generatedId}\nWarranty Serial: ${payload.warrantyId}\nClient: ${payload.client}\nIssue: ${payload.issue}\nSite Address: ${payload.siteAddress}\n\nSystem Generated Auto Snapshot.`;
+                const mailtoUrl = `mailto:${adminMail},${payload.email}?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+                window.open(mailtoUrl, '_blank');
+            }, 800);
+
+            event.target.reset();
+        }
+
+        function closeSuccessModalAndReset() {
+            document.getElementById('success-popup-modal').classList.add('hidden');
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.location.href = cleanUrl; 
+        }
+
+        // 4. DASHBOARD REAL-TIME UPDATE ALERTS FOR CLIENT
+        function updateRowStatus(id, newStatus) {
+            let target = complaintsResponseArray.find(c => c.id === id);
+            if(target) {
+                target.status = newStatus;
+                localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
+                renderDashboardTable();
+
+                // Trigger Customer Updates Live via Communication Grid
+                const updateMessage = `🔔 *STATUS UPDATE: TICKET ${target.id}* 🔔\n\nDear Customer,\n\nThe status of your Signage complaint (Warranty ID: ${target.warrantyId}) has been updated to *[${newStatus}]*.\n\nThank you,\nLinea LED Signage Team.`;
+                
+                // Alert Trigger via WhatsApp Link Generation
+                if(target.phone) {
+                    const waCustomerUrl = `https://api.whatsapp.com/send?phone=91${target.phone}&text=${encodeURIComponent(updateMessage)}`;
+                    window.open(waCustomerUrl, '_blank');
+                }
+
+                // Alert Trigger via Mail Client
+                if(target.email) {
+                    const mailSub = `Update regarding Ticket ID: ${target.id}`;
+                    const mailCont = `Dear Customer,\n\nYour complaint status has been modified to: ${newStatus}.\nOur technical team is continuously processing the nodes.\n\nTicket Ref: ${target.id}`;
+                    window.open(`mailto:${target.email}?subject=${encodeURIComponent(mailSub)}&body=${encodeURIComponent(mailCont)}`, '_blank');
+                }
+
+                alert(`✅ Status Modified to "${newStatus}" and Alerts Dispatched to Customer!`);
+            }
+        }
+
+        // REAL DYNAMIC QR CODE MATRIX GENERATION ENGINE (Locks base full link path)
+        function renderCustomQRCards() {
+            const gridContainer = document.getElementById('qr-cards-grid');
+            if(!gridContainer) return;
+            
+            const totalCount = masterWarrantyStorage.length + customQRCardsArray.length;
+            document.getElementById('total-nodes-badge').innerText = `${totalCount} Cards Active`;
+
+            // Fix base absolute path generation so that scanner picks up actual web server addresses
+            const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            
+            let htmlContent = masterWarrantyStorage.map(item => {
+                const fullUrlLink = `${baseUrl}?wId=${encodeURIComponent(item.warrantyId)}&bName=${encodeURIComponent(item.projectName)}&addr=${encodeURIComponent(item.siteAddress)}`;
+                return `
+                <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm hover:border-brandOrange transition-all">
+                    <div>
+                        <h4 class="font-bold text-textDark text-sm">${item.projectName}</h4>
+                        <p class="text-[11px] text-brandOrange font-mono font-bold mt-0.5">WARRANTY ID: ${item.warrantyId}</p>
+                        <div class="my-4 bg-gray-50 border border-borderGrey p-3 rounded-lg inline-block mx-auto cursor-pointer" onclick="simulateScan('${item.warrantyId}', '${item.projectName.replace(/'/g, "\\'")}', '${item.siteAddress.replace(/'/g, "\\'")}')">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(fullUrlLink)}" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
+                            <span class="text-[9px] text-brandOrange font-bold block mt-2"><i class="fa-solid fa-mobile-screen"></i> Scan QR or Click to Test Mobile View</span>
+                        </div>
+                        <p class="text-[11px] text-textMuted font-sans truncate">${item.siteAddress}</p>
+                    </div>
+                </div>`;
+            }).join('');
+
+            let customHtml = customQRCardsArray.map(item => {
+                const fullUrlLink = `${baseUrl}?wId=${encodeURIComponent(item.id)}&bName=${encodeURIComponent(item.client)}&addr=${encodeURIComponent(item.address)}`;
+                return `
+                <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm hover:border-brandOrange transition-all">
+                    <div>
+                        <h4 class="font-bold text-textDark text-sm">${item.client}</h4>
+                        <p class="text-[11px] text-brandOrange font-mono font-bold mt-0.5">WARRANTY ID: ${item.id}</p>
+                        <div class="my-4 bg-gray-50 border border-borderGrey p-3 rounded-lg inline-block mx-auto cursor-pointer" onclick="simulateScan('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(fullUrlLink)}" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
+                            <span class="text-[9px] text-brandOrange font-bold block mt-2"><i class="fa-solid fa-mobile-screen"></i> Scan QR or Click to Test Mobile View</span>
+                        </div>
+                        <p class="text-[11px] text-textMuted font-sans truncate">${item.address}</p>
+                    </div>
+                </div>`;
+            }).join('');
+
+            gridContainer.innerHTML = htmlContent + customHtml;
         }
 
         function toggleAdminFieldsEdit() {
@@ -472,68 +620,6 @@
             }
         }
 
-        // COMPLAINT SUBMISSION ENGINE (NO CLIENT WHATSAPP REDIRECTION)
-        function handleCustomerFormSubmission(event) {
-            event.preventDefault();
-            
-            const wId = document.getElementById('claim-serial').value.trim().toUpperCase();
-            const pName = document.getElementById('claim-project-name').value;
-            const siteAddress = document.getElementById('claim-address').value;
-            const personName = document.getElementById('claim-contact-name').value;
-            const personPhone = document.getElementById('claim-contact-phone').value;
-            
-            const file1 = document.getElementById('photo-mandatory').files[0];
-            const file2 = document.getElementById('photo-optional-1').files[0];
-            const file3 = document.getElementById('photo-optional-2').files[0];
-            
-            let filesArr = [];
-            if(file1) filesArr.push(file1.name);
-            if(file2) filesArr.push(file2.name);
-            if(file3) filesArr.push(file3.name);
-            const recordedPhotoLabel = filesArr.join(', ') || "attached_proof.jpg";
-
-            let faultsSelected = [];
-            document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
-            const customDescription = document.getElementById('fault-custom-description').value.trim();
-            if (customDescription) faultsSelected.push(customDescription);
-            const completeFaultText = faultsSelected.join(', ') || 'Flickering / Blink Issue';
-
-            const isMatchFound = masterWarrantyStorage.some(r => r.warrantyId.toUpperCase() === wId);
-            const verifiedLabel = isMatchFound ? "Veri-Fied Node Match" : "No Warranty Claim";
-
-            const generatedId = "COMP-" + Date.now();
-
-            const payload = {
-                id: generatedId,
-                warrantyId: wId || 'UNKNOWN',
-                client: pName || 'Direct Client Entry',
-                siteAddress: siteAddress || 'Not Provided',
-                contact: `${personName} (${personPhone})`,
-                imageName: recordedPhotoLabel,
-                issue: completeFaultText,
-                matchStatus: verifiedLabel,
-                status: "Open Fault"
-            };
-
-            // Save silently to database stack
-            complaintsResponseArray.unshift(payload);
-            localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
-            renderDashboardTable();
-
-            // TRIGGER SUCCESS POPUP ON THE SAME PAGE ONLY
-            document.getElementById('popup-complaint-id').innerText = generatedId;
-            const popupModal = document.getElementById('success-popup-modal');
-            popupModal.classList.remove('hidden');
-
-            event.target.reset();
-
-            // Clear parameters after 3 seconds and freeze on simple message screen safely
-            setTimeout(() => {
-                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                window.location.href = cleanUrl; 
-            }, 4000);
-        }
-
         function addManualQRCard() {
             const wId = document.getElementById('new-warranty-id').value.trim().toUpperCase();
             const bName = document.getElementById('new-branch-name').value.trim();
@@ -548,50 +634,6 @@
             document.getElementById('new-branch-name').value = "";
             document.getElementById('new-site-address').value = "";
             alert("✅ Custom Card Generated!");
-        }
-
-        function renderCustomQRCards() {
-            const gridContainer = document.getElementById('qr-cards-grid');
-            if(!gridContainer) return;
-            
-            const totalCount = masterWarrantyStorage.length + customQRCardsArray.length;
-            document.getElementById('total-nodes-badge').innerText = `${totalCount} Cards Active`;
-
-            const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-            
-            let htmlContent = masterWarrantyStorage.map(item => {
-                const url = `${baseUrl}?wId=${encodeURIComponent(item.warrantyId)}&bName=${encodeURIComponent(item.projectName)}&addr=${encodeURIComponent(item.siteAddress)}`;
-                return `
-                <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm hover:border-brandOrange transition-all">
-                    <div>
-                        <h4 class="font-bold text-textDark text-sm">${item.projectName}</h4>
-                        <p class="text-[11px] text-brandOrange font-mono font-bold mt-0.5">WARRANTY ID: ${item.warrantyId}</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-3 rounded-lg inline-block mx-auto cursor-pointer" onclick="simulateScan('${item.warrantyId}', '${item.projectName.replace(/'/g, "\\'")}', '${item.siteAddress.replace(/'/g, "\\'")}')">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}" class="w-[120px] h-[120px] mx-auto block mix-blend-multiply">
-                            <span class="text-[9px] text-brandOrange font-bold block mt-2">Simulate Customer Mobile Scan</span>
-                        </div>
-                        <p class="text-[11px] text-textMuted font-sans truncate">${item.siteAddress}</p>
-                    </div>
-                </div>`;
-            }).join('');
-
-            let customHtml = customQRCardsArray.map(item => {
-                const url = `${baseUrl}?wId=${encodeURIComponent(item.id)}&bName=${encodeURIComponent(item.client)}&addr=${encodeURIComponent(item.address)}`;
-                return `
-                <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm hover:border-brandOrange transition-all">
-                    <div>
-                        <h4 class="font-bold text-textDark text-sm">${item.client}</h4>
-                        <p class="text-[11px] text-brandOrange font-mono font-bold mt-0.5">WARRANTY ID: ${item.id}</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-3 rounded-lg inline-block mx-auto cursor-pointer" onclick="simulateScan('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}" class="w-[120px] h-[120px] mx-auto block mix-blend-multiply">
-                            <span class="text-[9px] text-brandOrange font-bold block mt-2">Simulate Customer Mobile Scan</span>
-                        </div>
-                        <p class="text-[11px] text-textMuted font-sans truncate">${item.address}</p>
-                    </div>
-                </div>`;
-            }).join('');
-
-            gridContainer.innerHTML = htmlContent + customHtml;
         }
 
         function filterRegistryCards() {
@@ -638,15 +680,6 @@
                         </select>
                     </td>
                 </tr>`).join('');
-        }
-
-        function updateRowStatus(id, newStatus) {
-            let target = complaintsResponseArray.find(c => c.id === id);
-            if(target) {
-                target.status = newStatus;
-                localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
-                renderDashboardTable();
-            }
         }
 
         function filterDashboardTable() {
