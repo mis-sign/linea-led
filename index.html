@@ -502,12 +502,12 @@
                 phone: personPhone
             };
 
-            // Database Save
+            // 1. Live Dashboard Storage Connection Fix
             complaintsResponseArray.unshift(payload);
             localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
             renderDashboardTable();
 
-            // WhatsApp Notification Stack Dispatch
+            // 2. UltraMsg WhatsApp API Direct Payload Routing Fix
             const txtMessageBody = `🚨 *NEW WARRANTY CLAIM LOGGED* 🚨\n\n*Ticket ID:* ${generatedId}\n*Warranty ID:* ${wId}\n*Client:* ${pName}\n*Address:* ${siteAddress}\n*Issue:* ${completeFaultText}\n*Contact:* ${personName} (${personPhone})\n*GPS:* ${gpsLoc}`;
             
             fetch(`https://api.ultramsg.com/instance${phoneIdCfg}/messages/chat`, {
@@ -519,15 +519,11 @@
             .then(data => console.log("WhatsApp Output Logs:", data))
             .catch(err => console.log("WhatsApp API Failure Log:", err));
 
-            // Email Pipeline Routing Execution
+            // 3. Email Secure Redirect Pipeline Execution
             const emailSubject = encodeURIComponent(`Warranty Ticket Registered: ${generatedId}`);
             const emailBody = encodeURIComponent(`Hello Team,\n\nA new claim has been registered:\n\nTicket ID: ${generatedId}\nWarranty ID: ${wId}\nClient Branch: ${pName}\nAddress: ${siteAddress}\nReported Issues: ${completeFaultText}\nLogged By: ${personName} (${personPhone})\nGPS Location Matrix: ${gpsLoc}`);
             
-            const bgMailPing = document.createElement('img');
-            bgMailPing.src = `mailto:${adminEmailReceiver},${personEmail}?subject=${emailSubject}&body=${emailBody}`;
-            bgMailPing.style.display = 'none';
-            document.body.appendChild(bgMailPing);
-            setTimeout(() => bgMailPing.remove(), 1000);
+            window.location.href = `mailto:${adminEmailReceiver},${personEmail}?subject=${emailSubject}&body=${emailBody}`;
 
             document.getElementById('popup-complaint-id').innerText = generatedId;
             document.getElementById('success-popup-modal').classList.remove('hidden');
@@ -574,7 +570,7 @@
                         <h4 class="font-bold text-textDark text-sm">${item.projectName}</h4>
                         <p class="text-[11px] text-brandOrange font-mono font-bold mt-0.5">WARRANTY ID: ${item.warrantyId}</p>
                         <div class="my-4 bg-gray-50 border border-borderGrey p-3 rounded-lg inline-block mx-auto">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(fullUrlLink)}" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(fullUrlLink)}" class="w-[140px] h-[140px] mx-auto block mt-2 hover:underline">
                             <button onclick="triggerInlineFormLoad('${item.warrantyId}', '${encodeURIComponent(item.projectName)}', '${encodeURIComponent(item.siteAddress)}')" class="text-[9px] text-brandOrange font-bold block mt-2 hover:underline">
                                 Scan to open Form on Mobile
                             </button>
