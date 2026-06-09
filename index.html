@@ -396,8 +396,12 @@
                 const footBar = document.getElementById('main-footer');
                 if(footBar) footBar.remove();
                 
+                // Hide or isolate other tabs but don't completely destroy them yet to avoid submission crash
                 document.querySelectorAll('.tab-section').forEach(s => {
-                    if(s.id !== 'content-complaint') s.remove();
+                    if(s.id !== 'content-complaint') {
+                        s.style.display = 'none';
+                        s.classList.add('hidden');
+                    }
                 });
 
                 const targetSection = document.getElementById('content-complaint');
@@ -449,7 +453,7 @@
             }
         }
 
-        // COMPLAINT SUBMISSION - SILENT CLOUD TELEMETRY GATEWAY ACTIVE
+        // COMPLAINT SUBMISSION CORE ENGINE
         function handleCustomerFormSubmission(event) {
             event.preventDefault();
             
@@ -494,9 +498,12 @@
                 phone: personPhone
             };
 
-            // Save to local registry stack
+            // Save to local storage database immediately
             complaintsResponseArray.unshift(payload);
             localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
+
+            // CRASH SHIELD: Refresh dashboard row elements ONLY if the layout exists in page DOM
+            renderDashboardTable();
 
             // =========================================================================
             // ACTIVE ROUTE 1: AUTOMATIC WHATSAPP ENGINE DISPATCH via UltraMsg / Maytapi API
@@ -513,13 +520,11 @@
             .catch(err => console.log("[WHATSAPP STACK QUEUED IN LOGS]:", err));
 
             // =========================================================================
-            // ACTIVE ROUTE 2: SILENT LIVE BACKEND EMAIL GENERATION VIA SECURE MAIL PIPELINE
+            // ACTIVE ROUTE 2: BACKEND EMAIL GENERATION PIPELINE
             // =========================================================================
-            // Auto sending dispatch email logs back-to-back to Admin console & Customer 
             const emailSubject = encodeURIComponent(`Warranty Ticket Registered: ${generatedId}`);
-            const emailBody = encodeURIComponent(`Hello Team,\n\nA new claim has been registered:\n\nTicket ID: ${generatedId}\nWarranty ID: ${wId}\nClient Branch: ${pName}\nAddress: ${siteAddress}\nReported Issues: ${completeFaultText}\nLogged By: ${personName} (${personPhone})\nGPS Location Matrix: ${gpsLoc}\n\nThis is an automated background log dispatch.`);
+            const emailBody = encodeURIComponent(`Hello Team,\n\nA new claim has been registered:\n\nTicket ID: ${generatedId}\nWarranty ID: ${wId}\nClient Branch: ${pName}\nAddress: ${siteAddress}\nReported Issues: ${completeFaultText}\nLogged By: ${personName} (${personPhone})\nGPS Location Matrix: ${gpsLoc}`);
             
-            // Background mail request ping hook sync 
             const bgMailPing = document.createElement('img');
             bgMailPing.src = `mailto:${adminEmailReceiver},${personEmail}?subject=${emailSubject}&body=${emailBody}`;
             bgMailPing.style.display = 'none';
@@ -541,8 +546,10 @@
             if(formContainer) formContainer.remove();
             
             const thankYouScreen = document.getElementById('client-thankyou-screen');
-            thankYouScreen.classList.remove('hidden');
-            thankYouScreen.style.display = 'block';
+            if(thankYouScreen) {
+                thankYouScreen.classList.remove('hidden');
+                thankYouScreen.style.display = 'block';
+            }
         }
 
         function updateRowStatus(id, newStatus) {
@@ -650,11 +657,19 @@
 
         function renderDashboardTable() {
             const tableBody = document.getElementById('dashboard-complaint-rows');
-            if (!tableBody) return;
+            
+            // CRASH PROTECTOR FOR MOBILE QR MODE
+            if (document.getElementById('dash-counter-total')) {
+                document.getElementById('dash-counter-total').innerText = complaintsResponseArray.length;
+            }
+            if (document.getElementById('dash-counter-pending')) {
+                document.getElementById('dash-counter-pending').innerText = complaintsResponseArray.filter(c => c.status === "Open Fault" || c.status === "In Progress").length;
+            }
+            if (document.getElementById('dash-counter-resolved')) {
+                document.getElementById('dash-counter-resolved').innerText = complaintsResponseArray.filter(c => c.status === "Resolved").length;
+            }
 
-            document.getElementById('dash-counter-total').innerText = complaintsResponseArray.length;
-            document.getElementById('dash-counter-pending').innerText = complaintsResponseArray.filter(c => c.status === "Open Fault" || c.status === "In Progress").length;
-            document.getElementById('dash-counter-resolved').innerText = complaintsResponseArray.filter(c => c.status === "Resolved").length;
+            if (!tableBody) return; // Breaks out safely if element is hidden/not rendered
 
             tableBody.innerHTML = complaintsResponseArray.map(item => `
                 <tr class="hover:bg-gray-50 border-b border-gray-200">
@@ -682,7 +697,8 @@
         function filterDashboardTable() {
             const query = document.getElementById('dashboard-search').value.toLowerCase();
             const statusFilter = document.getElementById('dashboard-status-filter').value;
-            const rows = document.getElementById('dashboard-complaint-rows').getElementsByTagName('tr');
+            const rows = document.getElementById('dashboard-complaint-rows')?.getElementsByTagName('tr');
+            if(!rows) return;
 
             for (let row of rows) {
                 if (row.cells.length < 2) continue;
@@ -766,7 +782,8 @@
 
         function filterWarrantyTable() {
             const query = document.getElementById('warranty-search-input').value.toLowerCase().trim();
-            const rows = document.getElementById('csv-data-viewer-rows').getElementsByTagName('tr');
+            const rows = document.getElementById('csv-data-viewer-rows')?.getElementsByTagName('tr');
+            if(!rows) return;
 
             for (let row of rows) {
                 if (row.cells.length < 2) continue;
