@@ -54,7 +54,7 @@
                 <p class="text-[10px] text-textMuted tracking-wider font-semibold">REAL-TIME SIGNAGE SYSTEM AUTOMATION</p>
             </div>
             
-            <div class="flex flex-wrap gap-1.5 bg-gray-100 p-1.5 rounded-xl border border-borderGrey">
+            <div id="navigation-tabs-bar" class="flex flex-wrap gap-1.5 bg-gray-100 p-1.5 rounded-xl border border-borderGrey">
                 <button onclick="changeTab('qr')" id="tab-qr" class="bg-brandOrange text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-all shadow-sm"><i class="fa-solid fa-qrcode mr-1"></i> 1. QR Generator</button>
                 <button onclick="changeTab('complaint')" id="tab-complaint" class="text-textMuted hover:bg-gray-200 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> 2. Register Complaint</button>
                 <button onclick="changeTab('dashboard')" id="tab-dashboard" class="text-textMuted hover:bg-gray-200 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"><i class="fa-solid fa-chart-line mr-1"></i> 3. Live Dashboard</button>
@@ -132,8 +132,19 @@
 
                     <div class="bg-gray-50 p-4 rounded-xl border border-borderGrey space-y-3">
                         <span class="block text-xs font-bold uppercase tracking-wider text-brandOrange"><i class="fa-solid fa-camera"></i> Upload Defective Product Photographs</span>
-                        <div>
-                            <input type="file" id="photo-mandatory" accept="image/*" required class="w-full bg-white text-xs text-textMuted border border-gray-300 rounded-lg p-1 shadow-sm">
+                        <div class="space-y-2">
+                            <div>
+                                <label class="block text-[10px] text-textMuted font-bold mb-0.5">Photo 1 (Mandatory) *</label>
+                                <input type="file" id="photo-mandatory" accept="image/*" required class="w-full bg-white text-xs text-textDark border border-gray-300 rounded-lg p-1 shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-textMuted font-medium mb-0.5">Photo 2 (Optional)</label>
+                                <input type="file" id="photo-optional-1" accept="image/*" class="w-full bg-white text-xs text-textMuted border border-gray-300 rounded-lg p-1 shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-textMuted font-medium mb-0.5">Photo 3 (Optional)</label>
+                                <input type="file" id="photo-optional-2" accept="image/*" class="w-full bg-white text-xs text-textMuted border border-gray-300 rounded-lg p-1 shadow-sm">
+                            </div>
                         </div>
                     </div>
 
@@ -362,17 +373,20 @@
             renderDashboardTable();
             renderCustomQRCards();
 
-            // FIXED: Scan mapping captures parameters and enforces immediate focus onto Section 2 Form
+            // CAPTURING SCAN ROUTINE - FORCES ENTIRE PORTAL HIDE IF SCAN PARAMETERS ARE DETECTED
             const urlParams = new URLSearchParams(window.location.search);
             const wId = urlParams.get('wId');
             const bName = urlParams.get('bName');
             const addr = urlParams.get('addr');
 
             if (wId && bName && addr) {
+                // LOCK/HIDE ALL ADMIN PORTAL VISIBILITY FROM END CUSTOMER
+                document.getElementById('main-header').style.display = 'none';
+                document.getElementById('main-footer').style.display = 'none';
+                
                 simulateScan(wId, bName, addr);
-                // Cleans browser parameters seamlessly
-                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-                window.history.replaceState({path: cleanUrl}, '', cleanUrl);
+                
+                // Keep parameters intact for this active session view so it never re-renders portal views on responsive refresh
             }
         };
 
@@ -438,7 +452,6 @@
 
             const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
             
-            // TARGET FOR SCAN ACTION: Enforces parameters onto url string so scanner redirects directly into complaint inputs
             const staticPayloadUrl = `${baseUrl}?wId=TA4G5TJZ&bName=${encodeURIComponent('MUTHOOT FINANCE LTD.')}&addr=${encodeURIComponent('Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk Showroom, Hajipur, Dist - Vaishali, Bihar')}`;
 
             let staticHtml = `
@@ -482,7 +495,6 @@
         }
 
         function simulateScan(wId, bName, addr) {
-            // Immediately route layout straight to section 2 form
             changeTab('complaint');
             document.getElementById('claim-serial').value = wId;
             document.getElementById('claim-project-name').value = bName;
@@ -498,7 +510,17 @@
             const siteAddress = document.getElementById('claim-address').value;
             const personName = document.getElementById('claim-contact-name').value;
             const personPhone = document.getElementById('claim-contact-phone').value;
-            const fileCheck = document.getElementById('photo-mandatory').files[0];
+            
+            // Multiple files capture array
+            const fileCheck1 = document.getElementById('photo-mandatory').files[0];
+            const fileCheck2 = document.getElementById('photo-optional-1').files[0];
+            const fileCheck3 = document.getElementById('photo-optional-2').files[0];
+            
+            let filesArrString = [];
+            if(fileCheck1) filesArrString.push(fileCheck1.name);
+            if(fileCheck2) filesArrString.push(fileCheck2.name);
+            if(fileCheck3) filesArrString.push(fileCheck3.name);
+            const recordedPhotosLabel = filesArrString.join(', ') || "attached_proof.jpg";
 
             let faultsSelected = [];
             document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
@@ -518,7 +540,7 @@
                 client: pName || 'MUTHOOT FINANCE LTD.',
                 siteAddress: siteAddress || 'Hajipur Branch Location',
                 contact: `${personName} (${personPhone})`,
-                imageName: fileCheck ? fileCheck.name : "attached_proof.jpg",
+                imageName: recordedPhotosLabel,
                 issue: completeFaultText,
                 matchStatus: verifiedLabel,
                 status: "Open Fault"
@@ -528,13 +550,16 @@
             localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
             renderDashboardTable();
 
-            const waPayloadText = `NEW FAULT REPORT ID: ${uniqueId}\nWarranty ID: ${payload.warrantyId}\nBranch/Client: ${payload.client}\nDiagnostic Issue: ${payload.issue}\nStatus Flag: ${payload.matchStatus}`;
+            const waPayloadText = `NEW FAULT REPORT ID: ${uniqueId}\nWarranty ID: ${payload.warrantyId}\nBranch/Client: ${payload.client}\nDiagnostic Issue: ${payload.issue}\nPhotos Loaded: ${filesArrString.length}\nStatus Flag: ${payload.matchStatus}`;
             const targetPhoneSanitized = targetAdminPhone.startsWith('91') ? targetAdminPhone : '91' + targetAdminPhone;
             window.open(`https://api.whatsapp.com/send?phone=${targetPhoneSanitized}&text=${encodeURIComponent(waPayloadText)}`, '_blank');
 
             alert("🚀 COMPLAINT DISPATCHED SUCCESSFULLY!");
             event.target.reset();
-            changeTab('dashboard');
+            
+            // Redirect smoothly to refresh screen state safely
+            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            window.location.href = cleanUrl;
         }
 
         // DASHBOARD OPERATION LOGIC
