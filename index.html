@@ -241,7 +241,8 @@
                             <tr class="bg-gray-100 text-textMuted border-b border-borderGrey uppercase tracking-wider font-mono text-[10px]">
                                 <th class="p-3">Warranty ID</th>
                                 <th class="p-3">Client / Branch Name</th>
-                                <th class="p-3">Site Address</th> <th class="p-3">Contact Reference</th>
+                                <th class="p-3">Site Address</th>
+                                <th class="p-3">Contact Reference</th>
                                 <th class="p-3">Verified Photo Attachment</th>
                                 <th class="p-3">Diagnostic Issue</th>
                                 <th class="p-3">System Match Status</th>
@@ -312,26 +313,42 @@
         </div>
 
         <div id="content-admin-panel" class="tab-section hidden">
-            <div class="bg-cardBg p-6 rounded-xl border border-borderGrey shadow-sm max-w-xl mx-auto space-y-4">
-                <div class="border-b border-gray-200 pb-2 flex items-center gap-2">
-                    <span class="text-brandOrange text-xl"><i class="fa-solid fa-shield-halved"></i></span>
+            <div class="bg-cardBg p-6 rounded-xl border border-borderGrey shadow-sm max-w-2xl mx-auto space-y-6">
+                <div class="border-b border-gray-200 pb-3 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <span class="text-brandOrange text-xl"><i class="fa-solid fa-gears"></i></span>
+                        <h3 class="text-sm font-bold text-textDark uppercase tracking-wider">Linea Signage API Endpoint Console</h3>
+                    </div>
+                    <button onclick="toggleAdminFieldsEdit()" id="admin-edit-toggle-btn" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg transition-all shadow-sm">
+                        <i class="fa-solid fa-pen-to-square mr-1"></i> EDIT CONFIG
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <h3 class="text-sm font-bold text-textDark uppercase tracking-wider">Central Admin Credentials Dashboard</h3>
+                        <label class="block text-[11px] font-bold text-textMuted uppercase mb-1">Central Google App Script URL Node</label>
+                        <input type="text" id="cfg-apps-script" disabled value="https://script.google.com/macros/s/AKfycby3jkh..." class="w-full bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-xs font-mono text-textDark focus:outline-none focus:border-brandOrange">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-textMuted uppercase mb-1">Master Secure Encryption Token ID</label>
+                        <input type="text" id="cfg-token-id" disabled value="LINEA_SECURE_NODE_9875" class="w-full bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-xs font-mono text-textDark focus:outline-none focus:border-brandOrange">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-textMuted uppercase mb-1">WhatsApp Cloud Device Phone ID</label>
+                        <input type="text" id="cfg-phone-id" disabled value="8698755608" class="w-full bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-xs font-mono text-textDark focus:outline-none focus:border-brandOrange">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-textMuted uppercase mb-1">MIS Configuration Route Base (Bali ID)</label>
+                        <input type="text" id="cfg-bali-id" disabled value="BALI_NODE_SECURE_CORE_01" class="w-full bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-xs font-mono text-textDark focus:outline-none focus:border-brandOrange">
                     </div>
                 </div>
-                
-                <div class="space-y-3 bg-gray-50 p-4 rounded-xl border border-borderGrey">
-                    <div>
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Admin Executive Name</label>
-                        <input type="text" id="admin-user-name" readonly value="Sudhanshu Shekhar" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark font-bold cursor-not-allowed shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">Registered Contact Number</label>
-                        <input type="text" id="admin-user-phone" readonly value="7004456935" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-cyberBlue font-mono font-bold cursor-not-allowed shadow-sm">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] text-textMuted uppercase font-bold mb-1">System Registered Mail ID</label>
-                        <input type="text" id="admin-user-email" readonly value="operations@linealed.com" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark font-mono font-semibold cursor-not-allowed shadow-sm">
+
+                <div class="bg-gray-50 border border-borderGrey rounded-xl p-4 space-y-2">
+                    <span class="text-[10px] uppercase font-bold text-textMuted tracking-wider block"><i class="fa-solid fa-circle-info"></i> Node Deployment Profile:</span>
+                    <div class="text-xs font-medium text-textDark space-y-1">
+                        <p><b>Executive Administrator:</b> Sudhanshu Shekhar</p>
+                        <p><b>Central Operations Node:</b> operations@linealed.com</p>
+                        <p><b>Primary Contact Anchor:</b> +91 8698755608</p>
                     </div>
                 </div>
             </div>
@@ -351,11 +368,12 @@
         const LINEA_SYNC_CONFIG = {
             googleScriptUrl: "", 
             adminName: "Sudhanshu Shekhar",
-            adminWhatsApp: "917004456935",
+            adminWhatsApp: "918698755608",
             adminEmail: "operations@linealed.com"
         };
 
         let isCustomerLayoutViewMode = false;
+        let isAdminEditModeActive = false;
 
         window.onload = function() {
             renderWarrantyTable();
@@ -377,6 +395,42 @@
                 window.history.replaceState({path: cleanUrl}, '', cleanUrl);
             }
         };
+
+        function toggleAdminFieldsEdit() {
+            const inputs = ['cfg-apps-script', 'cfg-token-id', 'cfg-phone-id', 'cfg-bali-id'];
+            const btn = document.getElementById('admin-edit-toggle-btn');
+            
+            isAdminEditModeActive = !isAdminEditModeActive;
+            
+            inputs.forEach(id => {
+                const element = document.getElementById(id);
+                element.disabled = !isAdminEditModeActive;
+                if (isAdminEditModeActive) {
+                    element.classList.remove('bg-gray-100');
+                    element.classList.add('bg-white');
+                } else {
+                    element.classList.remove('bg-white');
+                    element.classList.add('bg-gray-100');
+                }
+            });
+
+            if (isAdminEditModeActive) {
+                btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> SAVE CONFIG`;
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+            } else {
+                btn.innerHTML = `<i class="fa-solid fa-pen-to-square mr-1"></i> EDIT CONFIG`;
+                btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
+                btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                
+                // Live sync to update core settings phone configuration dynamically
+                const updatedPhone = document.getElementById('cfg-phone-id').value.trim();
+                if(updatedPhone) {
+                    LINEA_SYNC_CONFIG.adminWhatsApp = updatedPhone.startsWith('91') ? updatedPhone : '91' + updatedPhone;
+                }
+                alert("✅ Admin API parameters successfully locked and integrated locally!");
+            }
+        }
 
         function changeTab(tabName) {
             document.querySelectorAll('.tab-section').forEach(section => {
@@ -551,7 +605,7 @@
             document.getElementById('claim-project-name').value = bName;
             document.getElementById('claim-address').value = siteAddr;
             document.getElementById('claim-contact-name').value = "Sudhanshu Shekhar";
-            document.getElementById('claim-contact-phone').value = "7004456935";
+            document.getElementById('claim-contact-phone').value = "8698755608";
         }
 
         function fileToDataUrl(file) {
@@ -595,7 +649,6 @@
             
             const activeFaultText = faultsSelected.join(', ') || 'Diagnostic Evaluation';
 
-            // Check if input ID exists in Warranty DB, else explicitly declare label status
             const matchFoundInDatabase = masterWarrantyStorage.some(record => record.warrantyId.toUpperCase() === wId);
             const matchStatusLabel = (wId.length > 0 && matchFoundInDatabase) ? "Verified Node Match" : "NO WARRANTY CLAIM";
             const uniqueComplaintId = "COMP-" + Date.now();
@@ -678,7 +731,7 @@
             let resolvedCount = 0;
 
             if (complaintsResponseArray.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="8" class="p-10 text-center text-textMuted font-medium italic">Koi response abhi tak generate nahi hua hai. Warranty QR scan karke complaint submit kijiye!</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="8" class="p-10 text-center text-textMuted italic">Koi response abhi tak generate nahi hua hai. Warranty QR scan karke complaint submit kijiye!</td></tr>`;
                 updateCounters(0, 0, 0);
                 return;
             }
@@ -687,17 +740,14 @@
                 if (item.status === "Open Fault") pendingCount++;
                 if (item.status === "Resolved") resolvedCount++;
 
-                let badgeClass = "bg-red-100 text-red-800 border border-red-200";
-                if (item.status === "In Progress") badgeClass = "bg-amber-100 text-amber-800 border border-amber-200";
-                if (item.status === "Resolved") badgeClass = "bg-emerald-100 text-emerald-800 border border-emerald-200";
-
                 const matchBadgeClass = String(item.matchStatus).includes("Verified") ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-red-700 bg-red-50 border-red-200";
 
                 const rowHtml = `
                     <tr class="hover:bg-gray-50 border-b border-gray-200 text-textDark font-medium">
                         <td class="p-3 font-mono text-brandOrange font-bold">${item.warrantyId}</td>
                         <td class="p-3 font-bold font-sans">${item.client}</td>
-                        <td class="p-3 text-textDark font-sans whitespace-normal">${item.siteAddress}</td> <td class="p-3 text-textMuted font-sans">${item.contact}</td>
+                        <td class="p-3 text-textDark font-sans whitespace-normal">${item.siteAddress}</td>
+                        <td class="p-3 text-textMuted font-sans">${item.contact}</td>
                         <td class="p-3 text-cyberBlue font-mono font-semibold">${escapeHtml(item.imageName)}</td>
                         <td class="p-3"><span class="bg-gray-100 text-textDark px-2 py-0.5 rounded text-[10px] font-bold uppercase">${item.issue}</span></td>
                         <td class="p-3"><span class="border px-2 py-0.5 rounded text-[10px] font-bold font-mono ${matchBadgeClass}">${item.matchStatus}</span></td>
