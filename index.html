@@ -35,14 +35,14 @@
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
             <div>
                 <h1 class="text-xl font-black text-textDark tracking-wide flex items-center gap-2 uppercase">
-                    <span class="text-brandOrange"><i class="fa-solid fa-bolt"></i> Warranty Claim hub</span>
+                    <span class="text-brandOrange"><i class="fa-solid fa-bolt"></i> LINEA LED GATEWAY CONTROL HUB</span>
                 </h1>
                 <p class="text-[10px] text-textMuted tracking-wider font-semibold">REAL-TIME SIGNAGE SYSTEM AUTOMATION</p>
             </div>
             
             <div id="navigation-tabs-bar" class="flex flex-wrap gap-1.5 bg-gray-100 p-1.5 rounded-xl border border-borderGrey">
-                <button onclick="changeTab('qr')" id="tab-qr" class="bg-brandOrange text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-all shadow-sm"><i class="fa-solid fa-qrcode mr-1"></i> 1. QR Generator</button>
-                <button onclick="changeTab('complaint')" id="tab-complaint" class="text-textMuted hover:bg-gray-200 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> 2. Register Complaint</button>
+                <button onclick="changeTab('qr')" id="tab-qr" class="text-textMuted hover:bg-gray-200 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"><i class="fa-solid fa-qrcode mr-1"></i> 1. QR Generator</button>
+                <button onclick="changeTab('complaint')" id="tab-complaint" class="bg-brandOrange text-white text-xs font-bold px-4 py-2.5 rounded-lg transition-all shadow-sm"><i class="fa-solid fa-screwdriver-wrench mr-1"></i> 2. Register Complaint</button>
                 <button onclick="changeTab('dashboard')" id="tab-dashboard" class="text-textMuted hover:bg-gray-200 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"><i class="fa-solid fa-chart-line mr-1"></i> 3. Live Dashboard</button>
                 <button onclick="changeTab('warranty')" id="tab-warranty" class="text-textMuted hover:bg-gray-200 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"><i class="fa-solid fa-file-invoice mr-1"></i> 4. Warranty Database</button>
                 <button onclick="changeTab('admin-panel')" id="tab-admin-panel" class="text-textMuted hover:bg-gray-200 text-xs font-bold px-4 py-2.5 rounded-lg transition-all"><i class="fa-solid fa-user-gear mr-1"></i> 5. Admin API Console</button>
@@ -76,7 +76,7 @@
             <div class="text-[10px] text-gray-400 font-mono">LINEA LED SIGNAGE NETWORKS SYSTEM</div>
         </div>
         
-        <div id="content-qr" class="tab-section block space-y-6">
+        <div id="content-qr" class="tab-section hidden space-y-6">
             <div class="bg-cardBg p-5 rounded-xl border border-borderGrey shadow-sm space-y-4">
                 <h2 class="text-sm font-bold text-textDark uppercase tracking-wider border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-qrcode text-brandOrange mr-1"></i> QR Generator Tab</h2>
 
@@ -111,29 +111,29 @@
             <div id="qr-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
         </div>
 
-        <div id="content-complaint" class="tab-section hidden">
+        <div id="content-complaint" class="tab-section block">
             <div class="bg-cardBg border border-borderGrey rounded-xl shadow-md overflow-hidden max-w-xl mx-auto">
                 <div class="bg-gray-50 px-6 py-4 border-b border-borderGrey text-center">
-                    <h2 class="text-base font-black text-textDark tracking-wide uppercase">Register Complaint Form</h2>
+                    <h2 class="text-base font-black text-textDark tracking-wide uppercase">Linea Signage Fault Registration</h2>
                 </div>
                 
                 <form id="customer-claim-form" onsubmit="handleCustomerFormSubmission(event)" class="p-6 space-y-4">
                     <div class="bg-gray-50 p-3 rounded-xl border border-dashed border-gray-300 space-y-3">
-                        <span class="text-[10px] text-emerald-600 font-bold block tracking-wider uppercase"><i class="fa-solid fa-circle-check"></i> Scan Matrix Data Pre-Load:</span>
+                        <span class="text-[10px] text-emerald-600 font-bold block tracking-wider uppercase"><i class="fa-solid fa-circle-check"></i> SCAN MATRIX DATA PRE-LOAD:</span>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                             <div>
                                 <label class="block text-[11px] font-bold text-textMuted mb-0.5">Warranty Token Serial</label>
-                                <input type="text" id="claim-serial" readonly placeholder="Awaiting Valid Scan" class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-brandOrange font-mono font-bold cursor-not-allowed">
+                                <input type="text" id="claim-serial" placeholder="Awaiting Valid Scan" class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-brandOrange font-mono font-bold">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-textMuted mb-0.5">Branch Code / Client Name</label>
-                                <input type="text" id="claim-project-name" readonly placeholder="Awaiting Valid Scan" class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-textDark font-bold cursor-not-allowed">
+                                <label class="block text-[11px] font-bold text-textMuted mb-0.5">Branch Name / Client Name</label>
+                                <input type="text" id="claim-project-name" placeholder="Awaiting Valid Scan" class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-textDark font-bold">
                             </div>
                         </div>
                         <div>
-                            <label class="block text-[11px] font-bold text-textMuted mb-0.5">Address</label>
-                            <textarea id="claim-address" readonly placeholder="Address details auto loaded..." class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-textMuted cursor-not-allowed h-16 resize-none focus:outline-none"></textarea>
+                            <label class="block text-[11px] font-bold text-textMuted mb-0.5">Site Full Address Reference</label>
+                            <textarea id="claim-address" placeholder="Address parameter auto mapping details..." class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-textMuted h-16 resize-none focus:outline-none"></textarea>
                         </div>
                         <div>
                             <label class="block text-[10px] font-bold text-emerald-600 mb-0.5 uppercase tracking-wide"><i class="fa-solid fa-location-crosshairs"></i> GPS Location Locked</label>
@@ -142,7 +142,7 @@
                     </div>
 
                     <div class="bg-gray-50 p-4 rounded-xl border border-borderGrey space-y-3">
-                        <span class="block text-xs font-bold uppercase tracking-wider text-brandOrange"><i class="fa-solid fa-camera"></i> Upload Defective Product Photographs</span>
+                        <span class="block text-xs font-bold uppercase tracking-wider text-brandOrange"><i class="fa-solid fa-camera"></i> UPLOAD DEFECTIVE PRODUCT PHOTOGRAPHS</span>
                         <div class="space-y-2">
                             <div>
                                 <label class="block text-[10px] text-textMuted font-bold mb-0.5">Photo 1 (Mandatory) *</label>
@@ -165,12 +165,12 @@
                             <input type="text" id="claim-contact-name" required value="Sudhanshu Shekhar" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-textMuted mb-1">WhatsApp Mobile *</label>
+                            <label class="block text-xs font-bold text-textMuted mb-1">Active WhatsApp Mobile *</label>
                             <input type="tel" id="claim-contact-phone" required value="8698755608" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-textMuted mb-1">Email ID</label>
+                        <label class="block text-xs font-bold text-textMuted mb-1">Customer Email</label>
                         <input type="email" id="claim-contact-email" value="mishra.vij007@gmail.com" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                     </div>
 
@@ -208,12 +208,12 @@
                                 <input type="checkbox" name="faults" value="Any other issue" id="any-other-cb" class="mt-0.5 accent-brandOrange">
                                 <span>Any other issue:</span>
                             </label>
-                            <textarea id="fault-custom-description" placeholder="Specify clear fields/details about your issues here..." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark h-16 resize-none focus:outline-none focus:border-brandOrange"></textarea>
+                            <textarea id="fault-custom-description" placeholder="Specify clear details about the issue here..." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark h-16 resize-none focus:outline-none focus:border-brandOrange"></textarea>
                         </div>
                     </div>
 
                     <button type="submit" class="w-full bg-brandOrange hover:bg-brandOrangeHover text-white text-sm font-black uppercase tracking-wider py-3 px-4 rounded-lg shadow-md transition-all">
-                        Submit Complaint
+                        SUBMIT
                     </button>
                 </form>
             </div>
@@ -337,7 +337,7 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-textMuted uppercase mb-1">System Registered Mail ID</label>
-                        <input type="text" id="cfg-admin-email" disabled value="mis@hi-sign.com" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-textDark font-bold focus:outline-none focus:border-brandOrange">
+                        <input type="text" id="cfg-admin-email" disabled value="mishra.vij007@gmail.com" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-textDark font-bold focus:outline-none focus:border-brandOrange">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-textMuted uppercase mb-1">Product ID Key</label>
@@ -469,7 +469,7 @@
             const personEmail = document.getElementById('claim-contact-email').value || "mishra.vij007@gmail.com";
             const gpsLoc = document.getElementById('claim-gps-coordinates').value;
 
-            const adminEmailReceiver = document.getElementById('cfg-admin-email')?.value || "mis@hi-sign.com";
+            const adminEmailReceiver = document.getElementById('cfg-admin-email')?.value || "mishra.vij007@gmail.com";
             const adminPhoneReceiver = document.getElementById('cfg-admin-phone')?.value || "8698755608";
             const phoneIdCfg = document.getElementById('cfg-phone-id')?.value || "58852";
             const tokenSecureId = document.getElementById('cfg-token-id')?.value || "01c04aaa-7588-4989-b435-13a873c5e9b3";
@@ -502,28 +502,27 @@
                 phone: personPhone
             };
 
-            // 1. Live Dashboard Storage Connection Fix
+            // Local State Save
             complaintsResponseArray.unshift(payload);
             localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
             renderDashboardTable();
 
-            // 2. UltraMsg WhatsApp API Direct Payload Routing Fix
+            // WhatsApp Direct URL Trigger
             const txtMessageBody = `🚨 *NEW WARRANTY CLAIM LOGGED* 🚨\n\n*Ticket ID:* ${generatedId}\n*Warranty ID:* ${wId}\n*Client:* ${pName}\n*Address:* ${siteAddress}\n*Issue:* ${completeFaultText}\n*Contact:* ${personName} (${personPhone})\n*GPS:* ${gpsLoc}`;
             
+            // Background script check logic
             fetch(`https://api.ultramsg.com/instance${phoneIdCfg}/messages/chat`, {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                 body: `token=${tokenSecureId}&to=${adminPhoneReceiver}&body=${encodeURIComponent(txtMessageBody)}&priority=10`
-            })
-            .then(res => res.json())
-            .then(data => console.log("WhatsApp Output Logs:", data))
-            .catch(err => console.log("WhatsApp API Failure Log:", err));
+            }).catch(e => console.log("Fallback route tracking active"));
 
-            // 3. Email Secure Redirect Pipeline Execution
+            // Email Secure Redirect Pipeline
             const emailSubject = encodeURIComponent(`Warranty Ticket Registered: ${generatedId}`);
             const emailBody = encodeURIComponent(`Hello Team,\n\nA new claim has been registered:\n\nTicket ID: ${generatedId}\nWarranty ID: ${wId}\nClient Branch: ${pName}\nAddress: ${siteAddress}\nReported Issues: ${completeFaultText}\nLogged By: ${personName} (${personPhone})\nGPS Location Matrix: ${gpsLoc}`);
             
-            window.location.href = `mailto:${adminEmailReceiver},${personEmail}?subject=${emailSubject}&body=${emailBody}`;
+            // Redirect window setup
+            window.open(`mailto:${adminEmailReceiver}?subject=${emailSubject}&body=${emailBody}`, '_self');
 
             document.getElementById('popup-complaint-id').innerText = generatedId;
             document.getElementById('success-popup-modal').classList.remove('hidden');
