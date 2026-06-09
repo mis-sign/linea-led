@@ -81,16 +81,16 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block text-xs font-bold text-textMuted mb-1">Warranty Serial ID *</label>
-                            <input type="text" id="new-warranty-id" placeholder="e.g. TA4G5TJZ" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark font-mono uppercase focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
+                            <input type="text" id="new-warranty-id" placeholder="e.g. TA4G5TJZ" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark font-mono uppercase focus:outline-none focus:border-brandOrange">
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-textMuted mb-1">Branch Name / Client *</label>
-                            <input type="text" id="new-branch-name" placeholder="e.g. MUTHOOT FINANCE LTD." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
+                            <input type="text" id="new-branch-name" placeholder="e.g. MUTHOOT FINANCE LTD." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                         </div>
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-textMuted mb-1">Site Verified Full Location Address *</label>
-                        <input type="text" id="new-site-address" placeholder="Enter full physical landmark details..." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
+                        <input type="text" id="new-site-address" placeholder="Enter full physical landmark details..." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                     </div>
                     <button onclick="addManualQRCard()" class="w-full bg-brandOrange hover:bg-brandOrangeHover text-white text-sm font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 uppercase tracking-wide">
                         <i class="fa-solid fa-square-plus"></i> Create Custom QR Card
@@ -100,8 +100,7 @@
 
             <div>
                 <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-3"><i class="fa-solid fa-network-wired"></i> System Active Signage Registry (<span id="total-nodes-badge" class="font-mono text-brandOrange font-bold">1</span> Cards Active Card Active)</h3>
-                <div id="qr-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    </div>
+                <div id="qr-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
         </div>
 
@@ -134,7 +133,7 @@
                     <div class="bg-gray-50 p-4 rounded-xl border border-borderGrey space-y-3">
                         <span class="block text-xs font-bold uppercase tracking-wider text-brandOrange"><i class="fa-solid fa-camera"></i> Upload Defective Product Photographs</span>
                         <div>
-                            <input type="file" id="photo-mandatory" accept="image/*" required class="w-full bg-white text-xs text-textMuted file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-brandOrange file:text-white hover:file:bg-brandOrangeHover cursor-pointer border border-gray-300 rounded-lg p-1 shadow-sm">
+                            <input type="file" id="photo-mandatory" accept="image/*" required class="w-full bg-white text-xs text-textMuted border border-gray-300 rounded-lg p-1 shadow-sm">
                         </div>
                     </div>
 
@@ -291,8 +290,7 @@
                                     <th class="p-3">Site Address (Full)</th>
                                 </tr>
                             </thead>
-                            <tbody id="csv-data-viewer-rows" class="divide-y divide-gray-200 text-textDark font-medium font-mono">
-                                </tbody>
+                            <tbody id="csv-data-viewer-rows" class="divide-y divide-gray-200 text-textDark font-medium font-mono"></tbody>
                         </table>
                     </div>
                 </div>
@@ -350,7 +348,7 @@
     </footer>
 
     <script>
-        // MASTER CENTRAL VARIABLES
+        // MASTER STORAGE ENGINE
         let masterWarrantyStorage = JSON.parse(localStorage.getItem('linea_warranty_db')) || [
             { warrantyId: "TA4G5TJZ", customerName: "Mission Xcellence Creative Solutions Pvt. Ltd.", totalWarranty: "5 years", startDate: "05/21/2026", endDate: "05/20/2031", projectName: "MUTHOOT FINANCE LTD.", contactNo: "9355338899", siteAddress: "Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk Showroom, Hajipur, Dist - Vaishali, Bihar" },
             { warrantyId: "D14GNIQA", customerName: "SIGN TECHNIC INDUSTRIES PVT LTD", totalWarranty: "5 years", startDate: "05/16/2026", endDate: "05/15/2031", projectName: "HDFC Bank", contactNo: "8838773213", siteAddress: "GROUND FLOOR, 590, OPP. NAGARPALIKA OFFICE, KURDUVADI, DIST PUNE MAHARASHTRA - 413208" }
@@ -364,7 +362,7 @@
             renderDashboardTable();
             renderCustomQRCards();
 
-            // Intercept scan query strings if applicable
+            // FIX: Checking URL for Scanner parameter mappings to trigger complaint system automatically
             const urlParams = new URLSearchParams(window.location.search);
             const wId = urlParams.get('wId');
             const bName = urlParams.get('bName');
@@ -372,39 +370,11 @@
 
             if (wId && bName && addr) {
                 simulateScan(wId, bName, addr);
+                // Clean browser URL safely without hard reload
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.replaceState({path: cleanUrl}, '', cleanUrl);
             }
         };
-
-        // ADMIN CONSOLE INTERACTION LOGIC
-        function toggleAdminFieldsEdit() {
-            const inputs = ['cfg-admin-name', 'cfg-admin-phone', 'cfg-admin-email', 'cfg-product-key', 'cfg-token-id', 'cfg-phone-id'];
-            const btn = document.getElementById('admin-edit-toggle-btn');
-            
-            isAdminEditModeActive = !isAdminEditModeActive;
-            
-            inputs.forEach(id => {
-                const element = document.getElementById(id);
-                element.disabled = !isAdminEditModeActive;
-                if (isAdminEditModeActive) {
-                    element.classList.remove('bg-gray-50');
-                    element.classList.add('bg-white');
-                } else {
-                    element.classList.remove('bg-white');
-                    element.classList.add('bg-gray-50');
-                }
-            });
-
-            if (isAdminEditModeActive) {
-                btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> SAVE CONFIG`;
-                btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg shadow-sm transition-all";
-            } else {
-                btn.innerHTML = `<i class="fa-solid fa-pen-to-square mr-1"></i> EDIT CONFIG`;
-                btn.className = "bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg shadow-sm transition-all";
-                alert("✅ Central Credentials Parameters Successfully Saved and Locked!");
-            }
-        }
 
         function changeTab(tabName) {
             document.querySelectorAll('.tab-section').forEach(section => {
@@ -421,7 +391,211 @@
             document.getElementById('tab-' + tabName).classList.remove('text-textMuted');
         }
 
-        // WARRANTY SPREADSHEET MATRIX LOGIC
+        // ADMIN CONFIG MANAGEMENT
+        function toggleAdminFieldsEdit() {
+            const inputs = ['cfg-admin-name', 'cfg-admin-phone', 'cfg-admin-email', 'cfg-product-key', 'cfg-token-id', 'cfg-phone-id'];
+            const btn = document.getElementById('admin-edit-toggle-btn');
+            isAdminEditModeActive = !isAdminEditModeActive;
+            
+            inputs.forEach(id => {
+                const element = document.getElementById(id);
+                element.disabled = !isAdminEditModeActive;
+                element.classList.toggle('bg-gray-50', !isAdminEditModeActive);
+                element.classList.toggle('bg-white', isAdminEditModeActive);
+            });
+
+            if (isAdminEditModeActive) {
+                btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> SAVE CONFIG`;
+                btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg shadow-sm";
+            } else {
+                btn.innerHTML = `<i class="fa-solid fa-pen-to-square mr-1"></i> EDIT CONFIG`;
+                btn.className = "bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg shadow-sm";
+                alert("✅ Credentials Config Successfully Saved and Locked!");
+            }
+        }
+
+        // DYNAMIC QR DEPLOYMENT ENGINE (REDIRECTING TO COMPLAINT TAB ONLY)
+        function addManualQRCard() {
+            const wId = document.getElementById('new-warranty-id').value.trim().toUpperCase();
+            const bName = document.getElementById('new-branch-name').value.trim();
+            const bAddress = document.getElementById('new-site-address').value.trim();
+            if (!wId || !bName || !bAddress) return alert("Please fill all fields!");
+
+            customQRCardsArray.unshift({ id: wId, client: bName, address: bAddress });
+            localStorage.setItem('linea_custom_qr_cards', JSON.stringify(customQRCardsArray));
+            renderCustomQRCards();
+
+            document.getElementById('new-warranty-id').value = "";
+            document.getElementById('new-branch-name').value = "";
+            document.getElementById('new-site-address').value = "";
+            alert("✅ Custom Card Generated!");
+        }
+
+        function renderCustomQRCards() {
+            const gridContainer = document.getElementById('qr-cards-grid');
+            if(!gridContainer) return;
+            document.getElementById('total-nodes-badge').innerText = `${customQRCardsArray.length + 1} Cards Active Card Active`;
+
+            const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+            
+            // TARGET FOR SCAN ACTION: Enforces routing straight to complaint inputs
+            const staticPayloadUrl = `${baseUrl}?wId=TA4G5TJZ&bName=${encodeURIComponent('MUTHOOT FINANCE LTD.')}&addr=${encodeURIComponent('Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk Showroom, Hajipur, Dist - Vaishali, Bihar')}`;
+
+            let staticHtml = `
+                <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm hover:border-brandOrange transition-all">
+                    <div>
+                        <h4 class="font-bold text-textDark text-sm">MUTHOOT FINANCE LTD.</h4>
+                        <p class="text-[11px] text-brandOrange font-mono font-bold mt-0.5">WARRANTY ID: TA4G5TJZ</p>
+                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block mx-auto cursor-pointer" onclick="simulateScan('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk Showroom, Hajipur, Dist - Vaishali, Bihar')">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(staticPayloadUrl)}" class="w-[120px] h-[120px] mx-auto block mix-blend-multiply">
+                            <span class="text-[10px] text-brandOrange font-bold block mt-2">CLICK TO SIMULATE SCAN</span>
+                        </div>
+                        <p class="text-[11px] text-textMuted font-sans max-h-12 overflow-hidden truncate">Hajipur Branch, Ground floor, Gayatri Complex</p>
+                    </div>
+                </div>`;
+
+            let dynamicHtml = customQRCardsArray.map(item => {
+                const dynamicUrl = `${baseUrl}?wId=${encodeURIComponent(item.id)}&bName=${encodeURIComponent(item.client)}&addr=${encodeURIComponent(item.address)}`;
+                return `
+                <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm hover:border-brandOrange transition-all">
+                    <div>
+                        <h4 class="font-bold text-textDark text-sm">${item.client}</h4>
+                        <p class="text-[11px] text-brandOrange font-mono font-bold mt-0.5">WARRANTY ID: ${item.id}</p>
+                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block mx-auto cursor-pointer" onclick="simulateScan('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(dynamicUrl)}" class="w-[120px] h-[120px] mx-auto block mix-blend-multiply">
+                            <span class="text-[10px] text-brandOrange font-bold block mt-2">CLICK TO SIMULATE SCAN</span>
+                        </div>
+                        <p class="text-[11px] text-textMuted font-sans max-h-12 overflow-hidden truncate">${item.address}</p>
+                    </div>
+                </div>`;
+            }).join('');
+
+            gridContainer.innerHTML = staticHtml + dynamicHtml;
+        }
+
+        function filterRegistryCards() {
+            const query = document.getElementById('qr-registry-search').value.toLowerCase().trim();
+            const cards = document.getElementsByClassName('qr-registry-node');
+            for (let card of cards) {
+                card.style.display = card.innerText.toLowerCase().includes(query) ? "" : "none";
+            }
+        }
+
+        function simulateScan(wId, bName, addr) {
+            changeTab('complaint');
+            document.getElementById('claim-serial').value = wId;
+            document.getElementById('claim-project-name').value = bName;
+            document.getElementById('claim-address').value = addr;
+        }
+
+        // COMPLAINT DISPATCH & FORM SUBMISSION 
+        async function handleCustomerFormSubmission(event) {
+            event.preventDefault();
+            
+            const wId = document.getElementById('claim-serial').value.trim().toUpperCase();
+            const pName = document.getElementById('claim-project-name').value;
+            const siteAddress = document.getElementById('claim-address').value;
+            const personName = document.getElementById('claim-contact-name').value;
+            const personPhone = document.getElementById('claim-contact-phone').value;
+            const fileCheck = document.getElementById('photo-mandatory').files[0];
+
+            let faultsSelected = [];
+            document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
+            const customDescription = document.getElementById('fault-custom-description').value.trim();
+            if (customDescription) faultsSelected.push(customDescription);
+            const completeFaultText = faultsSelected.join(', ') || 'Flickering / Blink Issue';
+
+            const matchFound = masterWarrantyStorage.some(r => r.warrantyId.toUpperCase() === wId);
+            const verifiedLabel = matchFound ? "Verified Node Match" : "NO WARRANTY CLAIM";
+            const uniqueId = "COMP-" + Date.now();
+
+            let targetAdminPhone = document.getElementById('cfg-admin-phone').value.trim() || "8698755608";
+
+            const payload = {
+                id: uniqueId,
+                warrantyId: wId || 'TA4G5TJZ',
+                client: pName || 'MUTHOOT FINANCE LTD.',
+                siteAddress: siteAddress || 'Hajipur Branch Location',
+                contact: `${personName} (${personPhone})`,
+                imageName: fileCheck ? fileCheck.name : "attached_proof.jpg",
+                issue: completeFaultText,
+                matchStatus: verifiedLabel,
+                status: "Open Fault"
+            };
+
+            complaintsResponseArray.unshift(payload);
+            localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
+            renderDashboardTable();
+
+            const waPayloadText = `NEW FAULT REPORT ID: ${uniqueId}\nWarranty ID: ${payload.warrantyId}\nBranch/Client: ${payload.client}\nDiagnostic Issue: ${payload.issue}\nStatus Flag: ${payload.matchStatus}`;
+            const targetPhoneSanitized = targetAdminPhone.startsWith('91') ? targetAdminPhone : '91' + targetAdminPhone;
+            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneSanitized}&text=${encodeURIComponent(waPayloadText)}`, '_blank');
+
+            alert("🚀 COMPLAINT DISPATCHED SUCCESSFULLY!");
+            event.target.reset();
+            changeTab('dashboard');
+        }
+
+        // DASHBOARD OPERATION LOGIC
+        function renderDashboardTable() {
+            const tableBody = document.getElementById('dashboard-complaint-rows');
+            if (!tableBody) return;
+
+            if (complaintsResponseArray.length === 0) {
+                tableBody.innerHTML = `<tr id='empty-ledger-placeholder'><td colspan='8' class='p-10 text-center text-textMuted italic'>No warranty claims found.</td></tr>`;
+                return;
+            }
+
+            document.getElementById('dash-counter-total').innerText = complaintsResponseArray.length;
+            document.getElementById('dash-counter-pending').innerText = complaintsResponseArray.filter(c => c.status === "Open Fault").length;
+            document.getElementById('dash-counter-resolved').innerText = complaintsResponseArray.filter(c => c.status === "Resolved").length;
+
+            tableBody.innerHTML = complaintsResponseArray.map(item => `
+                <tr class="hover:bg-gray-50 border-b border-gray-200">
+                    <td class="p-3 font-mono text-brandOrange font-bold">${item.warrantyId}</td>
+                    <td class="p-3 font-bold">${item.client}</td>
+                    <td class="p-3 whitespace-normal">${item.siteAddress}</td>
+                    <td class="p-3 text-textMuted">${item.contact}</td>
+                    <td class="p-3 font-mono text-blue-500">${item.imageName}</td>
+                    <td class="p-3"><span class="bg-gray-100 px-2 py-0.5 rounded text-[10px] font-bold">${item.issue}</span></td>
+                    <td class="p-3"><span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-bold">${item.matchStatus}</span></td>
+                    <td class="p-3 text-center"><span class="font-bold text-orange-500">${item.status}</span></td>
+                </tr>`).join('');
+        }
+
+        function filterDashboardTable() {
+            const query = document.getElementById('dashboard-search').value.toLowerCase();
+            const statusFilter = document.getElementById('dashboard-status-filter').value;
+            const rows = document.getElementById('dashboard-complaint-rows').getElementsByTagName('tr');
+
+            for (let row of rows) {
+                if (row.cells.length < 2) continue;
+                const txtId = row.cells[0].innerText.toLowerCase();
+                const txtClient = row.cells[1].innerText.toLowerCase();
+                const currentStatus = row.cells[7]?.innerText || '';
+
+                const matchesSearch = txtId.includes(query) || txtClient.includes(query);
+                const matchesStatus = (statusFilter === "ALL") || (currentStatus.includes(statusFilter));
+                row.style.display = (matchesSearch && matchesStatus) ? "" : "none";
+            }
+        }
+
+        function exportDashboardData() {
+            if(complaintsResponseArray.length === 0) return alert("No logs available to export.");
+            let csvContent = "data:text/csv;charset=utf-8,Warranty ID,Client,Address,Contact,Issue,Match Status,Status\n";
+            complaintsResponseArray.forEach(item => {
+                csvContent += `"${item.warrantyId}","${item.client}","${item.siteAddress}","${item.contact}","${item.issue}","${item.matchStatus}","${item.status}"\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "Linea_LED_Report.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // MASTER WARRANTY DATABASE CSV LOGIC
         function parseWarrantyCSV(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -452,7 +626,7 @@
                 }
                 localStorage.setItem('linea_warranty_db', JSON.stringify(masterWarrantyStorage));
                 renderWarrantyTable();
-                alert(`✅ DATA INTEGRATED SAFELY: Loaded ${masterWarrantyStorage.length} records.`);
+                alert(`✅ DATA INTEGRATED: Loaded ${masterWarrantyStorage.length} records.`);
             };
             reader.readAsText(file);
         }
@@ -477,8 +651,7 @@
                     <td class="p-3 text-blue-600 font-bold font-sans whitespace-normal">${item.projectName}</td>
                     <td class="p-3">${item.contactNo}</td>
                     <td class="p-3 font-sans whitespace-normal">${item.siteAddress}</td>
-                </tr>
-            `).join('');
+                </tr>`).join('');
         }
 
         function filterWarrantyTable() {
@@ -489,216 +662,8 @@
                 if (row.cells.length < 2) continue;
                 const matchId = row.cells[0].innerText.toLowerCase();
                 const matchProject = row.cells[5].innerText.toLowerCase();
-                if (matchId.includes(query) || matchProject.includes(query)) {
-                    row.style.display = "";
-                } else {
-                    row.style.display = "none";
-                }
+                row.style.display = (matchId.includes(query) || matchProject.includes(query)) ? "" : "none";
             }
-        }
-
-        // QR MANAGEMENT AND MATRIX AUTOMATION
-        function addManualQRCard() {
-            const wId = document.getElementById('new-warranty-id').value.trim().toUpperCase();
-            const bName = document.getElementById('new-branch-name').value.trim();
-            const bAddress = document.getElementById('new-site-address').value.trim();
-
-            if (!wId || !bName || !bAddress) {
-                alert("Attention: Please populate all input parameters!");
-                return;
-            }
-
-            customQRCardsArray.unshift({ id: wId, client: bName, address: bAddress });
-            localStorage.setItem('linea_custom_qr_cards', JSON.stringify(customQRCardsArray));
-            renderCustomQRCards();
-
-            document.getElementById('new-warranty-id').value = "";
-            document.getElementById('new-branch-name').value = "";
-            document.getElementById('new-site-address').value = "";
-            alert("✅ Dynamic QR Card compiled successfully!");
-        }
-
-        function renderCustomQRCards() {
-            const gridContainer = document.getElementById('qr-cards-grid');
-            if(!gridContainer) return;
-            document.getElementById('total-nodes-badge').innerText = `${customQRCardsArray.length + 1} Cards Active Card Active`;
-
-            const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-            const staticPayloadUrl = `${baseUrl}?wId=TA4G5TJZ&bName=${encodeURIComponent('MUTHOOT FINANCE LTD.')}&addr=${encodeURIComponent('Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk Showroom, Hajipur, Dist - Vaishali, Bihar')}`;
-
-            let staticHtml = `
-                <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
-                    <div>
-                        <h4 class="font-bold text-textDark text-sm font-sans">MUTHOOT FINANCE LTD.</h4>
-                        <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">WARRANTY ID: TA4G5TJZ</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="simulateScan('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk Showroom, Hajipur, Dist - Vaishali, Bihar')">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(staticPayloadUrl)}" alt="QR" class="w-[120px] h-[120px] mx-auto block mix-blend-multiply">
-                            <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline">CLICK TO SIMULATE SCAN</span>
-                        </div>
-                        <p class="text-[11px] text-textMuted font-sans max-h-12 overflow-hidden truncate">Hajipur Branch, Ground floor, Gayatri Complex</p>
-                    </div>
-                </div>
-            `;
-
-            let dynamicHtml = customQRCardsArray.map(item => {
-                const dynamicUrl = `${baseUrl}?wId=${encodeURIComponent(item.id)}&bName=${encodeURIComponent(item.client)}&addr=${encodeURIComponent(item.address)}`;
-                return `
-                <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
-                    <div>
-                        <h4 class="font-bold text-textDark text-sm font-sans">${item.client}</h4>
-                        <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">WARRANTY ID: ${item.id}</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="simulateScan('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(dynamicUrl)}" alt="QR" class="w-[120px] h-[120px] mx-auto block mix-blend-multiply">
-                            <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline">CLICK TO SIMULATE SCAN</span>
-                        </div>
-                        <p class="text-[11px] text-textMuted font-sans max-h-12 overflow-hidden truncate">${item.address}</p>
-                    </div>
-                </div>
-            `}).join('');
-
-            gridContainer.innerHTML = staticHtml + dynamicHtml;
-        }
-
-        function filterRegistryCards() {
-            const query = document.getElementById('qr-registry-search').value.toLowerCase().trim();
-            const cards = document.getElementsByClassName('qr-registry-node');
-            for (let card of cards) {
-                if (card.innerText.toLowerCase().includes(query)) {
-                    card.style.display = "";
-                } else {
-                    card.style.display = "none";
-                }
-            }
-        }
-
-        function simulateScan(wId, bName, addr) {
-            changeTab('complaint');
-            document.getElementById('claim-serial').value = wId;
-            document.getElementById('claim-project-name').value = bName;
-            document.getElementById('claim-address').value = addr;
-        }
-
-        // SECURE SUBMISSION AND DISPATCH HANDLING
-        function fileToDataUrl(file) {
-            return new Promise((resolve) => {
-                if (!file) return resolve("");
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result || "");
-                reader.onerror = () => resolve("");
-                reader.readAsDataURL(file);
-            });
-        }
-
-        async function handleCustomerFormSubmission(event) {
-            event.preventDefault();
-            
-            const wId = document.getElementById('claim-serial').value.trim().toUpperCase();
-            const pName = document.getElementById('claim-project-name').value;
-            const siteAddress = document.getElementById('claim-address').value;
-            const personName = document.getElementById('claim-contact-name').value;
-            const personPhone = document.getElementById('claim-contact-phone').value;
-            const fileCheck = document.getElementById('photo-mandatory').files[0];
-
-            let faultsSelected = [];
-            document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
-            const customDescription = document.getElementById('fault-custom-description').value.trim();
-            if (customDescription) {
-                faultsSelected.push(customDescription);
-            }
-            const completeFaultText = faultsSelected.join(', ') || 'Flickering / Blink Issue';
-
-            const matchFound = masterWarrantyStorage.some(r => r.warrantyId.toUpperCase() === wId);
-            const verifiedLabel = matchFound ? "Verified Node Match" : "NO WARRANTY CLAIM";
-            const uniqueId = "COMP-" + Date.now();
-
-            let targetAdminPhone = document.getElementById('cfg-admin-phone').value.trim() || "8698755608";
-
-            const payload = {
-                id: uniqueId,
-                warrantyId: wId || 'TA4G5TJZ',
-                client: pName || 'MUTHOOT FINANCE LTD.',
-                siteAddress: siteAddress || 'Hajipur Branch Location',
-                contact: `${personName} (${personPhone})`,
-                imageName: fileCheck ? fileCheck.name : "attached_proof.jpg",
-                issue: completeFaultText,
-                matchStatus: verifiedLabel,
-                status: "Open Fault"
-            };
-
-            complaintsResponseArray.unshift(payload);
-            localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
-            renderDashboardTable();
-
-            // WhatsApp Dispatch Action Engine
-            const waPayloadText = `NEW FAULT REPORT ID: ${uniqueId}\nWarranty ID: ${payload.warrantyId}\nBranch/Client: ${payload.client}\nDiagnostic Issue: ${payload.issue}\nStatus Flag: ${payload.matchStatus}`;
-            const targetPhoneSanitized = targetAdminPhone.startsWith('91') ? targetAdminPhone : '91' + targetAdminPhone;
-            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneSanitized}&text=${encodeURIComponent(waPayloadText)}`, '_blank');
-
-            alert("🚀 COMPLAINT DISPATCHED SUCCESSFULLY!");
-            event.target.reset();
-            changeTab('dashboard');
-        }
-
-        function renderDashboardTable() {
-            const tableBody = document.getElementById('dashboard-complaint-rows');
-            if (!tableBody) return;
-
-            if (complaintsResponseArray.length === 0) {
-                tableBody.innerHTML = `<tr id='empty-ledger-placeholder'><td colspan='8' class='p-10 text-center text-textMuted italic'>No warranty claims found.</td></tr>`;
-                return;
-            }
-
-            document.getElementById('dash-counter-total').innerText = complaintsResponseArray.length;
-            document.getElementById('dash-counter-pending').innerText = complaintsResponseArray.filter(c => c.status === "Open Fault").length;
-            document.getElementById('dash-counter-resolved').innerText = complaintsResponseArray.filter(c => c.status === "Resolved").length;
-
-            tableBody.innerHTML = complaintsResponseArray.map(item => {
-                return `
-                    <tr class="hover:bg-gray-50 border-b border-gray-200">
-                        <td class="p-3 font-mono text-brandOrange font-bold">${item.warrantyId}</td>
-                        <td class="p-3 font-bold">${item.client}</td>
-                        <td class="p-3 whitespace-normal">${item.siteAddress}</td>
-                        <td class="p-3 text-textMuted">${item.contact}</td>
-                        <td class="p-3 font-mono text-blue-500">${item.imageName}</td>
-                        <td class="p-3"><span class="bg-gray-100 px-2 py-0.5 rounded text-[10px] font-bold">${item.issue}</span></td>
-                        <td class="p-3"><span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-bold">${item.matchStatus}</span></td>
-                        <td class="p-3 text-center"><span class="font-bold text-orange-500">${item.status}</span></td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function filterDashboardTable() {
-            const query = document.getElementById('dashboard-search').value.toLowerCase();
-            const statusFilter = document.getElementById('dashboard-status-filter').value;
-            const rows = document.getElementById('dashboard-complaint-rows').getElementsByTagName('tr');
-
-            for (let row of rows) {
-                if (row.cells.length < 2) continue;
-                const txtId = row.cells[0].innerText.toLowerCase();
-                const txtClient = row.cells[1].innerText.toLowerCase();
-                const currentStatus = row.cells[7]?.innerText || '';
-
-                const matchesSearch = txtId.includes(query) || txtClient.includes(query);
-                const matchesStatus = (statusFilter === "ALL") || (currentStatus.includes(statusFilter));
-
-                row.style.display = (matchesSearch && matchesStatus) ? "" : "none";
-            }
-        }
-
-        function exportDashboardData() {
-            if(complaintsResponseArray.length === 0) return alert("No logs available to export.");
-            let csvContent = "data:text/csv;charset=utf-8,Warranty ID,Client,Address,Contact,Issue,Match Status,Status\n";
-            complaintsResponseArray.forEach(item => {
-                csvContent += `"${item.warrantyId}","${item.client}","${item.siteAddress}","${item.contact}","${item.issue}","${item.matchStatus}","${item.status}"\n`;
-            });
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", "Linea_LED_Report.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         }
     </script>
 </body>
