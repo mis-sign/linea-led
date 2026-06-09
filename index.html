@@ -60,6 +60,22 @@
 
     <main class="max-w-7xl w-full mx-auto p-6 flex-grow">
         
+        <div id="success-popup-modal" class="hidden fixed inset-0 bg-black/60 z-[9999] flex items-center justify-center p-4">
+            <div class="bg-white rounded-2xl p-6 max-w-sm w-full text-center shadow-2xl border border-emerald-500 space-y-4">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-black text-textDark uppercase">Registration Success</h3>
+                    <p class="text-xs text-textMuted mt-1">Your Complaint has been Submitted & Registered Successfully!</p>
+                </div>
+                <div class="bg-gray-50 p-2.5 rounded-lg border font-mono text-xs text-brandOrange font-bold">
+                    ID: <span id="popup-complaint-id">COMP-LOADING</span>
+                </div>
+                <p class="text-[10px] text-gray-400">Our engineering team has received the diagnostic snapshot log grid telemetry.</p>
+            </div>
+        </div>
+        
         <div id="content-qr" class="tab-section block space-y-6">
             <div class="bg-cardBg p-5 rounded-xl border border-borderGrey shadow-sm space-y-4">
                 <h2 class="text-sm font-bold text-textDark uppercase tracking-wider border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-qrcode text-brandOrange mr-1"></i> QR Generator Tab</h2>
@@ -118,6 +134,11 @@
                         <div>
                             <label class="block text-[11px] font-bold text-textMuted mb-0.5">Address</label>
                             <textarea id="claim-address" readonly placeholder="Address details auto loaded..." class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-textMuted cursor-not-allowed h-16 resize-none focus:outline-none"></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-[10px] font-bold text-emerald-600 mb-0.5 uppercase tracking-wide"><i class="fa-solid fa-location-crosshairs"></i> GPS Location Locked</label>
+                            <input type="text" id="claim-gps-coordinates" readonly value="Detecting Satellites Network..." class="w-full bg-emerald-50 text-emerald-700 font-mono font-bold border border-emerald-200 rounded-lg px-3 py-1.5 text-xs cursor-not-allowed">
                         </div>
                     </div>
 
@@ -342,7 +363,6 @@
     </footer>
 
     <script>
-        // CORE REPOS & STORAGE ARCHITECTURE
         let masterWarrantyStorage = JSON.parse(localStorage.getItem('linea_warranty_db')) || [
             { warrantyId: "TA4G5TJZ", customerName: "Mission Xcellence Creative Solutions Pvt. Ltd.", totalWarranty: "5 years", startDate: "05/21/2026", endDate: "05/20/2031", projectName: "MUTHOOT FINANCE LTD.", contactNo: "9355338899", siteAddress: "Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk Showroom, Hajipur, Dist - Vaishali, Bihar" },
             { warrantyId: "IQXKQ3EK", customerName: "SIGN TECHNIC INDUSTRIES PVT LTD", totalWarranty: "5 years", startDate: "05/16/2026", endDate: "05/15/2031", projectName: "HDFC Bank", contactNo: "8838773213", siteAddress: "SHOP NO. G1, G2 (PART), GRD. FLOOR, SURVEY NO. 275/1/3, TIMES SQUARE, HINJAWADI, DIST. PUNE, MAHARASHTRA - 411057" },
@@ -367,35 +387,67 @@
             renderWarrantyTable();
             renderDashboardTable();
             renderCustomQRCards();
+            triggerGPSLocationFetch();
 
             const urlParams = new URLSearchParams(window.location.search);
             const wId = urlParams.get('wId');
             const bName = urlParams.get('bName');
             const addr = urlParams.get('addr');
 
+            // CRITICAL CUSTOMER ISOLATION LOCK LOGIC: 
             if (wId && bName && addr) {
+                // Hide header, footer, and completely strip away other tabs from DOM/View
                 document.getElementById('main-header').style.display = 'none';
-                document.getElementById('main-footer').style.display = 'none';
-                simulateScan(wId, bName, addr);
+                if(document.getElementById('main-footer')) document.getElementById('main-footer').style.display = 'none';
+                
+                // Open ONLY the complaint page
+                isolateCustomerView(wId, bName, addr);
             }
         };
+
+        function isolateCustomerView(wId, bName, addr) {
+            document.querySelectorAll('.tab-section').forEach(s => s.style.display = 'none');
+            const targetSection = document.getElementById('content-complaint');
+            targetSection.style.display = 'block';
+            targetSection.classList.remove('hidden');
+
+            document.getElementById('claim-serial').value = wId;
+            document.getElementById('claim-project-name').value = bName;
+            document.getElementById('claim-address').value = addr;
+        }
+
+        function triggerGPSLocationFetch() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        const coordsStr = `LAT: ${pos.coords.latitude.toFixed(5)} | LNG: ${pos.coords.longitude.toFixed(5)}`;
+                        const element = document.getElementById('claim-gps-coordinates');
+                        if (element) element.value = coordsStr;
+                    },
+                    (err) => {
+                        const element = document.getElementById('claim-gps-coordinates');
+                        if (element) element.value = "LAT: 28.6139 | LNG: 77.2090 (Default Active Node)";
+                    }
+                );
+            }
+        }
 
         function changeTab(tabName) {
             document.querySelectorAll('.tab-section').forEach(section => {
                 section.classList.add('hidden');
-                section.classList.remove('block');
+                section.style.display = 'none';
             });
             document.querySelectorAll('[id^="tab-"]').forEach(btn => {
                 btn.classList.remove('bg-brandOrange', 'text-white', 'shadow-sm');
                 btn.classList.add('text-textMuted');
             });
-            document.getElementById('content-' + tabName).classList.remove('hidden');
-            document.getElementById('content-' + tabName).classList.add('block');
+            const target = document.getElementById('content-' + tabName);
+            target.classList.remove('hidden');
+            target.style.display = 'block';
             document.getElementById('tab-' + tabName).classList.add('bg-brandOrange', 'text-white', 'shadow-sm');
             document.getElementById('tab-' + tabName).classList.remove('text-textMuted');
         }
 
-        // ADMIN CONFIG MANAGEMENT (RESTORED)
         function toggleAdminFieldsEdit() {
             const inputs = ['cfg-admin-name', 'cfg-admin-phone', 'cfg-admin-email', 'cfg-product-key', 'cfg-token-id', 'cfg-phone-id'];
             const btn = document.getElementById('admin-edit-toggle-btn');
@@ -420,7 +472,68 @@
             }
         }
 
-        // DYNAMIC QR CARD REGISTRY ENGINE
+        // COMPLAINT SUBMISSION ENGINE (NO CLIENT WHATSAPP REDIRECTION)
+        function handleCustomerFormSubmission(event) {
+            event.preventDefault();
+            
+            const wId = document.getElementById('claim-serial').value.trim().toUpperCase();
+            const pName = document.getElementById('claim-project-name').value;
+            const siteAddress = document.getElementById('claim-address').value;
+            const personName = document.getElementById('claim-contact-name').value;
+            const personPhone = document.getElementById('claim-contact-phone').value;
+            
+            const file1 = document.getElementById('photo-mandatory').files[0];
+            const file2 = document.getElementById('photo-optional-1').files[0];
+            const file3 = document.getElementById('photo-optional-2').files[0];
+            
+            let filesArr = [];
+            if(file1) filesArr.push(file1.name);
+            if(file2) filesArr.push(file2.name);
+            if(file3) filesArr.push(file3.name);
+            const recordedPhotoLabel = filesArr.join(', ') || "attached_proof.jpg";
+
+            let faultsSelected = [];
+            document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
+            const customDescription = document.getElementById('fault-custom-description').value.trim();
+            if (customDescription) faultsSelected.push(customDescription);
+            const completeFaultText = faultsSelected.join(', ') || 'Flickering / Blink Issue';
+
+            const isMatchFound = masterWarrantyStorage.some(r => r.warrantyId.toUpperCase() === wId);
+            const verifiedLabel = isMatchFound ? "Veri-Fied Node Match" : "No Warranty Claim";
+
+            const generatedId = "COMP-" + Date.now();
+
+            const payload = {
+                id: generatedId,
+                warrantyId: wId || 'UNKNOWN',
+                client: pName || 'Direct Client Entry',
+                siteAddress: siteAddress || 'Not Provided',
+                contact: `${personName} (${personPhone})`,
+                imageName: recordedPhotoLabel,
+                issue: completeFaultText,
+                matchStatus: verifiedLabel,
+                status: "Open Fault"
+            };
+
+            // Save silently to database stack
+            complaintsResponseArray.unshift(payload);
+            localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
+            renderDashboardTable();
+
+            // TRIGGER SUCCESS POPUP ON THE SAME PAGE ONLY
+            document.getElementById('popup-complaint-id').innerText = generatedId;
+            const popupModal = document.getElementById('success-popup-modal');
+            popupModal.classList.remove('hidden');
+
+            event.target.reset();
+
+            // Clear parameters after 3 seconds and freeze on simple message screen safely
+            setTimeout(() => {
+                const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                window.location.href = cleanUrl; 
+            }, 4000);
+        }
+
         function addManualQRCard() {
             const wId = document.getElementById('new-warranty-id').value.trim().toUpperCase();
             const bName = document.getElementById('new-branch-name').value.trim();
@@ -496,66 +609,6 @@
             document.getElementById('claim-address').value = addr;
         }
 
-        // COMPLAINT LOGIC SUBMISSION (WITH MULTIPLE PHOTO STRING CAPTURE)
-        function handleCustomerFormSubmission(event) {
-            event.preventDefault();
-            
-            const wId = document.getElementById('claim-serial').value.trim().toUpperCase();
-            const pName = document.getElementById('claim-project-name').value;
-            const siteAddress = document.getElementById('claim-address').value;
-            const personName = document.getElementById('claim-contact-name').value;
-            const personPhone = document.getElementById('claim-contact-phone').value;
-            
-            const file1 = document.getElementById('photo-mandatory').files[0];
-            const file2 = document.getElementById('photo-optional-1').files[0];
-            const file3 = document.getElementById('photo-optional-2').files[0];
-            
-            let filesArr = [];
-            if(file1) filesArr.push(file1.name);
-            if(file2) filesArr.push(file2.name);
-            if(file3) filesArr.push(file3.name);
-            const recordedPhotoLabel = filesArr.join(', ') || "attached_proof.jpg";
-
-            let faultsSelected = [];
-            document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
-            const customDescription = document.getElementById('fault-custom-description').value.trim();
-            if (customDescription) faultsSelected.push(customDescription);
-            const completeFaultText = faultsSelected.join(', ') || 'Flickering / Blink Issue';
-
-            // DYNAMIC ENGINE SELECTION MATCH CHECK
-            const isMatchFound = masterWarrantyStorage.some(r => r.warrantyId.toUpperCase() === wId);
-            const verifiedLabel = isMatchFound ? "Veri-Fied Node Match" : "No Warranty Claim";
-
-            const payload = {
-                id: "COMP-" + Date.now(),
-                warrantyId: wId || 'UNKNOWN',
-                client: pName || 'Direct Client Entry',
-                siteAddress: siteAddress || 'Not Provided',
-                contact: `${personName} (${personPhone})`,
-                imageName: recordedPhotoLabel,
-                issue: completeFaultText,
-                matchStatus: verifiedLabel,
-                status: "Open Fault"
-            };
-
-            complaintsResponseArray.unshift(payload);
-            localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
-            renderDashboardTable();
-
-            // SEND WHATSAPP DISPATCH
-            let targetAdminPhone = document.getElementById('cfg-admin-phone')?.value.trim() || "8698755608";
-            const targetPhoneSanitized = targetAdminPhone.startsWith('91') ? targetAdminPhone : '91' + targetAdminPhone;
-            const waPayloadText = `Warranty ID: ${payload.warrantyId}\nBranch/Client: ${payload.client}\nDiagnostic Issue: ${payload.issue}\nStatus Flag: ${payload.matchStatus}`;
-            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneSanitized}&text=${encodeURIComponent(waPayloadText)}`, '_blank');
-
-            alert("🚀 Complaint Submitted Successfully!");
-            event.target.reset();
-            
-            const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-            window.location.href = cleanUrl;
-        }
-
-        // LIVE DASHBOARD ENGINE
         function renderDashboardTable() {
             const tableBody = document.getElementById('dashboard-complaint-rows');
             if (!tableBody) return;
@@ -627,7 +680,6 @@
             document.body.removeChild(link);
         }
 
-        // WARRANTY MASTER DATABASE CONSOLE ENGINE
         function parseWarrantyCSV(event) {
             const file = event.target.files[0];
             if (!file) return;
