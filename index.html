@@ -86,7 +86,7 @@
             </div>
 
             <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
-                <span class="text-xs font-bold text-textMuted uppercase tracking-wider"><i class="fa-solid fa-network-wired"></i> System Active Signage Registry (<span id="total-nodes-badge" class="font-mono text-brandOrange font-bold">2</span> Cards Active)</span>
+                <span class="text-xs font-bold text-textMuted uppercase tracking-wider"><i class="fa-solid fa-network-wired"></i> System Active Signage Registry (<span id="total-nodes-badge" class="font-mono text-brandOrange font-bold">6</span> Cards Active)</span>
                 <div class="w-full sm:w-80">
                     <input type="text" id="qr-registry-search" oninput="filterRegistryCards()" placeholder="Search Bar..." class="w-full bg-gray-50 border-2 border-brandOrange rounded-lg px-3 py-2 text-xs text-textDark font-bold focus:outline-none shadow-sm">
                 </div>
@@ -121,9 +121,22 @@
                         </div>
                     </div>
 
-                    <div class="bg-gray-50 p-4 rounded-xl border border-borderGrey space-y-2">
-                        <span class="block text-xs font-bold uppercase tracking-wider text-brandOrange"><i class="fa-solid fa-camera"></i> Upload Defective Product Photograph</span>
-                        <input type="file" id="photo-mandatory" accept="image/*" class="w-full bg-white text-xs text-textDark border border-gray-300 rounded-lg p-1 shadow-sm">
+                    <div class="bg-gray-50 p-4 rounded-xl border border-borderGrey space-y-3">
+                        <span class="block text-xs font-bold uppercase tracking-wider text-brandOrange"><i class="fa-solid fa-camera"></i> Upload Defective Product Photographs</span>
+                        <div class="space-y-2">
+                            <div>
+                                <label class="block text-[10px] text-textMuted font-bold mb-0.5">Photo 1 (Mandatory) *</label>
+                                <input type="file" id="photo-mandatory" accept="image/*" required class="w-full bg-white text-xs text-textDark border border-gray-300 rounded-lg p-1 shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-textMuted font-medium mb-0.5">Photo 2 (Optional)</label>
+                                <input type="file" id="photo-optional-1" accept="image/*" class="w-full bg-white text-xs text-textMuted border border-gray-300 rounded-lg p-1 shadow-sm">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] text-textMuted font-medium mb-0.5">Photo 3 (Optional)</label>
+                                <input type="file" id="photo-optional-2" accept="image/*" class="w-full bg-white text-xs text-textMuted border border-gray-300 rounded-lg p-1 shadow-sm">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -254,7 +267,7 @@
 
                 <div class="bg-white rounded-xl border border-borderGrey overflow-hidden">
                     <div class="p-3 bg-gray-50 border-b border-borderGrey text-right">
-                        <span id="csv-count-badge" class="text-[10px] text-brandOrange font-mono font-bold">7 Records Found</span>
+                        <span id="csv-count-badge" class="text-[10px] text-brandOrange font-mono font-bold">6 Records Found</span>
                     </div>
                     
                     <div class="overflow-x-auto overflow-y-auto max-h-[500px]">
@@ -288,24 +301,35 @@
                             <p class="text-[11px] text-textMuted">Secure Identity & Gateway Parameters Locked Configuration</p>
                         </div>
                     </div>
+                    <button onclick="toggleAdminFieldsEdit()" id="admin-edit-toggle-btn" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg transition-all shadow-sm">
+                        <i class="fa-solid fa-pen-to-square mr-1"></i> EDIT CONFIG
+                    </button>
                 </div>
 
                 <div class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-textMuted uppercase mb-1">Admin Executive Name</label>
-                        <input type="text" value="Sudhanshu Shekhar" disabled class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark font-bold">
+                        <input type="text" id="cfg-admin-name" disabled value="Sudhanshu Shekhar" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark font-bold focus:outline-none focus:border-brandOrange">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-textMuted uppercase mb-1">Registered Contact Number</label>
-                        <input type="text" value="8698755608" disabled class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm text-blue-600 font-bold">
+                        <input type="text" id="cfg-admin-phone" disabled value="8698755608" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm text-blue-600 font-bold focus:outline-none focus:border-brandOrange">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-textMuted uppercase mb-1">System Registered Mail ID</label>
-                        <input type="text" value="mis@hi-sign.com" disabled class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-textDark font-bold">
+                        <input type="text" id="cfg-admin-email" disabled value="mis@hi-sign.com" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-textDark font-bold focus:outline-none focus:border-brandOrange">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-textMuted uppercase mb-1">Product ID Key</label>
-                        <input type="text" value="3a950ac6-e427-45db-848b-21ca1f292072" disabled class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-orange-500">
+                        <input type="text" id="cfg-product-key" disabled value="3a950ac6-e427-45db-848b-21ca1f292072" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-orange-500 focus:outline-none focus:border-brandOrange">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-textMuted uppercase mb-1">Token Secure ID</label>
+                        <input type="text" id="cfg-token-id" disabled value="01c04aaa-7588-4989-b435-13a873c5e9b3" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-textMuted focus:outline-none focus:border-brandOrange">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-textMuted uppercase mb-1">Phone Configuration ID</label>
+                        <input type="text" id="cfg-phone-id" disabled value="58852" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-emerald-500 font-bold focus:outline-none focus:border-brandOrange">
                     </div>
                 </div>
             </div>
@@ -333,10 +357,11 @@
             { id: "COMP-2", warrantyId: "TA4G5TJZ", client: "MUTHOOT FINANCE LTD.", siteAddress: "Hajipur Branch, Ground floor, Gayatri Complex", contact: "Sudhanshu Shekhar (8698755608)", imageName: "WhatsApp Image 2026-05-29 at 5.48.23 PM.jpeg", issue: "COMPLETE LED BLACKOUT, LED MODULE DEAD", matchStatus: "Veri-Fied Node Match", status: "Open Fault" },
             { id: "COMP-3", warrantyId: "95XCR7JY", client: "HDFC Bank", siteAddress: "GROUND FLOOR, JAANTA RAJA MARG", contact: "Sudhanshu Shekhar (8698755608)", imageName: "17806597292637691178974528091989.jpg", issue: "COMPLETE LED BLACKOUT, PARTIAL DIM PATCHES, FLICKERING / BLINK ISSUE", matchStatus: "Manual Network Registration", status: "In Progress" },
             { id: "COMP-4", warrantyId: "MAZK0CRX", client: "HDFC Bank", siteAddress: "SHOP NO G16, G17, G18, SONAL BUSINESS PARK", contact: "Sudhanshu Shekhar (8698755608)", imageName: "17806539378116935102393151549596.jpg", issue: "COMPLETE LED BLACKOUT, PARTIAL DIM PATCHES", matchStatus: "Manual Network Registration", status: "Open Fault" },
-            { id: "COMP-5", warrantyId: "MAZK0CRX", client: "HDFC Bank", siteAddress: "SHOP NO G16, G17, G18, SONAL BUSINESS PARK", contact: "Sudhanshu Shekhar (8698755608)", imageName: "WhatsApp Image 2026-05-29 at 5.48.23 PM.jpeg", issue: "COMPLETE LED BLACKOUT, PARTIAL DIM PATCHES, LED MODULE DEAD", matchStatus: "Verified Node Match", status: "Resolved" }
+            { id: "COMP-5", warrantyId: "MAZK0CRX", client: "HDFC Bank", siteAddress: "SHOP NO G16, G17, G18, SONAL BUSINESS PARK", contact: "Sudhanshu Shekhar (8698755608)", imageName: "WhatsApp Image 2026-05-29 at 5.48.23 PM.jpeg", issue: "COMPLETE LED BLACKOUT, PARTIAL DIM PATCHES, LED MODULE DEAD", matchStatus: "Veri-Fied Node Match", status: "Resolved" }
         ];
 
         let customQRCardsArray = JSON.parse(localStorage.getItem('linea_custom_qr_cards')) || [];
+        let isAdminEditModeActive = false;
 
         window.onload = function() {
             renderWarrantyTable();
@@ -368,6 +393,31 @@
             document.getElementById('content-' + tabName).classList.add('block');
             document.getElementById('tab-' + tabName).classList.add('bg-brandOrange', 'text-white', 'shadow-sm');
             document.getElementById('tab-' + tabName).classList.remove('text-textMuted');
+        }
+
+        // ADMIN CONFIG MANAGEMENT (RESTORED)
+        function toggleAdminFieldsEdit() {
+            const inputs = ['cfg-admin-name', 'cfg-admin-phone', 'cfg-admin-email', 'cfg-product-key', 'cfg-token-id', 'cfg-phone-id'];
+            const btn = document.getElementById('admin-edit-toggle-btn');
+            isAdminEditModeActive = !isAdminEditModeActive;
+            
+            inputs.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.disabled = !isAdminEditModeActive;
+                    element.classList.toggle('bg-gray-50', !isAdminEditModeActive);
+                    element.classList.toggle('bg-white', isAdminEditModeActive);
+                }
+            });
+
+            if (isAdminEditModeActive) {
+                btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> SAVE CONFIG`;
+                btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg shadow-sm";
+            } else {
+                btn.innerHTML = `<i class="fa-solid fa-pen-to-square mr-1"></i> EDIT CONFIG`;
+                btn.className = "bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg shadow-sm";
+                alert("✅ Credentials Config Successfully Saved and Locked!");
+            }
         }
 
         // DYNAMIC QR CARD REGISTRY ENGINE
@@ -446,7 +496,7 @@
             document.getElementById('claim-address').value = addr;
         }
 
-        // COMPLAINT LOGIC SUBMISSION
+        // COMPLAINT LOGIC SUBMISSION (WITH MULTIPLE PHOTO STRING CAPTURE)
         function handleCustomerFormSubmission(event) {
             event.preventDefault();
             
@@ -456,8 +506,15 @@
             const personName = document.getElementById('claim-contact-name').value;
             const personPhone = document.getElementById('claim-contact-phone').value;
             
-            const photoFile = document.getElementById('photo-mandatory').files[0];
-            const recordedPhotoLabel = photoFile ? photoFile.name : "attached_proof.jpg";
+            const file1 = document.getElementById('photo-mandatory').files[0];
+            const file2 = document.getElementById('photo-optional-1').files[0];
+            const file3 = document.getElementById('photo-optional-2').files[0];
+            
+            let filesArr = [];
+            if(file1) filesArr.push(file1.name);
+            if(file2) filesArr.push(file2.name);
+            if(file3) filesArr.push(file3.name);
+            const recordedPhotoLabel = filesArr.join(', ') || "attached_proof.jpg";
 
             let faultsSelected = [];
             document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
@@ -465,7 +522,7 @@
             if (customDescription) faultsSelected.push(customDescription);
             const completeFaultText = faultsSelected.join(', ') || 'Flickering / Blink Issue';
 
-            // IF WARRANTY ID DOES NOT EXIST IN DATABASE -> OUTPUT "No Warranty Claim"
+            // DYNAMIC ENGINE SELECTION MATCH CHECK
             const isMatchFound = masterWarrantyStorage.some(r => r.warrantyId.toUpperCase() === wId);
             const verifiedLabel = isMatchFound ? "Veri-Fied Node Match" : "No Warranty Claim";
 
@@ -486,8 +543,10 @@
             renderDashboardTable();
 
             // SEND WHATSAPP DISPATCH
+            let targetAdminPhone = document.getElementById('cfg-admin-phone')?.value.trim() || "8698755608";
+            const targetPhoneSanitized = targetAdminPhone.startsWith('91') ? targetAdminPhone : '91' + targetAdminPhone;
             const waPayloadText = `Warranty ID: ${payload.warrantyId}\nBranch/Client: ${payload.client}\nDiagnostic Issue: ${payload.issue}\nStatus Flag: ${payload.matchStatus}`;
-            window.open(`https://api.whatsapp.com/send?phone=918698755608&text=${encodeURIComponent(waPayloadText)}`, '_blank');
+            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneSanitized}&text=${encodeURIComponent(waPayloadText)}`, '_blank');
 
             alert("🚀 Complaint Submitted Successfully!");
             event.target.reset();
