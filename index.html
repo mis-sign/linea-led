@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Linea LED - Warranty Claim Hub</title>
+    <title>Linea LED - Gateway Control Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -49,7 +49,7 @@
         <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
             <div>
                 <h1 class="text-xl font-black text-textDark tracking-wide flex items-center gap-2">
-                    <span class="text-brandOrange"><i class="fa-solid fa-bolt"></i> LINEA LED</span> WARRANTY CLAIM HUB
+                    <span class="text-brandOrange"><i class="fa-solid fa-bolt"></i> LINEA LED</span> GATEWAY CONTROL HUB
                 </h1>
                 <p class="text-[10px] text-textMuted tracking-wider font-semibold">REAL-TIME SIGNAGE SYSTEM AUTOMATION</p>
             </div>
@@ -70,7 +70,7 @@
             <div class="bg-cardBg p-5 rounded-xl border border-borderGrey shadow-sm space-y-4">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                     <div>
-                        <h2 class="text-sm font-bold text-textDark uppercase tracking-wider border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-qrcode text-brandOrange mr-1"></i> QR Generator Tab</h2>
+                        <h2 class="text-sm font-bold text-textDark uppercase tracking-wider border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-qrcode text-brandOrange mr-1"></i> Custom QR Generator Tab</h2>
                     </div>
                     <div class="w-full sm:w-64">
                         <input type="text" id="qr-registry-search" oninput="filterRegistryCards()" placeholder="Search Registry..." class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange shadow-inner">
@@ -84,12 +84,12 @@
                             <input type="text" id="new-warranty-id" placeholder="e.g. TA4G5TJZ" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark font-mono uppercase focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-textMuted mb-1">Branch Code / Client Name *</label>
+                            <label class="block text-xs font-bold text-textMuted mb-1">Branch Name / Client *</label>
                             <input type="text" id="new-branch-name" placeholder="e.g. MUTHOOT FINANCE LTD." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-textMuted mb-1">Address *</label>
+                        <label class="block text-xs font-bold text-textMuted mb-1">Site Verified Full Location Address *</label>
                         <input type="text" id="new-site-address" placeholder="Enter full physical landmark details..." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange focus:ring-1 focus:ring-brandOrange">
                     </div>
                     <button onclick="addManualQRCard()" class="w-full bg-brandOrange hover:bg-brandOrangeHover text-white text-sm font-bold py-2.5 px-4 rounded-lg shadow-sm transition-all flex items-center justify-center gap-2 uppercase tracking-wide">
@@ -99,16 +99,16 @@
             </div>
 
             <div>
-                <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-3"><i class="fa-solid fa-network-wired"></i> System Active Signage Registry (<span id="total-nodes-badge" class="font-mono text-brandOrange font-bold">1</span> Card Active)</h3>
+                <h3 class="text-xs font-bold text-textMuted uppercase tracking-wider mb-3"><i class="fa-solid fa-network-wired"></i> System Active Signage Registry (<span id="total-nodes-badge" class="font-mono text-brandOrange font-bold">1</span> Cards Active Card Active)</h3>
                 <div id="qr-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                </div>
+                    </div>
             </div>
         </div>
 
         <div id="content-complaint" class="tab-section hidden">
             <div class="bg-cardBg border border-borderGrey rounded-xl shadow-md overflow-hidden max-w-xl mx-auto">
                 <div class="bg-gray-50 px-6 py-4 border-b border-borderGrey text-center">
-                    <h2 class="text-base font-black text-textDark tracking-wide mt-0.5">Complaint Register</h2>
+                    <h2 class="text-base font-black text-textDark tracking-wide mt-0.5">Linea Signage Fault Registration</h2>
                 </div>
                 
                 <form onsubmit="handleCustomerFormSubmission(event)" class="p-6 space-y-4">
@@ -121,7 +121,7 @@
                                 <input type="text" id="claim-serial" readonly placeholder="Awaiting Valid Scan" class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-brandOrange font-mono font-bold cursor-not-allowed">
                             </div>
                             <div>
-                                <label class="block text-[11px] font-bold text-textMuted mb-0.5">Branch Code / Client Name</label>
+                                <label class="block text-[11px] font-bold text-textMuted mb-0.5">Branch Name / Client Name</label>
                                 <input type="text" id="claim-project-name" readonly placeholder="Awaiting Valid Scan" class="w-full bg-white border border-borderGrey rounded-lg px-3 py-1.5 text-xs text-textDark font-bold cursor-not-allowed">
                             </div>
                         </div>
@@ -131,35 +131,33 @@
                         </div>
                     </div>
 
-                    <input type="hidden" id="gps-verified-data" value="LAT_28.6441_LONG_77.2012">
-
                     <div class="bg-gray-50 p-4 rounded-xl border border-borderGrey space-y-3">
-                        <span class="block text-xs font-bold uppercase tracking-wider text-brandOrange"><i class="fa-solid fa-camera"></i> Upload Defective Product Photograph</span>
+                        <span class="block text-xs font-bold uppercase tracking-wider text-brandOrange"><i class="fa-solid fa-camera"></i> Upload Defective Product Photographs</span>
                         <div>
-                            <input type="file" id="photo-mandatory" accept="image/*" class="w-full bg-white text-xs text-textMuted file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-brandOrange file:text-white hover:file:bg-brandOrangeHover cursor-pointer border border-gray-300 rounded-lg p-1 shadow-sm">
+                            <input type="file" id="photo-mandatory" accept="image/*" required class="w-full bg-white text-xs text-textMuted file:mr-3 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:font-bold file:bg-brandOrange file:text-white hover:file:bg-brandOrangeHover cursor-pointer border border-gray-300 rounded-lg p-1 shadow-sm">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-bold text-textMuted mb-1">Contact Person Name *</label>
-                            <input type="text" id="claim-contact-name" required placeholder="Enter Name" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
+                            <input type="text" id="claim-contact-name" required value="Sudhanshu Shekhar" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-textMuted mb-1">WhatsApp Number *</label>
-                            <input type="tel" id="claim-contact-phone" required placeholder="10 Digit Number" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
+                            <label class="block text-xs font-bold text-textMuted mb-1">Active WhatsApp Mobile *</label>
+                            <input type="tel" id="claim-contact-phone" required value="8698755608" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-textMuted mb-1">Email ID</label>
-                        <input type="email" id="claim-contact-email" placeholder="customer@email.com" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
+                        <label class="block text-xs font-bold text-textMuted mb-1">Customer Email</label>
+                        <input type="email" id="claim-contact-email" value="mishra.vij007@gmail.com" class="w-full bg-white border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark focus:outline-none focus:border-brandOrange">
                     </div>
 
                     <div>
                         <label class="block text-xs font-bold text-textMuted mb-2">Signage Technical Fault Diagnosis *</label>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
                             <label class="flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg border border-borderGrey cursor-pointer select-none text-[11px]">
-                                <input type="checkbox" name="faults" value="Complete LED Blackout" class="mt-0.5 accent-brandOrange" checked>
+                                <input type="checkbox" name="faults" value="Complete LED Blackout" class="mt-0.5 accent-brandOrange">
                                 <span class="text-textDark font-medium">Complete LED Blackout</span>
                             </label>
                             <label class="flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg border border-borderGrey cursor-pointer select-none text-[11px]">
@@ -175,7 +173,7 @@
                                 <span class="text-textDark font-medium">Power Driver Failure</span>
                             </label>
                             <label class="flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg border border-borderGrey cursor-pointer select-none text-[11px]">
-                                <input type="checkbox" name="faults" value="Flickering / Blink Issue" class="mt-0.5 accent-brandOrange">
+                                <input type="checkbox" name="faults" value="Flickering / Blink Issue" class="mt-0.5 accent-brandOrange" checked>
                                 <span class="text-textDark font-medium">Flickering / Blink Issue</span>
                             </label>
                             <label class="flex items-start gap-2 bg-gray-50 p-2.5 rounded-lg border border-borderGrey cursor-pointer select-none text-[11px]">
@@ -185,16 +183,13 @@
                         </div>
                         
                         <div class="bg-gray-50 p-3 rounded-lg border border-borderGrey space-y-2">
-                            <label class="flex items-center gap-2 cursor-pointer select-none text-[11px] font-bold text-textDark">
-                                <input type="checkbox" id="fault-any-other" value="Any Other Issue" class="accent-brandOrange">
-                                <span>Any Other Issue</span>
-                            </label>
+                            <span class="text-[11px] font-bold text-textDark">Any other issue:</span>
                             <textarea id="fault-custom-description" placeholder="Specify clear details about the issue here..." class="w-full bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark h-16 resize-none focus:outline-none focus:border-brandOrange"></textarea>
                         </div>
                     </div>
 
                     <button type="submit" class="w-full bg-brandOrange hover:bg-brandOrangeHover text-white text-sm font-bold uppercase tracking-wider py-3 px-4 rounded-lg shadow-md transition-all">
-                        Submit
+                        DISPATCH SECURE COMPLAINT PAYLOAD
                     </button>
                 </form>
             </div>
@@ -203,7 +198,7 @@
         <div id="content-dashboard" class="tab-section hidden space-y-6">
             <div class="bg-cardBg p-5 rounded-xl border border-borderGrey shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
-                    <h2 class="text-base font-bold text-textDark tracking-wide border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-desktop text-brandOrange mr-1"></i> Live Dashboard</h2>
+                    <h2 class="text-base font-bold text-textDark tracking-wide border-l-4 border-brandOrange pl-2">Customer Responses & Operational Matrix</h2>
                 </div>
                 <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
                     <input type="text" id="dashboard-search" oninput="filterDashboardTable()" placeholder="Search logs..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-44">
@@ -214,21 +209,21 @@
                         <option value="Resolved">Resolved</option>
                     </select>
                     <button onclick="exportDashboardData()" class="bg-brandOrange hover:bg-brandOrangeHover text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 shadow-sm">
-                        <i class="fa-solid fa-file-export"></i> Export CSV
+                        Import CSV
                     </button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm relative overflow-hidden">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm text-center">
                     <span class="text-[10px] text-textMuted uppercase font-bold tracking-wider block">Total Claims</span>
                     <span id="dash-counter-total" class="text-2xl font-black text-textDark block mt-1 font-mono">0</span>
                 </div>
-                <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm relative overflow-hidden border-l-4 border-red-500">
+                <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm text-center border-l-4 border-red-500">
                     <span class="text-[10px] text-red-600 uppercase font-bold tracking-wider block">Pending Claims</span>
                     <span id="dash-counter-pending" class="text-2xl font-black text-red-600 block mt-1 font-mono">0</span>
                 </div>
-                <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm relative overflow-hidden border-l-4 border-emerald-500">
+                <div class="bg-white p-4 rounded-xl border border-borderGrey shadow-sm text-center border-l-4 border-emerald-500">
                     <span class="text-[10px] text-emerald-600 uppercase font-bold tracking-wider block">Resolved Claims</span>
                     <span id="dash-counter-resolved" class="text-2xl font-black text-emerald-600 block mt-1 font-mono">0</span>
                 </div>
@@ -240,7 +235,7 @@
                         <thead>
                             <tr class="bg-gray-100 text-textMuted border-b border-borderGrey uppercase tracking-wider font-mono text-[10px]">
                                 <th class="p-3">Warranty ID</th>
-                                <th class="p-3">Client / Branch Name</th>
+                                <th class="p-3">Client / Branch</th>
                                 <th class="p-3">Site Address</th>
                                 <th class="p-3">Contact Reference</th>
                                 <th class="p-3">Verified Photo Attachment</th>
@@ -252,7 +247,7 @@
                         <tbody id="dashboard-complaint-rows" class="divide-y divide-gray-200 font-medium text-textDark">
                             <tr id="empty-ledger-placeholder">
                                 <td colspan="8" class="p-10 text-center text-textMuted font-medium italic">
-                                    <i class="fa-solid fa-receipt text-3xl block mb-2 text-gray-300"></i> Koi response abhi tak generate nahi hua hai. Warranty QR scan karke complaint submit kijiye!
+                                    No warranty claims found.
                                 </td>
                             </tr>
                         </tbody>
@@ -265,47 +260,39 @@
             <div class="bg-cardBg p-6 rounded-xl border border-borderGrey shadow-sm space-y-5">
                 <div class="border-b border-gray-200 pb-3 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                        <h2 class="text-base font-bold text-textDark border-l-4 border-brandOrange pl-2"><i class="fa-solid fa-file-invoice text-brandOrange mr-1"></i> Master Warranty Registrations Database</h2>
+                        <h2 class="text-base font-bold text-textDark border-l-4 border-brandOrange pl-2">Master Warranty Registrations Database</h2>
                     </div>
                     
                     <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                        <input type="text" id="warranty-search-input" oninput="filterWarrantyTable()" placeholder="Search ID, Client, Project..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-64">
+                        <input type="text" id="warranty-search-input" oninput="filterWarrantyTable()" placeholder="Search ID, Client..." class="bg-white border border-gray-300 rounded-lg px-3 py-1.5 text-xs text-textDark focus:outline-none focus:border-brandOrange w-full sm:w-64">
                         <label class="flex items-center gap-1.5 bg-cyberGreen hover:bg-emerald-600 text-white text-xs font-bold py-1.5 px-3 rounded-lg cursor-pointer transition-all shadow-sm uppercase tracking-wider">
-                            <i class="fa-solid fa-file-excel"></i> Upload Master CSV
+                            UPLOAD MASTER CSV
                             <input type="file" id="warranty-csv-import" accept=".csv" onchange="parseWarrantyCSV(event)" class="hidden">
                         </label>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-xl border border-borderGrey overflow-hidden">
-                    <div class="p-3 bg-gray-50 border-b border-borderGrey flex justify-between items-center">
-                        <span class="text-[10px] font-bold uppercase tracking-wider text-textMuted">Spreadsheet Records</span>
-                        <span id="csv-count-badge" class="text-[10px] bg-orange-100 text-brandOrange font-mono px-2 py-0.5 rounded border border-orange-200 font-bold">0 Records Found</span>
+                    <div class="p-3 bg-gray-50 border-b border-borderGrey text-right">
+                        <span id="csv-count-badge" class="text-[10px] text-brandOrange font-mono font-bold">2 Records Found</span>
                     </div>
                     
                     <div class="overflow-x-auto overflow-y-auto max-h-[500px]">
                         <table class="w-full text-left text-xs min-w-[1500px]">
                             <thead class="sticky top-0 bg-gray-100 text-textMuted font-mono text-[10px] uppercase border-b border-borderGrey z-10">
                                 <tr>
-                                    <th class="p-3 border-r border-gray-200 w-[120px]">Warranty ID</th>
-                                    <th class="p-3 border-r border-gray-200 w-[200px]">Customer Name</th>
-                                    <th class="p-3 border-r border-gray-200 w-[100px]">Total Warranty</th>
-                                    <th class="p-3 border-r border-gray-200 w-[100px]">Start Date</th>
-                                    <th class="p-3 border-r border-gray-200 w-[100px]">End Date</th>
-                                    <th class="p-3 border-r border-gray-200 w-[200px]">Branch Code / Client Name</th>
-                                    <th class="p-3 border-r border-gray-200 w-[130px]">Contact Number</th>
-                                    <th class="p-3 border-r border-gray-200 w-[350px]">Site Address (Full)</th>
-                                    <th class="p-3 border-r border-gray-200 w-[180px]">Product Name</th>
-                                    <th class="p-3 w-[120px]">Product Type</th>
+                                    <th class="p-3 border-r border-gray-200">Warranty ID</th>
+                                    <th class="p-3 border-r border-gray-200">Customer Name</th>
+                                    <th class="p-3 border-r border-gray-200">Total Warranty</th>
+                                    <th class="p-3 border-r border-gray-200">Start Date</th>
+                                    <th class="p-3 border-r border-gray-200">End Date</th>
+                                    <th class="p-3 border-r border-gray-200">Project / Branch Name</th>
+                                    <th class="p-3 border-r border-gray-200">Contact Number</th>
+                                    <th class="p-3">Site Address (Full)</th>
                                 </tr>
                             </thead>
-                            <tbody id="csv-data-viewer-rows" class="divide-y divide-gray-200 text-textDark font-medium break-words">
-                                <tr>
-                                    <td colspan="10" class="p-12 text-center text-textMuted italic">
-                                        <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-300 block mb-2"></i> No data loaded into temporary system node. Please upload a valid CSV.
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="csv-data-viewer-rows" class="divide-y divide-gray-200 text-textDark font-medium font-mono">
+                                </tbody>
                         </table>
                     </div>
                 </div>
@@ -316,39 +303,41 @@
             <div class="bg-cardBg p-6 rounded-xl border border-borderGrey shadow-sm max-w-2xl mx-auto space-y-6">
                 <div class="border-b border-gray-200 pb-3 flex justify-between items-center">
                     <div class="flex items-center gap-2">
-                        <span class="text-brandOrange text-xl"><i class="fa-solid fa-gears"></i></span>
-                        <h3 class="text-sm font-bold text-textDark uppercase tracking-wider">Linea Signage API Endpoint Console</h3>
+                        <span class="text-brandOrange text-xl"><i class="fa-solid fa-shield-halved"></i></span>
+                        <div>
+                            <h3 class="text-sm font-bold text-textDark uppercase tracking-wide">Central Admin Credentials Dashboard</h3>
+                            <p class="text-[11px] text-textMuted">Secure Identity & Gateway Parameters Locked Configuration</p>
+                        </div>
                     </div>
                     <button onclick="toggleAdminFieldsEdit()" id="admin-edit-toggle-btn" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg transition-all shadow-sm">
                         <i class="fa-solid fa-pen-to-square mr-1"></i> EDIT CONFIG
                     </button>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-4">
                     <div>
-                        <label class="block text-[11px] font-bold text-textMuted uppercase mb-1">Central Google App Script URL Node</label>
-                        <input type="text" id="cfg-apps-script" disabled value="https://script.google.com/macros/s/AKfycby3jkh..." class="w-full bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-xs font-mono text-textDark focus:outline-none focus:border-brandOrange">
+                        <label class="block text-xs font-bold text-textMuted uppercase mb-1">Admin Executive Name</label>
+                        <input type="text" id="cfg-admin-name" disabled value="Sudhanshu Shekhar" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm text-textDark font-bold focus:outline-none focus:border-brandOrange">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-textMuted uppercase mb-1">Master Secure Encryption Token ID</label>
-                        <input type="text" id="cfg-token-id" disabled value="LINEA_SECURE_NODE_9875" class="w-full bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-xs font-mono text-textDark focus:outline-none focus:border-brandOrange">
+                        <label class="block text-xs font-bold text-textMuted uppercase mb-1">Registered Contact Number</label>
+                        <input type="text" id="cfg-admin-phone" disabled value="8698755608" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm text-blue-600 font-bold focus:outline-none focus:border-brandOrange">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-textMuted uppercase mb-1">WhatsApp Cloud Device Phone ID</label>
-                        <input type="text" id="cfg-phone-id" disabled value="8698755608" class="w-full bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-xs font-mono text-textDark focus:outline-none focus:border-brandOrange">
+                        <label class="block text-xs font-bold text-textMuted uppercase mb-1">System Registered Mail ID</label>
+                        <input type="text" id="cfg-admin-email" disabled value="mis@hi-sign.com" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-textDark font-bold focus:outline-none focus:border-brandOrange">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-bold text-textMuted uppercase mb-1">MIS Configuration Route Base (Bali ID)</label>
-                        <input type="text" id="cfg-bali-id" disabled value="BALI_NODE_SECURE_CORE_01" class="w-full bg-gray-100 border border-gray-300 rounded-lg px-3 py-2 text-xs font-mono text-textDark focus:outline-none focus:border-brandOrange">
+                        <label class="block text-xs font-bold text-textMuted uppercase mb-1">Product ID Key</label>
+                        <input type="text" id="cfg-product-key" disabled value="3a950ac6-e427-45db-848b-21ca1f292072" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-orange-500 focus:outline-none focus:border-brandOrange">
                     </div>
-                </div>
-
-                <div class="bg-gray-50 border border-borderGrey rounded-xl p-4 space-y-2">
-                    <span class="text-[10px] uppercase font-bold text-textMuted tracking-wider block"><i class="fa-solid fa-circle-info"></i> Node Deployment Profile:</span>
-                    <div class="text-xs font-medium text-textDark space-y-1">
-                        <p><b>Executive Administrator:</b> Sudhanshu Shekhar</p>
-                        <p><b>Central Operations Node:</b> operations@linealed.com</p>
-                        <p><b>Primary Contact Anchor:</b> +91 8698755608</p>
+                    <div>
+                        <label class="block text-xs font-bold text-textMuted uppercase mb-1">Token Secure ID</label>
+                        <input type="text" id="cfg-token-id" disabled value="01c04aaa-7588-4989-b435-13a873c5e9b3" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-textMuted focus:outline-none focus:border-brandOrange">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-textMuted uppercase mb-1">Phone Configuration ID</label>
+                        <input type="text" id="cfg-phone-id" disabled value="58852" class="w-full bg-gray-50 border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono text-emerald-500 font-bold focus:outline-none focus:border-brandOrange">
                     </div>
                 </div>
             </div>
@@ -361,18 +350,13 @@
     </footer>
 
     <script>
-        let masterWarrantyStorage = JSON.parse(localStorage.getItem('linea_warranty_db')) || [];
+        // MASTER CENTRAL VARIABLES
+        let masterWarrantyStorage = JSON.parse(localStorage.getItem('linea_warranty_db')) || [
+            { warrantyId: "TA4G5TJZ", customerName: "Mission Xcellence Creative Solutions Pvt. Ltd.", totalWarranty: "5 years", startDate: "05/21/2026", endDate: "05/20/2031", projectName: "MUTHOOT FINANCE LTD.", contactNo: "9355338899", siteAddress: "Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk Showroom, Hajipur, Dist - Vaishali, Bihar" },
+            { warrantyId: "D14GNIQA", customerName: "SIGN TECHNIC INDUSTRIES PVT LTD", totalWarranty: "5 years", startDate: "05/16/2026", endDate: "05/15/2031", projectName: "HDFC Bank", contactNo: "8838773213", siteAddress: "GROUND FLOOR, 590, OPP. NAGARPALIKA OFFICE, KURDUVADI, DIST PUNE MAHARASHTRA - 413208" }
+        ];
         let complaintsResponseArray = JSON.parse(localStorage.getItem('linea_complaints_db')) || [];
         let customQRCardsArray = JSON.parse(localStorage.getItem('linea_custom_qr_cards')) || [];
-
-        const LINEA_SYNC_CONFIG = {
-            googleScriptUrl: "", 
-            adminName: "Sudhanshu Shekhar",
-            adminWhatsApp: "918698755608",
-            adminEmail: "operations@linealed.com"
-        };
-
-        let isCustomerLayoutViewMode = false;
         let isAdminEditModeActive = false;
 
         window.onload = function() {
@@ -380,24 +364,22 @@
             renderDashboardTable();
             renderCustomQRCards();
 
+            // Intercept scan query strings if applicable
             const urlParams = new URLSearchParams(window.location.search);
             const wId = urlParams.get('wId');
             const bName = urlParams.get('bName');
             const addr = urlParams.get('addr');
 
             if (wId && bName && addr) {
-                isCustomerLayoutViewMode = true;
-                document.getElementById('main-header').style.display = 'none';
-                document.getElementById('main-footer').style.display = 'none';
-                triggerCustomerScanPassthrough(wId, bName, addr);
-                
+                simulateScan(wId, bName, addr);
                 const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
                 window.history.replaceState({path: cleanUrl}, '', cleanUrl);
             }
         };
 
+        // ADMIN CONSOLE INTERACTION LOGIC
         function toggleAdminFieldsEdit() {
-            const inputs = ['cfg-apps-script', 'cfg-token-id', 'cfg-phone-id', 'cfg-bali-id'];
+            const inputs = ['cfg-admin-name', 'cfg-admin-phone', 'cfg-admin-email', 'cfg-product-key', 'cfg-token-id', 'cfg-phone-id'];
             const btn = document.getElementById('admin-edit-toggle-btn');
             
             isAdminEditModeActive = !isAdminEditModeActive;
@@ -406,29 +388,21 @@
                 const element = document.getElementById(id);
                 element.disabled = !isAdminEditModeActive;
                 if (isAdminEditModeActive) {
-                    element.classList.remove('bg-gray-100');
+                    element.classList.remove('bg-gray-50');
                     element.classList.add('bg-white');
                 } else {
                     element.classList.remove('bg-white');
-                    element.classList.add('bg-gray-100');
+                    element.classList.add('bg-gray-50');
                 }
             });
 
             if (isAdminEditModeActive) {
                 btn.innerHTML = `<i class="fa-solid fa-floppy-disk mr-1"></i> SAVE CONFIG`;
-                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
-                btn.classList.add('bg-emerald-600', 'hover:bg-emerald-700');
+                btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg shadow-sm transition-all";
             } else {
                 btn.innerHTML = `<i class="fa-solid fa-pen-to-square mr-1"></i> EDIT CONFIG`;
-                btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-700');
-                btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                
-                // Live sync to update core settings phone configuration dynamically
-                const updatedPhone = document.getElementById('cfg-phone-id').value.trim();
-                if(updatedPhone) {
-                    LINEA_SYNC_CONFIG.adminWhatsApp = updatedPhone.startsWith('91') ? updatedPhone : '91' + updatedPhone;
-                }
-                alert("✅ Admin API parameters successfully locked and integrated locally!");
+                btn.className = "bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-1.5 px-4 rounded-lg shadow-sm transition-all";
+                alert("✅ Central Credentials Parameters Successfully Saved and Locked!");
             }
         }
 
@@ -447,6 +421,7 @@
             document.getElementById('tab-' + tabName).classList.remove('text-textMuted');
         }
 
+        // WARRANTY SPREADSHEET MATRIX LOGIC
         function parseWarrantyCSV(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -462,49 +437,46 @@
                     if (!row) continue;
                     const cols = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
                     
-                    if (cols.length > 0) {
+                    if (cols.length >= 8) {
                         masterWarrantyStorage.push({
                             warrantyId: cols[0] ? cols[0].replace(/"/g, '').trim() : '',
                             customerName: cols[1] ? cols[1].replace(/"/g, '').trim() : '',
-                            totalWarranty: cols[3] ? cols[3].replace(/"/g, '').trim() : '',
-                            startDate: cols[4] ? cols[4].replace(/"/g, '').trim() : '',
-                            endDate: cols[5] ? cols[5].replace(/"/g, '').trim() : '',
-                            projectName: cols[11] ? cols[11].replace(/"/g, '').trim() : '',
-                            contactNo: cols[13] ? cols[13].replace(/"/g, '').trim() : '',
-                            siteAddress: cols[15] ? cols[15].replace(/"/g, '').trim() : '',
-                            productName: cols[18] ? cols[18].replace(/"/g, '').trim() : '',
-                            productType: cols[19] ? cols[19].replace(/"/g, '').trim() : ''
+                            totalWarranty: cols[2] ? cols[2].replace(/"/g, '').trim() : '',
+                            startDate: cols[3] ? cols[3].replace(/"/g, '').trim() : '',
+                            endDate: cols[4] ? cols[4].replace(/"/g, '').trim() : '',
+                            projectName: cols[5] ? cols[5].replace(/"/g, '').trim() : '',
+                            contactNo: cols[6] ? cols[6].replace(/"/g, '').trim() : '',
+                            siteAddress: cols[7] ? cols[7].replace(/"/g, '').trim() : ''
                         });
                     }
                 }
                 localStorage.setItem('linea_warranty_db', JSON.stringify(masterWarrantyStorage));
                 renderWarrantyTable();
-                alert(`✅ DATA INTEGRATED SAFELY: ${masterWarrantyStorage.length} Master spreadsheet rows registered!`);
+                alert(`✅ DATA INTEGRATED SAFELY: Loaded ${masterWarrantyStorage.length} records.`);
             };
             reader.readAsText(file);
         }
 
         function renderWarrantyTable() {
             const tableBody = document.getElementById('csv-data-viewer-rows');
+            if(!tableBody) return;
             document.getElementById('csv-count-badge').innerText = `${masterWarrantyStorage.length} Records Found`;
 
             if (masterWarrantyStorage.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="10" class="p-12 text-center text-textMuted italic">No data loaded into system node. Please upload a valid CSV.</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="8" class="p-12 text-center text-textMuted italic">No database records registered.</td></tr>`;
                 return;
             }
 
             tableBody.innerHTML = masterWarrantyStorage.map(item => `
-                <tr class="hover:bg-gray-50 border-b border-gray-200 font-mono text-[11px] align-top text-textDark">
-                    <td class="p-3 text-brandOrange font-bold border-r border-gray-200">${item.warrantyId}</td>
-                    <td class="p-3 text-textDark border-r border-gray-200 whitespace-normal font-sans">${item.customerName}</td>
-                    <td class="p-3 text-textMuted border-r border-gray-200">${item.totalWarranty}</td>
-                    <td class="p-3 text-textMuted border-r border-gray-200">${item.startDate}</td>
-                    <td class="p-3 text-textMuted border-r border-gray-200">${item.endDate}</td>
-                    <td class="p-3 text-cyberBlue font-bold border-r border-gray-200 whitespace-normal font-sans">${item.projectName}</td>
-                    <td class="p-3 text-textDark border-r border-gray-200">${item.contactNo}</td>
-                    <td class="p-3 text-textMuted border-r border-gray-200 whitespace-normal font-sans tracking-wide select-all">${item.siteAddress}</td>
-                    <td class="p-3 text-cyberGreen border-r border-gray-200 whitespace-normal font-sans">${item.productName}</td>
-                    <td class="p-3 text-textMuted whitespace-normal font-sans">${item.productType}</td>
+                <tr class="hover:bg-gray-50 border-b border-gray-200 text-[11px] text-textDark align-top">
+                    <td class="p-3 text-brandOrange font-bold">${item.warrantyId}</td>
+                    <td class="p-3 font-sans whitespace-normal">${item.customerName}</td>
+                    <td class="p-3 text-textMuted">${item.totalWarranty}</td>
+                    <td class="p-3 text-textMuted">${item.startDate}</td>
+                    <td class="p-3 text-textMuted">${item.endDate}</td>
+                    <td class="p-3 text-blue-600 font-bold font-sans whitespace-normal">${item.projectName}</td>
+                    <td class="p-3">${item.contactNo}</td>
+                    <td class="p-3 font-sans whitespace-normal">${item.siteAddress}</td>
                 </tr>
             `).join('');
         }
@@ -516,10 +488,8 @@
             for (let row of rows) {
                 if (row.cells.length < 2) continue;
                 const matchId = row.cells[0].innerText.toLowerCase();
-                const matchClient = row.cells[1].innerText.toLowerCase();
                 const matchProject = row.cells[5].innerText.toLowerCase();
-
-                if (matchId.includes(query) || matchClient.includes(query) || matchProject.includes(query)) {
+                if (matchId.includes(query) || matchProject.includes(query)) {
                     row.style.display = "";
                 } else {
                     row.style.display = "none";
@@ -527,6 +497,7 @@
             }
         }
 
+        // QR MANAGEMENT AND MATRIX AUTOMATION
         function addManualQRCard() {
             const wId = document.getElementById('new-warranty-id').value.trim().toUpperCase();
             const bName = document.getElementById('new-branch-name').value.trim();
@@ -549,37 +520,38 @@
 
         function renderCustomQRCards() {
             const gridContainer = document.getElementById('qr-cards-grid');
-            document.getElementById('total-nodes-badge').innerText = `${customQRCardsArray.length + 1} Cards Active`;
+            if(!gridContainer) return;
+            document.getElementById('total-nodes-badge').innerText = `${customQRCardsArray.length + 1} Cards Active Card Active`;
 
             const baseUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
-            const staticStaticUrl = `${baseUrl}?wId=TA4G5TJZ&bName=${encodeURIComponent('MUTHOOT FINANCE LTD.')}&addr=${encodeURIComponent('Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')}`;
+            const staticPayloadUrl = `${baseUrl}?wId=TA4G5TJZ&bName=${encodeURIComponent('MUTHOOT FINANCE LTD.')}&addr=${encodeURIComponent('Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk Showroom, Hajipur, Dist - Vaishali, Bihar')}`;
 
             let staticHtml = `
                 <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
                     <div>
-                        <h4 class="font-bold text-textDark text-sm tracking-wide font-sans">MUTHOOT FINANCE LTD.</h4>
-                        <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">Warranty ID: TA4G5TJZ</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerCustomerScanPassthrough('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar')">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(staticStaticUrl)}" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
-                            <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
+                        <h4 class="font-bold text-textDark text-sm font-sans">MUTHOOT FINANCE LTD.</h4>
+                        <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">WARRANTY ID: TA4G5TJZ</p>
+                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="simulateScan('TA4G5TJZ', 'MUTHOOT FINANCE LTD.', 'Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk Showroom, Hajipur, Dist - Vaishali, Bihar')">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(staticPayloadUrl)}" alt="QR" class="w-[120px] h-[120px] mx-auto block mix-blend-multiply">
+                            <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline">CLICK TO SIMULATE SCAN</span>
                         </div>
-                        <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">Hajipur Branch, Ground floor, Gayatri Complex, Nai Tola, Yadav Chowk, Bihar</p>
+                        <p class="text-[11px] text-textMuted font-sans max-h-12 overflow-hidden truncate">Hajipur Branch, Ground floor, Gayatri Complex</p>
                     </div>
                 </div>
             `;
 
             let dynamicHtml = customQRCardsArray.map(item => {
-                const qrPayloadUrl = `${baseUrl}?wId=${encodeURIComponent(item.id)}&bName=${encodeURIComponent(item.client)}&addr=${encodeURIComponent(item.address)}`;
+                const dynamicUrl = `${baseUrl}?wId=${encodeURIComponent(item.id)}&bName=${encodeURIComponent(item.client)}&addr=${encodeURIComponent(item.address)}`;
                 return `
                 <div class="qr-registry-node bg-cardBg border border-borderGrey rounded-xl p-5 flex flex-col justify-between text-center shadow-sm group hover:border-brandOrange transition-all duration-300">
                     <div>
-                        <h4 class="font-bold text-textDark text-sm tracking-wide font-sans">${item.client}</h4>
-                        <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">Warranty ID: ${item.id}</p>
-                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="triggerCustomerScanPassthrough('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
-                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrPayloadUrl)}" alt="QR" class="w-[140px] h-[140px] mx-auto block mix-blend-multiply">
-                            <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline"><i class="fa-solid fa-mobile-screen-button"></i> CLICK TO SIMULATE SCAN</span>
+                        <h4 class="font-bold text-textDark text-sm font-sans">${item.client}</h4>
+                        <p class="text-[11px] text-brandOrange font-mono font-bold uppercase tracking-wider mt-0.5">WARRANTY ID: ${item.id}</p>
+                        <div class="my-4 bg-gray-50 border border-borderGrey p-4 rounded-lg inline-block shadow-inner mx-auto cursor-pointer" onclick="simulateScan('${item.id}', '${item.client.replace(/'/g, "\\'")}', '${item.address.replace(/'/g, "\\'")}')">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(dynamicUrl)}" alt="QR" class="w-[120px] h-[120px] mx-auto block mix-blend-multiply">
+                            <span class="text-[10px] text-brandOrange font-bold block mt-2 hover:underline">CLICK TO SIMULATE SCAN</span>
                         </div>
-                        <p class="text-[11px] text-textMuted px-1 text-center font-medium font-sans">${item.address}</p>
+                        <p class="text-[11px] text-textMuted font-sans max-h-12 overflow-hidden truncate">${item.address}</p>
                     </div>
                 </div>
             `}).join('');
@@ -599,15 +571,14 @@
             }
         }
 
-        function triggerCustomerScanPassthrough(wId, bName, siteAddr) {
+        function simulateScan(wId, bName, addr) {
             changeTab('complaint');
             document.getElementById('claim-serial').value = wId;
             document.getElementById('claim-project-name').value = bName;
-            document.getElementById('claim-address').value = siteAddr;
-            document.getElementById('claim-contact-name').value = "Sudhanshu Shekhar";
-            document.getElementById('claim-contact-phone').value = "8698755608";
+            document.getElementById('claim-address').value = addr;
         }
 
+        // SECURE SUBMISSION AND DISPATCH HANDLING
         function fileToDataUrl(file) {
             return new Promise((resolve) => {
                 if (!file) return resolve("");
@@ -618,165 +589,83 @@
             });
         }
 
-        function escapeHtml(value) {
-            return String(value || "")
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
-
         async function handleCustomerFormSubmission(event) {
             event.preventDefault();
-            const gpsLock = document.getElementById('gps-verified-data').value || "LAT_28.6441_LONG_77.2012";
+            
             const wId = document.getElementById('claim-serial').value.trim().toUpperCase();
             const pName = document.getElementById('claim-project-name').value;
             const siteAddress = document.getElementById('claim-address').value;
             const personName = document.getElementById('claim-contact-name').value;
-            const personPhone = document.getElementById('claim-contact-phone').value.replace(/\D/g, '');
-            const personEmail = (document.getElementById('claim-contact-email')?.value || '').trim();
+            const personPhone = document.getElementById('claim-contact-phone').value;
             const fileCheck = document.getElementById('photo-mandatory').files[0];
-            let photoDataUrl = "";
 
             let faultsSelected = [];
             document.querySelectorAll('input[name="faults"]:checked').forEach(cb => faultsSelected.push(cb.value));
-            
-            if (document.getElementById('fault-any-other').checked) {
-                const customText = document.getElementById('fault-custom-description').value.trim();
-                faultsSelected.push(customText ? `Other: ${customText}` : 'Any Other Issue');
+            const customDescription = document.getElementById('fault-custom-description').value.trim();
+            if (customDescription) {
+                faultsSelected.push(customDescription);
             }
-            
-            const activeFaultText = faultsSelected.join(', ') || 'Diagnostic Evaluation';
+            const completeFaultText = faultsSelected.join(', ') || 'Flickering / Blink Issue';
 
-            const matchFoundInDatabase = masterWarrantyStorage.some(record => record.warrantyId.toUpperCase() === wId);
-            const matchStatusLabel = (wId.length > 0 && matchFoundInDatabase) ? "Verified Node Match" : "NO WARRANTY CLAIM";
-            const uniqueComplaintId = "COMP-" + Date.now();
+            const matchFound = masterWarrantyStorage.some(r => r.warrantyId.toUpperCase() === wId);
+            const verifiedLabel = matchFound ? "Verified Node Match" : "NO WARRANTY CLAIM";
+            const uniqueId = "COMP-" + Date.now();
 
-            const complaintPayload = {
-                id: uniqueComplaintId,
-                warrantyId: wId || 'UNLISTED_ID',
-                client: pName || 'Manual Registration',
-                siteAddress: siteAddress || 'Direct Form Input Location',
-                contactName: personName,
-                contactPhone: personPhone,
-                contactEmail: personEmail,
+            let targetAdminPhone = document.getElementById('cfg-admin-phone').value.trim() || "8698755608";
+
+            const payload = {
+                id: uniqueId,
+                warrantyId: wId || 'TA4G5TJZ',
+                client: pName || 'MUTHOOT FINANCE LTD.',
+                siteAddress: siteAddress || 'Hajipur Branch Location',
                 contact: `${personName} (${personPhone})`,
                 imageName: fileCheck ? fileCheck.name : "attached_proof.jpg",
-                photoDataUrl: photoDataUrl,
-                photoUrl: photoDataUrl,
-                issue: activeFaultText,
-                gps: gpsLock,
-                matchStatus: matchStatusLabel,
-                status: "Open Fault",
-                createdAt: new Date().toISOString()
+                issue: completeFaultText,
+                matchStatus: verifiedLabel,
+                status: "Open Fault"
             };
 
-            upsertComplaintLocally(complaintPayload);
-            openWhatsAppNotificationLinks(complaintPayload, 'registered');
-            openCustomerMailDraft(complaintPayload, 'registered');
-
-            photoDataUrl = await fileToDataUrl(fileCheck);
-            complaintPayload.photoDataUrl = photoDataUrl;
-            complaintPayload.photoUrl = photoDataUrl || complaintPayload.photoUrl;
-            upsertComplaintLocally(complaintPayload);
-            
-            alert(`🚀 COMPLAINT PROCESSED SUCCESSFULLY:\nID: ${uniqueComplaintId}\nStatus verification context: ${matchStatusLabel}`);
-            event.target.reset();
-            changeTab('dashboard');
-        }
-
-        function upsertComplaintLocally(item) {
-            const existingIndex = complaintsResponseArray.findIndex(row => row.id === item.id);
-            if (existingIndex >= 0) {
-                complaintsResponseArray[existingIndex] = { ...complaintsResponseArray[existingIndex], ...item };
-            } else {
-                complaintsResponseArray.unshift(item);
-            }
+            complaintsResponseArray.unshift(payload);
             localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
             renderDashboardTable();
-        }
 
-        function buildComplaintMessage(item, eventType, audience = 'admin') {
-            const id = item.id || '';
-            const customerName = item.contactName || 'Customer';
-            const issue = item.issue || 'Service request';
-            const status = item.status || 'Open Fault';
+            // WhatsApp Dispatch Action Engine
+            const waPayloadText = `NEW FAULT REPORT ID: ${uniqueId}\nWarranty ID: ${payload.warrantyId}\nBranch/Client: ${payload.client}\nDiagnostic Issue: ${payload.issue}\nStatus Flag: ${payload.matchStatus}`;
+            const targetPhoneSanitized = targetAdminPhone.startsWith('91') ? targetAdminPhone : '91' + targetAdminPhone;
+            window.open(`https://api.whatsapp.com/send?phone=${targetPhoneSanitized}&text=${encodeURIComponent(waPayloadText)}`, '_blank');
 
-            if (audience === 'customer') {
-                return `Hello Dear ${customerName},\n\nYour complaint status is now: ${status}.\nComplaint ID: ${id}\nWarranty Context: ${item.matchStatus}\n\nThank you,\nLinea LED Team`;
-            }
-            return `LINEA LED ALERT\n\nID: ${id}\nBranch/Client: ${item.client}\nAddress: ${item.siteAddress}\nIssue: ${issue}\nStatus Flag: ${item.matchStatus}`;
-        }
-
-        function openWhatsAppNotificationLinks(item, eventType) {
-            const adminMessage = buildComplaintMessage(item, eventType, 'admin');
-            window.open(`https://wa.me/${LINEA_SYNC_CONFIG.adminWhatsApp}?text=${encodeURIComponent(adminMessage)}`, '_blank');
-        }
-
-        function openCustomerMailDraft(item, eventType) {
-            const subject = `Linea LED Update - ${item.id}`;
-            const body = buildComplaintMessage(item, eventType, 'customer');
-            setTimeout(() => {
-                window.location.href = `mailto:${LINEA_SYNC_CONFIG.adminEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            }, 1000);
+            alert("🚀 COMPLAINT DISPATCHED SUCCESSFULLY!");
+            event.target.reset();
+            changeTab('dashboard');
         }
 
         function renderDashboardTable() {
             const tableBody = document.getElementById('dashboard-complaint-rows');
             if (!tableBody) return;
 
-            tableBody.innerHTML = "";
-            let pendingCount = 0;
-            let resolvedCount = 0;
-
             if (complaintsResponseArray.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="8" class="p-10 text-center text-textMuted italic">Koi response abhi tak generate nahi hua hai. Warranty QR scan karke complaint submit kijiye!</td></tr>`;
-                updateCounters(0, 0, 0);
+                tableBody.innerHTML = `<tr id='empty-ledger-placeholder'><td colspan='8' class='p-10 text-center text-textMuted italic'>No warranty claims found.</td></tr>`;
                 return;
             }
 
-            complaintsResponseArray.forEach((item, index) => {
-                if (item.status === "Open Fault") pendingCount++;
-                if (item.status === "Resolved") resolvedCount++;
+            document.getElementById('dash-counter-total').innerText = complaintsResponseArray.length;
+            document.getElementById('dash-counter-pending').innerText = complaintsResponseArray.filter(c => c.status === "Open Fault").length;
+            document.getElementById('dash-counter-resolved').innerText = complaintsResponseArray.filter(c => c.status === "Resolved").length;
 
-                const matchBadgeClass = String(item.matchStatus).includes("Verified") ? "text-emerald-700 bg-emerald-50 border-emerald-200" : "text-red-700 bg-red-50 border-red-200";
-
-                const rowHtml = `
-                    <tr class="hover:bg-gray-50 border-b border-gray-200 text-textDark font-medium">
+            tableBody.innerHTML = complaintsResponseArray.map(item => {
+                return `
+                    <tr class="hover:bg-gray-50 border-b border-gray-200">
                         <td class="p-3 font-mono text-brandOrange font-bold">${item.warrantyId}</td>
-                        <td class="p-3 font-bold font-sans">${item.client}</td>
-                        <td class="p-3 text-textDark font-sans whitespace-normal">${item.siteAddress}</td>
-                        <td class="p-3 text-textMuted font-sans">${item.contact}</td>
-                        <td class="p-3 text-cyberBlue font-mono font-semibold">${escapeHtml(item.imageName)}</td>
-                        <td class="p-3"><span class="bg-gray-100 text-textDark px-2 py-0.5 rounded text-[10px] font-bold uppercase">${item.issue}</span></td>
-                        <td class="p-3"><span class="border px-2 py-0.5 rounded text-[10px] font-bold font-mono ${matchBadgeClass}">${item.matchStatus}</span></td>
-                        <td class="p-3 text-center">
-                            <select onchange="updateRowStatus(${index}, this.value)" class="bg-white border border-gray-300 text-xs rounded-lg text-textDark px-2 py-1 font-bold focus:outline-none cursor-pointer">
-                                <option value="Open Fault" ${item.status === 'Open Fault' ? 'selected' : ''}>Open Fault</option>
-                                <option value="In Progress" ${item.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                                <option value="Resolved" ${item.status === 'Resolved' ? 'selected' : ''}>Resolved</option>
-                            </select>
-                        </td>
+                        <td class="p-3 font-bold">${item.client}</td>
+                        <td class="p-3 whitespace-normal">${item.siteAddress}</td>
+                        <td class="p-3 text-textMuted">${item.contact}</td>
+                        <td class="p-3 font-mono text-blue-500">${item.imageName}</td>
+                        <td class="p-3"><span class="bg-gray-100 px-2 py-0.5 rounded text-[10px] font-bold">${item.issue}</span></td>
+                        <td class="p-3"><span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded text-[10px] font-bold">${item.matchStatus}</span></td>
+                        <td class="p-3 text-center"><span class="font-bold text-orange-500">${item.status}</span></td>
                     </tr>
                 `;
-                tableBody.insertAdjacentHTML('beforeend', rowHtml);
-            });
-
-            updateCounters(complaintsResponseArray.length, pendingCount, resolvedCount);
-        }
-
-        function updateRowStatus(index, newStatus) {
-            complaintsResponseArray[index].status = newStatus;
-            localStorage.setItem('linea_complaints_db', JSON.stringify(complaintsResponseArray));
-            renderDashboardTable();
-            openWhatsAppNotificationLinks(complaintsResponseArray[index], 'status');
-        }
-
-        function updateCounters(total, pending, resolved) {
-            document.getElementById('dash-counter-total').innerText = total;
-            document.getElementById('dash-counter-pending').innerText = pending;
-            document.getElementById('dash-counter-resolved').innerText = resolved;
+            }).join('');
         }
 
         function filterDashboardTable() {
@@ -788,16 +677,17 @@
                 if (row.cells.length < 2) continue;
                 const txtId = row.cells[0].innerText.toLowerCase();
                 const txtClient = row.cells[1].innerText.toLowerCase();
-                const currentStatus = row.cells[7].getElementsByTagName('select')[0]?.value || '';
+                const currentStatus = row.cells[7]?.innerText || '';
 
                 const matchesSearch = txtId.includes(query) || txtClient.includes(query);
-                const matchesStatus = (statusFilter === "ALL") || (currentStatus === statusFilter);
+                const matchesStatus = (statusFilter === "ALL") || (currentStatus.includes(statusFilter));
 
                 row.style.display = (matchesSearch && matchesStatus) ? "" : "none";
             }
         }
 
         function exportDashboardData() {
+            if(complaintsResponseArray.length === 0) return alert("No logs available to export.");
             let csvContent = "data:text/csv;charset=utf-8,Warranty ID,Client,Address,Contact,Issue,Match Status,Status\n";
             complaintsResponseArray.forEach(item => {
                 csvContent += `"${item.warrantyId}","${item.client}","${item.siteAddress}","${item.contact}","${item.issue}","${item.matchStatus}","${item.status}"\n`;
